@@ -31,7 +31,6 @@ describe "TripDispatcher class" do
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
 
       dispatcher = RideShare::TripDispatcher.new
-
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -79,8 +78,9 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
+      
       before do
         @dispatcher = build_test_dispatcher
       end
@@ -90,6 +90,7 @@ describe "TripDispatcher class" do
       end
 
       it "finds a driver instance" do
+        
         driver = @dispatcher.find_driver(2)
         expect(driver).must_be_kind_of RideShare::Driver
       end
@@ -101,9 +102,10 @@ describe "TripDispatcher class" do
       end
 
       it "accurately loads driver information into drivers array" do
+        # binding.pry
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
-
+        # binding.pry
         expect(first_driver.name).must_equal "Driver 1 (unavailable)"
         expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
@@ -122,4 +124,6 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  # describe "calling a new trip"
 end

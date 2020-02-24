@@ -49,7 +49,13 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+          )
         )
 
       @passenger.add_trip(trip)
@@ -69,6 +75,58 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    it "net expenditure is calculated appropriately if no trips" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      expect(@passenger.net_expenditures).must_equal 0
+      expect(@passenger.total_time_spent).must_equal 0
+    end
+  
+    it "net expenditure is calculated appropriately if there are trips" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      trip_one = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 5,
+        cost: 10,
+        driver: RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+          )
+        )
+      trip_two = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.new(2016, 9, 8),
+        end_time: Time.new(2016, 9, 9),
+        rating: 5,
+        cost: 25,
+        driver: RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+          )
+        )
+      
+      @passenger.add_trip(trip_one)
+      @passenger.add_trip(trip_two)
+
+      expect(@passenger.net_expenditures).must_equal 35
+      expect(@passenger.total_time_spent).must_equal (Time.new(2016, 8, 9)-Time.new(2016, 8, 8))+(Time.new(2016, 9, 9)-Time.new(2016, 9, 8))
+    end
   end
 end

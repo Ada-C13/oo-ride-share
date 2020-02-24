@@ -3,6 +3,7 @@ require 'minitest'
 require 'minitest/autorun'
 require 'minitest/reporters'
 require 'minitest/skip_dsl'
+require 'pry'
 # Add simplecov
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
@@ -12,4 +13,4 @@ require_relative '../lib/csv_record'
 require_relative '../lib/passenger'
 require_relative '../lib/trip'
 require_relative '../lib/trip_dispatcher'
-# require_relative '../lib/driver'
+require_relative '../lib/driver'

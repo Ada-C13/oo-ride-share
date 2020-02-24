@@ -16,6 +16,16 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures 
+      return 0 if @trips == []
+      @trips.map {|trip| trip.cost}.inject(:+)
+    end
+
+    def total_time_spent 
+      return 0 if @trips == []
+      @trips.map {|trip| trip.duration() }.inject(:+)
+    end
+
     private
 
     def self.from_csv(record)
