@@ -10,10 +10,19 @@ module RideShare
       @name = name
       @phone_number = phone_number
       @trips = trips || []
+
     end
 
     def add_trip(trip)
       @trips << trip
+    end
+
+    def net_expenditures
+      return @trips.map {|trip| trip.cost}.sum
+    end
+
+    def total_time_spent
+      return @trips.map {|trip| trip.duration}.sum
     end
 
     private

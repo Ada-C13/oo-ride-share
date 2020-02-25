@@ -41,5 +41,24 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises an error if end_time is before start_time " do
+      @trip_data[:start_time] = @trip_data[:end_time] + 15 * 60 # made start_time bigger than end_time by 15 minutes
+      expect do
+        RideShare::Trip.new(@trip_data)
+      end.must_raise ArgumentError
+
+      @trip_data[:start_time] = @trip_data[:end_time] + 1 # made start_time bigger than end_time by 1 second
+      expect do
+        RideShare::Trip.new(@trip_data)
+      end.must_raise ArgumentError
+    end
+
+    it "calculates the duration of the trip corectly" do
+      expect(@trip.duration).must_be_kind_of Float
+      expect(@trip.duration).must_equal 1500.0
+    end
+
+    
   end
 end

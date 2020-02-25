@@ -28,14 +28,30 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      @start_time = start_time
+      if start_time.class == String
+        start_time = Time.parse(start_time) # added Time.parse to turn string into time, if it was passed as a string.
+      end
+      @start_time = start_time 
+
+      if end_time.class == String
+        end_time = Time.parse(end_time) # added Time.parse to turn string into time
+      end
       @end_time = end_time
+
+      if @end_time < @start_time
+        raise ArgumentError, "End time cannot be before start time."
+      end
+      
       @cost = cost
       @rating = rating
 
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+    end
+
+    def duration
+      return (@end_time - @start_time)
     end
 
     def inspect

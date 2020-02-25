@@ -69,6 +69,78 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      @trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 10,
+        rating: 5
+        )
+      @trip2 = RideShare::Trip.new(
+        id: 10,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 12),
+        cost: 40,
+        rating: 5
+        )
+      end
+
+    it "Returns the total amount the passenger has spent on trips." do
+      expect(@passenger.net_expenditures).must_equal 0
+      expect(@passenger.net_expenditures).must_be_kind_of Numeric 
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
+      expect(@passenger.net_expenditures).must_equal 50
+    end
+
+  end
+
+  describe "total_time_spent" do
+
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      @trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 10,
+        rating: 5
+        )
+      @trip2 = RideShare::Trip.new(
+        id: 10,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 12),
+        cost: 40,
+        rating: 5
+        )
+      end
+
+    it "Returns the total time the passenger has had on trips." do
+      expect(@passenger.total_time_spent).must_equal 0
+      expect(@passenger.total_time_spent).must_be_kind_of Numeric 
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
+      expect(@passenger.total_time_spent).must_equal 172800
+    end
+
   end
 end
