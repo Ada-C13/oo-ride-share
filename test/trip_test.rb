@@ -41,5 +41,29 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+    it "raises an error if end time is before the start time" do
+      #Arrange
+      start_time = Time.parse('2020-02-24 00:25:13 +0000')
+      end_time = Time.parse('2020-02-24 00:00:13 +0000')
+      trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3
+      }
+      
+
+      #Act # Assert
+
+      expect{
+        RideShare::Trip.new(trip_data)
+      }.must_raise ArgumentError
+    end
   end
 end
