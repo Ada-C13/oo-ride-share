@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -55,6 +56,10 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    def calculate_duration
+      return end_time - start_time
+    end
+
     private
 
     def self.from_csv(record)
@@ -65,7 +70,7 @@ module RideShare
                end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
-             )
+             ) 
     end
   end
 end

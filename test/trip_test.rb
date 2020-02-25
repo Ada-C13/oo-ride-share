@@ -60,8 +60,34 @@ describe "Trip class" do
       
       expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
     end
-  
-
 
   end
+
+  describe "calculate_duration" do
+    before do
+      @trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.parse("12:00"),
+        end_time: Time.parse("14:00"),
+        cost: 23.45,
+        rating: 3
+      }
+      @trip = RideShare::Trip.new(@trip_data)
+    end
+
+    it "wil calculate and return the time in seconds" do 
+
+      expect(@trip.calculate_duration).must_equal 7200.0
+    end
+
+  end
+
+
+
+
 end
