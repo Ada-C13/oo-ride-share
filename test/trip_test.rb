@@ -43,3 +43,5 @@ describe "Trip class" do
     end
   end
 end
+
+# Add a check in Trip#initialize that raises an ArgumentError if the end time is before the start time, and a corresponding TEST
