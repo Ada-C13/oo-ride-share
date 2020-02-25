@@ -1,5 +1,5 @@
 require 'csv'
-
+require 'time'
 require_relative 'csv_record'
 
 module RideShare
@@ -26,6 +26,10 @@ module RideShare
 
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
+      end
+
+      if end_time < start_time || end_time == nil 
+        raise ArgumentError.new("Incompatible start and end times")
       end
 
       @start_time = start_time
@@ -55,11 +59,13 @@ module RideShare
     private
 
     def self.from_csv(record)
+      end_time = Time.parse(record[:end_time])
+      start_time = Time.parse(record[:start_time])
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: start_time,
+               end_time: end_time,
                cost: record[:cost],
                rating: record[:rating]
              )
