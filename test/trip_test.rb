@@ -41,5 +41,27 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises an error for end_time greater than start_time" do
+
+  
+      @trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.parse("2018-12-20 16:09:21 -0800"),
+        end_time: Time.parse("2018-12-17 16:09:21 -0800"),
+        cost: 23.45,
+        rating: 3
+      }
+      
+      expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
+    end
+  
+
+
   end
 end
