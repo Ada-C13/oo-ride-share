@@ -37,7 +37,8 @@ module RideShare
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
-
+      
+      #Wave 1.1 #3: Adding check for raising argument 
       if start_time > end_time #https://ruby-doc.org/core-2.6.3/Time.html
         raise ArgumentError.new("Invalid, start time must be before end time")
       end
@@ -46,7 +47,7 @@ module RideShare
 
     #Wave 1:1 4.Adding duration of the trip in seconds
     def duration()
-      return (@end_time - @start_time) #will return in seconds because Time class method
+      return (end_time - start_time) #will return in seconds because Time class method
     end
 
     def inspect
