@@ -69,6 +69,55 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 10,
+        rating: 5
+        )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip)
+    end
+
+    it "totals to $30 dollars for all trips" do
+      expect(@passenger.net_expenditures).must_equal 30
+    end
+    
+    it "totals to $55.50 dollars for all trips" do
+      next_trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 25.50,
+        rating: 5
+        )
+      @passenger.add_trip(next_trip)
+
+      expect(@passenger.net_expenditures).must_equal 55.5
+    end
+
+    it "returns $0 if no trips have been taken" do
+      @passenger_two = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+
+      expect(@passenger_two.net_expenditures).must_equal 0
+    end
+
   end
 end
