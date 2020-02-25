@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -86,8 +86,8 @@ xdescribe "Driver class" do
         vin: "1C9EVBRM0YBC564DZ"
       )
       trip = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
+        driver_id: 8,
+        driver_name: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
@@ -117,8 +117,8 @@ xdescribe "Driver class" do
 
     it "correctly calculates the average rating" do
       trip2 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
+        driver_id: 8,
+        driver_name: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),

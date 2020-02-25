@@ -49,7 +49,9 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        cost: 8.3,
+        rating: 5,
+        driver_id: 222
         )
 
       @passenger.add_trip(trip)
@@ -68,7 +70,45 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
+  describe "passenger methods" do
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 8.3,
+        rating: 5,
+        driver_id: 222
+        )
+        trip_two = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 5.2,
+          rating: 5,
+          driver_id: 222
+          )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip_two)
+    end
+
     # You add tests for the net_expenditures method
+    it "will return the total cost for all trips made by the passenger" do  
+      expect(@passenger.net_expenditures).must_equal 13.5
+    end
+
+    it "will return the total number of seconds spent in rides by the passenger" do
+      expect(@passenger.total_time_spent).must_equal 172800
+    end
   end
 end
