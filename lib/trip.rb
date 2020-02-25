@@ -30,7 +30,7 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
-      # binding.pry
+
       if driver
         @driver = driver
         @driver_id = driver.id
