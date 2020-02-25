@@ -35,28 +35,42 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
-    def request_trip(passenger_id)
-
-      # Find first available driver
+    def first_available_driver
       counter = 0
       temp_status = self.drivers[counter].status
-      binding.pry
       until temp_status == :AVAILABLE 
-        temp_status = self.drivers[counter].status
         counter += 1
+
+        raise ArgumentError, "There is no available driver!" if self.drivers.length == counter 
+
+        temp_status = self.drivers[counter].status
       end
 
       counter
+    end
+
+
+    def request_trip(passenger_id)
+
+      counter = first_available_driver 
+
+      # Change driver status
+      self.drivers[counter].change_status()
+
+      # Create new trip 
+      new_trip = Trip.new(
+        id: self.trips.last.id + 1,
+        passenger_id: passenger_id,
+        driver_id: self.drivers[counter].id,
+        start_time: Time.now
+      )
+
+      # Add new trip to driver and passenger
+      self.drivers[counter].add_trip(new_trip)
+      self.find_passenger(passenger_id).add_trip(new_trip)
+      @trips << new_trip
       
-
-
-      # Trip.new(
-      #   id: Trip.last_trip + 1,
-      #   passenger_id: passenger_id,
-      #   driver_id: 1
-      # )
-
-
+      return new_trip
     end
 
     private

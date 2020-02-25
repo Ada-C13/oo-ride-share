@@ -7,6 +7,8 @@ module RideShare
   class Trip < CsvRecord
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver, :driver_id
 
+    attr_accessor :trip_completed
+
     def initialize(
           id:,
           passenger: nil,
@@ -16,7 +18,8 @@ module RideShare
           cost: nil,
           rating: nil,
           driver: nil,
-          driver_id: nil
+          driver_id: nil,
+          trip_completed: false
         )
       super(id)
 
@@ -45,12 +48,17 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      if @start_time && @end_time && @cost && @rating
+        @trip_completed = true
       end
-
-      if @start_time > @end_time
-        raise ArgumentError, "End time is before start time"
+      if @trip_completed == true  
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
+    
+        if @start_time > @end_time
+          raise ArgumentError, "End time is before start time"
+        end
       end
     end
 
@@ -75,10 +83,6 @@ module RideShare
     def duration
       @end_time - @start_time
     end
-
-    # def self.last_trip
-    #   self.last
-    # end
 
     private
 
