@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'time'
 
 describe "Trip class" do
   describe "initialize" do
@@ -61,5 +62,29 @@ describe "Trip class" do
       expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
     end
 
+  end
+  # Wave 1: Test for Trip class instance method to calculate the duration of the trip in seconds
+  describe "calculate duration" do
+    it "finds trip duration in seconds" do
+      start_time = Time.parse('2018-12-27 02:00:00 -0800')
+      end_time = Time.parse('2018-12-27 02:01:00 -0800')
+
+      @trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3
+      }
+
+      @trip = RideShare::Trip.new(@trip_data)
+
+      expect(@trip.calculate_duration).must_equal 60
+    end
   end
 end

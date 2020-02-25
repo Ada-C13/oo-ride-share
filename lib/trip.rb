@@ -46,6 +46,12 @@ module RideShare
       end
     end
 
+    # Wave 1: Add an instance method to the Trip class to calculate the duration of the trip in seconds, and a corresponding test
+    def calculate_duration
+      duration = @end_time - @start_time
+      return duration
+    end
+
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
@@ -73,7 +79,5 @@ module RideShare
         rating: record[:rating]
       )
     end
-
-    # Wave 1: Add an instance method to the Trip class to calculate the duration of the trip in seconds, and a corresponding test
   end
 end
