@@ -36,11 +36,27 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      Trip.new(
-        id: Trip.last_trip + 1,
-        passenger_id: passenger_id,
-        driver_id: 1
-      )
+
+      # Find first available driver
+      counter = 0
+      temp_status = self.drivers[counter].status
+      binding.pry
+      until temp_status == :AVAILABLE 
+        temp_status = self.drivers[counter].status
+        counter += 1
+      end
+
+      counter
+      
+
+
+      # Trip.new(
+      #   id: Trip.last_trip + 1,
+      #   passenger_id: passenger_id,
+      #   driver_id: 1
+      # )
+
+
     end
 
     private

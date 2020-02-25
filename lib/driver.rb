@@ -1,4 +1,5 @@
 require_relative 'csv_record'
+require_relative 'trip_dispatcher'
 
 module RideShare
   class Driver < CsvRecord
@@ -17,7 +18,7 @@ module RideShare
 			end
     end
 
-    def add_trip(trip)
+		def add_trip(trip)
       @trips << trip
 		end
 		
@@ -32,15 +33,16 @@ module RideShare
 			@trips.map {|trip| 
 				trip.cost < 1.65 ? 0 : (trip.cost - 1.65) * 0.80
 			}.inject(:+)
-		
 		end
 
-		# def self.first_available_driver
-		# 	count = 0 
-		# 	while self.
-		# 	if self.firs
-		# 	self.first 
+		# def self.all 
+		# 	total_trips = []
+		# 	return total_trips
 		# end
+
+		def self.first_available_driver
+
+		end
 
     private
 
@@ -49,8 +51,30 @@ module RideShare
         id: record[:id].to_i,
 				name: record[:name],
 				vin: record[:vin],
-				status: record[:status].to_sym
+				status: record[:status].strip.to_sym
       )
     end
   end
 end
+
+# driver_one = RideShare::Driver.new(
+# 	id: 45,
+# 	name: "Test Driver",
+# 	vin: "12345678912345678",
+# 	status: :UNAVAILABLE
+# )
+# driver_two = RideShare::Driver.new(
+# 	id: 20,
+# 	name: "Test Driver",
+# 	vin: "12345678912345678",
+# 	status: :AVAILABLE
+# )
+# driver_three = RideShare::Driver.new(
+# 	id: 36,
+# 	name: "Test Driver",
+# 	vin: "12345678912345678",
+# 	status: :UNAVAILABLE
+# )
+
+# selected_driver = Driver.first_available_driver()
+# p selected_driver

@@ -126,4 +126,40 @@ describe "TripDispatcher class" do
   end
 
   # describe "calling a new trip"
+  # before do
+  #   @dispatcher = build_test_dispatcher
+  # end
+
+  # describe "Initializer" do
+  #   it "is an instance of TripDispatcher" do
+  #     dispatcher = build_test_dispatcher
+  #     expect(dispatcher).must_be_kind_of RideShare::TripDispatcher
+  #   end
+  # end
+  describe 'self.first_available_driver' do
+    it 'will return the first available driver' do
+    #   @driver_one = RideShare::Driver.new(
+    #     id: 45,
+    #     name: "Test Driver",
+    #     vin: "12345678912345678",
+    #     status: :UNAVAILABLE
+    #   )
+    #   @driver_two = RideShare::Driver.new(
+    #     id: 20,
+    #     name: "Test Driver",
+    #     vin: "12345678912345678",
+    #     status: :AVAILABLE
+    #   )
+    #   @driver_three = RideShare::Driver.new(
+    #     id: 36,
+    #     name: "Test Driver",
+    #     vin: "12345678912345678",
+    #     status: :UNAVAILABLE
+    #   )
+      @dispatcher = build_test_dispatcher
+
+      selected_driver = @dispatcher.request_trip(345)
+      expect(@dispatcher.drivers[selected_driver].id).must_equal 1
+    end
+  end
 end
