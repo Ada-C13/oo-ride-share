@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -16,6 +17,7 @@ module RideShare
           rating:
         )
       super(id)
+      raise ArgumentError if end_time < start_time
 
       if passenger
         @passenger = passenger
@@ -51,14 +53,18 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    def calculate_duration()
+      return end_time - start_time
+    end
+
     private
 
     def self.from_csv(record)
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
