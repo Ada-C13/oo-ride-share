@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'time'
 
 describe "Trip class" do
   describe "initialize" do
@@ -19,7 +20,7 @@ describe "Trip class" do
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
-
+    
     it "is an instance of Trip" do
       expect(@trip).must_be_kind_of RideShare::Trip
     end
@@ -41,5 +42,24 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+  # TODO 1.1 raise ArgumentError if end time is before start time
+    it "raises an error if the end time is before start time" do
+      # Arrange
+      # TODO start times later than end times array
+      # Array of end times that are earlier of start times
+      # start_time array that are later times
+
+      start_time = "2018-12-27 03:38:08 -0800"
+      end_time = "2018-12-27 02:39:05 -0800"
+
+      # Act and Assert
+      @trip_data[:start_time] = start_time
+      @trip_data[:end_time] = end_time
+      expect {RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
+      # partially done through before block
+
+
+    end    
   end
 end

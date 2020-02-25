@@ -1,5 +1,5 @@
 require 'csv'
-
+require 'time'
 require_relative 'csv_record'
 
 module RideShare
@@ -36,6 +36,12 @@ module RideShare
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+
+      # 1.1 ArgumentError for end time < start time
+      if @end_time < @start_time
+        raise ArgumentError.new("Cannot have an end time before a start time.")
+      end
+
     end
 
     def inspect
@@ -51,17 +57,25 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    # TODO instance method to this class to calculate duration of the trip in seconds
+    # TODO implement test in trip test file
+
     private
 
+    # overrides the .from_csv in csv_record
     def self.from_csv(record)
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
     end
   end
 end
+
+
+# all_trips = RideShare::Trip.load_all
+# puts all_trips[0]
