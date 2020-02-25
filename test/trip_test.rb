@@ -41,5 +41,22 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "accurately calculates time in seconds" do
+      # Arrange
+      @start_time = Time.parse("Thu Nov 29 14:33:20 2020")
+      @end_time = Time.parse("Thu Nov 29 15:33:20 2020")
+
+      # Act
+      time_in_seconds = @end_time - @start_time
+      
+      # Assert
+      expect(time_in_seconds).must_equal 3600
+    end
+
+    # it "raises an ArgumentError if end time is before start time" do
+    #   expect { (@end_time - @start_time) < 0 }.must_raise ArgumentError
+    # end
+
   end
 end

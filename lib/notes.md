@@ -54,9 +54,23 @@ Using the pry session we started above, how would you...
 - Print the rating for the first trip
 td.trips[0].rating
 
+
 - Print the name of the passenger for trip 7
+td.trips[6].passenger.name
+=> "Melvin Gerlach DDS"
 
 
 - Print the ID of every trip taken by passenger 9
+td.passenger[8] prints the trip objects
+
+td.find_passenger(9).trips.each do |trip|
+  puts trip.id
+end  
+
 
 - Print the ID of the trip that cost the most money
+td.trips.max_by { |trip| trip.cost }.id
+
+
+highest_cost = td.trips.max_by { |trip| trip.cost }
+highest_cost.id ==> 14
