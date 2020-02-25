@@ -24,6 +24,14 @@ module RideShare
       return all_trips.sum
     end
 
+    def total_time_spent
+      all_trips_duration = @trips.map do |trip|
+        trip.calculate_duration
+      end
+
+      return all_trips_duration.sum
+    end
+
     private
 
     def self.from_csv(record)
