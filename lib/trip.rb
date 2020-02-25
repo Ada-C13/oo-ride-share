@@ -59,8 +59,13 @@ module RideShare
     end
 
     def duration
-      return end_time - start_time
+      if start_time == nil || end_time == nil
+        return 0
+      else 
+       return end_time - start_time
+      end 
     end
+    
     private
 
     def self.from_csv(record)
