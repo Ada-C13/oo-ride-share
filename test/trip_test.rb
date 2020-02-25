@@ -41,5 +41,13 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    # it "raises an error if end time is before start time" do 
+    #   expect{@trip_data[:end_time]< @trip_data[:start_time]}.must_raise ArgumentError
+    # end
+
+    # expect {order.add_product("banana", 4.25)}.must_raise ArgumentError
+
+
   end
 end

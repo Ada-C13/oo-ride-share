@@ -1,4 +1,5 @@
 require_relative 'csv_record'
+require 'time'
 
 module RideShare
   class Passenger < CsvRecord
@@ -19,7 +20,7 @@ module RideShare
     private
 
     def self.from_csv(record)
-      return new(
+      return self.new(
         id: record[:id],
         name: record[:name],
         phone_number: record[:phone_num]

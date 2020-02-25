@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 module RideShare
   class CsvRecord
@@ -21,6 +22,7 @@ module RideShare
         converters: :numeric
       ).map { |record| from_csv(record) }
     end
+    
 
     def self.validate_id(id)
       if id.nil? || id <= 0

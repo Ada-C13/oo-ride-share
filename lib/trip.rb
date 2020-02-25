@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -17,6 +18,7 @@ module RideShare
         )
       super(id)
 
+      
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
@@ -27,16 +29,32 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
-
+      
+      if start_time.class == String 
+        start_time = Time.parse(start_time)
+      end
       @start_time = start_time
+
+      if end_time.class == String 
+        end_time = Time.parse(end_time)
+      end
       @end_time = end_time
+
+
       @cost = cost
       @rating = rating
 
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+
+      if end_time < start_time
+        raise ArgumentError.new("End time #{end_time} is before  start time #{start_time}")
+      end
+
     end
+
+      
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
@@ -57,11 +75,16 @@ module RideShare
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: record[:start_time], # nn to turn into Time class
+               end_time: record[:end_time], # nn to turn into Time class  before passing into initialize 
                cost: record[:cost],
                rating: record[:rating]
              )
     end
   end
 end
+
+# all_trips = RideShare::Trip.load_all(full_path: "./support/trips.csv"
+
+# td = RideShare::TripDispatcher.new
+# td.trips[1].start_time
