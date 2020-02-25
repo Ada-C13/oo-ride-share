@@ -7,7 +7,6 @@ module RideShare
   class Trip < CsvRecord
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
-    # Add a check in Trip#initialize that raises an ArgumentError if the end time is before the start time, and a corresponding TEST
     def initialize(
           id:,
           passenger: nil,
@@ -30,7 +29,7 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-
+      # Raises an ArgumentError if the end time is before the start time
       if end_time > start_time
         @start_time = start_time
         @end_time = end_time
@@ -62,19 +61,19 @@ module RideShare
 
     private
 
-    # Spend some time reading the docs for Time - you might be particularly interested in Time.parse
     # Wave 1: Turn start_time and end_time into Time instances before passing them to Trip#initialize
+    # Trip.from_csv overrides CsvRecord.from_csv
     def self.from_csv(record)
       return self.new(
         id: record[:id],
         passenger_id: record[:passenger_id],
-      #  start_time: record[:start_time],
         start_time: Time.parse(record[:start_time]),
-      #  end_time: record[:end_time],
         end_time: Time.parse(record[:end_time]),
         cost: record[:cost],
         rating: record[:rating]
       )
     end
+
+    # Wave 1: Add an instance method to the Trip class to calculate the duration of the trip in seconds, and a corresponding test
   end
 end

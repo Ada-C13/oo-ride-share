@@ -30,6 +30,7 @@ module RideShare
 
     private
     
+    # Template method - doesn't know what to parse
     def self.from_csv(record)
       raise NotImplementedError, 'Implement me in a child class!'
     end

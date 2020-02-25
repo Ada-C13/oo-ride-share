@@ -41,7 +41,25 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    # Test for ArgumentError if the end time is before the start time
+    it "raises an error if end time is before start time" do
+    start_time = Time.now
+    end_time = start_time - 25 * 60 # earlier than start_time
+      @trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3
+      }
+      expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
+    end
+
   end
 end
-
-# Add a check in Trip#initialize that raises an ArgumentError if the end time is before the start time, and a corresponding TEST
