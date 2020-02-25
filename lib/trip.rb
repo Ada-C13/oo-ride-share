@@ -55,6 +55,11 @@ module RideShare
       passenger.add_trip(self)
     end
     
+    def duration
+      start_in_sec = (@start_time.hour * 3600) + (@start_time.min * 60) + @start_time.sec
+      end_in_sec = (@end_time.hour * 3600) + (@end_time.min * 60) + @end_time.sec
+      return end_in_sec - start_in_sec
+    end
     # while private methods' availability is restricted within the instance of a class and its descendants.
     private
 

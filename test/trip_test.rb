@@ -56,6 +56,11 @@ describe "Trip class" do
       expect {RideShare::Trip.new(trip_data2)}.must_raise ArgumentError
     end
 
+    it "reports duration of trip" do
+      expect(@trip.duration).must_be_kind_of Integer
+      expect(@trip.duration).must_equal 1500
+    end
+
     it "raises an error for an invalid rating" do
       [-3, 0, 6].each do |rating|
         @trip_data[:rating] = rating
