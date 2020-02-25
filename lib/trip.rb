@@ -31,7 +31,7 @@ module RideShare
       end
 
 
-      if !(@end_time.to_i < @start_time.to_i)
+      if end_time > start_time
         @start_time = start_time
         @end_time = end_time
       else
@@ -66,15 +66,15 @@ module RideShare
     # Wave 1: Turn start_time and end_time into Time instances before passing them to Trip#initialize
     def self.from_csv(record)
       return self.new(
-               id: record[:id],
-               passenger_id: record[:passenger_id],
-              #  start_time: record[:start_time],
-               start_time: Time.parse(record[:start_time]),
-              #  end_time: record[:end_time],
-               end_time: Time.parse(record[:end_time]),
-               cost: record[:cost],
-               rating: record[:rating]
-             )
+        id: record[:id],
+        passenger_id: record[:passenger_id],
+      #  start_time: record[:start_time],
+        start_time: Time.parse(record[:start_time]),
+      #  end_time: record[:end_time],
+        end_time: Time.parse(record[:end_time]),
+        cost: record[:cost],
+        rating: record[:rating]
+      )
     end
   end
 end
