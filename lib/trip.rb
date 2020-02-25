@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -7,14 +8,14 @@ module RideShare
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
-          id:,
-          passenger: nil,
-          passenger_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:
-        )
+      id:,
+      passenger: nil,
+      passenger_id: nil,
+      start_time:,
+      end_time:,
+      cost: nil,
+      rating:
+      )
       super(id)
 
       if passenger
@@ -36,6 +37,16 @@ module RideShare
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+
+      if start_time > end_time #https://ruby-doc.org/core-2.6.3/Time.html
+        raise ArgumentError.new("Invalid, start time must be before end time")
+      end
+
+    end
+
+    #Wave 1:1 4.Adding duration of the trip in seconds
+    def duration()
+      return (@end_time - @start_time) #will return in seconds because Time class method
     end
 
     def inspect
@@ -57,8 +68,8 @@ module RideShare
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )

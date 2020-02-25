@@ -41,5 +41,26 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises an error because end time is before the start time" do
+      # if start_time > end_time #https://ruby-doc.org/core-2.6.3/Time.html
+      #   raise ArgumentError.new("Invalid, start time must be before end time")
+      # end
+      #what do we need: testing the initialize by creating a Trip object
+      @trip_data[:start_time] = Time.parse("2018-12-27 02:00:00 -0800")
+      @trip_data[:end_time] = Time.parse("2018-12-27 01:00:00 -0800")
+      expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
+      
+    end
+    
+    describe "duration" do
+      it "calculates a one minute duration" do
+        @trip_data[:start_time] = Time.parse("2018-12-27 02:00:00 -0800")
+        @trip_data[:end_time] = Time.parse("2018-12-27 02:01:00 -0800")
+        test_time = RideShare::Trip.new(@trip_data)
+        expect(test_time.duration()).must_equal 60
+      
+      end
+    end
   end
 end
