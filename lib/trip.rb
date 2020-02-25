@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -28,10 +29,12 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      @start_time = start_time
-      @end_time = end_time
+      @start_time = Time.parse(start_time.to_s)
+      @end_time = Time.parse(end_time.to_s)
       @cost = cost
       @rating = rating
+
+      raise ArgumentError if @end_time < @start_time
 
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
@@ -49,6 +52,11 @@ module RideShare
     def connect(passenger)
       @passenger = passenger
       passenger.add_trip(self)
+    end
+
+    def duration
+      trip_duration = @end_time - @start_time
+      return trip_duration
     end
 
     private
