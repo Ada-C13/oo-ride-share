@@ -41,5 +41,78 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "each start and stop time in array is a Time instance" do
+      expect(@trip.start_time).must_be_kind_of Time
+      expect(@trip.end_time).must_be_kind_of Time
+    end    
+  end
+
+  describe "validating time inputs" do
+    it "throws an argument error with a bad start/end time (different dates)" do
+      expect do
+        RideShare::Trip.new(id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 9),
+        cost: 23.45,
+        rating: 3
+      )
+      end.must_raise ArgumentError
+    end
+
+    it "throws an argument error with a bad start/end time (same date)" do
+      expect do
+        RideShare::Trip.new(id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.new(2016, 8, 11) + 6*60*60,
+        end_time: Time.new(2016, 8, 11) + 4*60*60,
+        cost: 23.45,
+        rating: 3
+      )
+      end.must_raise ArgumentError
+    end
+  end
+
+  describe "calculate_trip_duration" do
+    it "returns the time elapsed in seconds" do
+      expect do
+        RideShare::Trip.new(id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.new(2016, 8, 11) + 4*60*60,
+        end_time: Time.new(2016, 8, 11) + 6*60*60,
+        cost: 23.45,
+        rating: 3
+      ).must_equal 7200
+      end
+    end 
+
+    it "returns 0 if start and end time are the same" do
+      expect do
+        RideShare::Trip.new(id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11),
+        cost: 23.45,
+        rating: 3
+      ).must_equal 0
+      end
+    end
   end
 end
