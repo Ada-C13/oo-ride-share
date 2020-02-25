@@ -41,5 +41,14 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "raises ArgumentError if start_time is after end_time" do
+      @trip_data[:end_time] = @trip_data[:start_time] - 25 * 60
+      expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
+    end
+
+    it "correctly calculates duration of trip in seconds" do
+      expect(@trip.calculate_duration).must_equal 1500
+    end
   end
 end
