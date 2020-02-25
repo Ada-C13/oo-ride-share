@@ -57,8 +57,10 @@ module RideShare
       passenger.add_trip(self)
     end
 
-    # TODO instance method to this class to calculate duration of the trip in seconds
-    # TODO implement test in trip test file
+    # 1.1 #4 instance method of duration of trip
+    def duration
+      return (Time.parse(@end_time) - Time.parse(@start_time)).to_i
+    end
 
     private
 
