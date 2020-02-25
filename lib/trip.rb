@@ -50,7 +50,8 @@ module RideShare
       @passenger = passenger
       passenger.add_trip(self)
     end
-
+    
+    # while private methods' availability is restricted within the instance of a class and its descendants.
     private
 
     def self.from_csv(record)
