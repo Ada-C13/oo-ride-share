@@ -42,13 +42,15 @@ module RideShare
       driver_id: nil,
       passenger: nil,
       passenger_id: passenger_id,
-      start_time: Time.new,
+      start_time: Time.now,
       end_time: nil,
       cost: nil,
       rating: nil)
-      assign_driver(driver, new_trip)
+      driver.assign_driver(new_trip)
       passenger = find_passenger(passenger_id)
       passenger.add_trip(new_trip)
+      @trips << new_trip
+      return new_trip
     end
 
     private
