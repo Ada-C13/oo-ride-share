@@ -21,16 +21,18 @@ describe "Trip class" do
     end
 
     it "accurately finds time length of ride" do
-      time_a = "2018-12-27 02:39:05 -0800"
-      time_b = "2018-12-27 03:38:08 -0800"
+      start_time = "2018-12-27 02:39:05 -0800"
+      end_time = "2018-12-27 03:38:08 -0800"
+      # time_a = "2018-12-27 02:39:05 -0800"
+      # time_b = "2018-12-27 03:38:08 -0800"
   
-      difference = Time.parse(time_b) - Time.parse(time_a)
+      difference = Time.parse(end_time) - Time.parse(start_time)
 
-      if difference > 0
-        return difference
-      else
-       return  24 * 3600 + difference
-      end
+      # if difference > 0
+      #   return difference
+      # else
+      #  return  24 * 3600 + difference
+      # end
 
       expect(difference).must_equal(3543.0)
     end
@@ -47,7 +49,7 @@ describe "Trip class" do
         end_time: "2018-12-27 02:39:05 -0800",
         cost: 23.45,
         rating: 3,
-        trip_time: 3543.0
+        #trip_time: 3543.0
       }
 
       expect {RideShare::Trip.new(test_trip)}.must_raise ArgumentError
@@ -65,7 +67,7 @@ describe "Trip class" do
         end_time: Time.parse("2018-12-27 02:39:05 -0800"),
         cost: 23.45,
         rating: 3,
-        trip_time: 3543.0
+        #trip_time: 3543.0
       }
 
       expect {RideShare::Trip.new(test_trip)}.must_raise ArgumentError
