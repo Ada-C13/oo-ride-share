@@ -17,7 +17,7 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
