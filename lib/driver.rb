@@ -50,25 +50,3 @@ module RideShare
     end
   end
 end
-
-# driver_one = RideShare::Driver.new(
-# 	id: 45,
-# 	name: "Test Driver",
-# 	vin: "12345678912345678",
-# 	status: :UNAVAILABLE
-# )
-# driver_two = RideShare::Driver.new(
-# 	id: 20,
-# 	name: "Test Driver",
-# 	vin: "12345678912345678",
-# 	status: :AVAILABLE
-# )
-# driver_three = RideShare::Driver.new(
-# 	id: 36,
-# 	name: "Test Driver",
-# 	vin: "12345678912345678",
-# 	status: :UNAVAILABLE
-# )
-
-# selected_driver = Driver.first_available_driver()
-# p selected_driver
