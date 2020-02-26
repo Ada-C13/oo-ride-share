@@ -36,6 +36,10 @@ module RideShare
       return @trips.map {|trip| trip.rating}.sum.to_f / (@trips.size == 0 ? 1 : @trips.size)
     end
 
+    def total_revenue
+      fee = 1.65
+      return @trips.map {|trip| trip.cost < fee ? 0 : trip.cost - fee}.sum * 0.8
+    end
 
 
     private   
@@ -48,9 +52,7 @@ module RideShare
         status: record[:status].to_sym
       )
     end
-
   end
-
 end
 
 
