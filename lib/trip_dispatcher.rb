@@ -33,6 +33,7 @@ module RideShare
       
       @trips.each do |trip| # for each trip in the collection of trips, look at the individual trip
         passenger = find_passenger(trip.passenger_id) # passenger = that trip's passenger id passed to find_passenger, which returns a passenger object with the matching id
+        trip.connect(passenger)
       end
 
       return trips

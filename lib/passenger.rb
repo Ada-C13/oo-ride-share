@@ -16,6 +16,18 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      net_expenditures = @trips.cost.sum
+      # net_expenditures = @trips.cost.sum
+      # returns the total amount spent by a single passenger object on all instances of trips
+
+      # access all trips
+      # access all costs of those trips
+      # add those costs together
+
+      return net_expenditures
+    end
+
     private
 
     def self.from_csv(record)
