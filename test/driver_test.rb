@@ -128,6 +128,27 @@ describe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "returns accurate average rating when there are in progress trips" do
+      tripdispatcher = RideShare::TripDispatcher.new
+      available_driver = ""
+
+      # get the first available driver id
+      tripdispatcher.drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          available_driver = driver
+          break
+        end
+      end
+
+      current_rating = available_driver.average_rating
+
+      requested_trip = tripdispatcher.request_trip(1)
+      p available_driver.trips
+
+      expect(available_driver.average_rating).must_equal current_rating
+    end
+
   end
 
   describe "total_revenue" do
@@ -183,6 +204,26 @@ describe "Driver class" do
       @driver.trips.clear
 
       expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "returns accurate drivers revenue when in progress trips" do
+      tripdispatcher = RideShare::TripDispatcher.new
+      available_driver = ""
+
+      # get the first available driver id
+      tripdispatcher.drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          available_driver = driver
+          break
+        end
+      end
+
+      current_revenue = available_driver.total_revenue
+
+      requested_trip = tripdispatcher.request_trip(1)
+      p available_driver.trips
+
+      expect(available_driver.total_revenue).must_equal current_revenue
     end
   end
 end
