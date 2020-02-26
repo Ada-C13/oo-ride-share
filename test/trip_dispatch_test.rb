@@ -122,14 +122,37 @@ describe "TripDispatcher class" do
       end
     end
   end
-  describe "Request_trip" do
+  describe "Trip" do
+    describe "Request_trip" do
+      before do
+        # Return a TripDispatcher instance
+        @dispatcher = build_test_dispatcher
+        @assigned_trip = @dispatcher.request_trip(1)
+        @size = @dispatcher.trips.length
+      end
+  
+      it "Returns the newly created trip" do
+        expect(@assigned_trip).must_be_instance_of RideShare::Trip
+      end
+  
+      it "Updates the trip lists for the driver and passenger" do 
+        expect(@assigned_trip.passenger_id).must_equal 1
+        expect(@assigned_trip.id).must_equal 5
+      end  
+      
+      it "Selects an available driver" do 
+        expect(@assigned_trip.driver.status).must_equal :UNAVAILABLE
+      end 
 
-    it "Returns the newly created trip" do
+      it "returns an ArgumentError if there are no AVAILABLE drivers" do 
 
-    end
+        # There are only 2 available drivers in our test file
+        @assigned_trip = @dispatcher.request_trip(2)
 
-  end
-
-
-
+        expect{
+          @dispatcher.request_trip(3)
+        }.must_raise ArgumentError
+      end 
+    end 
+  end 
 end

@@ -116,7 +116,7 @@ describe "Passenger class" do
     expect(@passenger.total_time_spent).must_be_kind_of Integer
    end 
 
-   it "returns the correct net expenditures and total time spent if the passenger has no trips?" do 
+   it "returns the correct net expenditures and total time spent if the passenger has no trips" do 
     # Arrange
     passenger = RideShare::Passenger.new(
       id: 9,
@@ -133,14 +133,14 @@ describe "Passenger class" do
     expect(passenger.net_expenditures).must_be_instance_of Float
    end 
 
-   it "returns the correct net expenditures and total time spent if the passenger has not complete a trip" do 
+   it "returns the correct net expenditures and total time spent if the passenger's trip is still in-progress" do 
     # Arrange 
     trip3 = RideShare::Trip.new(
       id: 8,
       passenger: @passenger,
       start_time: Time.parse('2020-02-24 00:00:13 +0000'),
       end_time: nil,
-      rating: 5,
+      rating: nil,
       cost: nil,
       driver_id: 1
       ) 

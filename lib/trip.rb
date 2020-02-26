@@ -32,7 +32,7 @@ module RideShare
       end
 
       if end_time == nil
-        #TODO
+        # Do nothing
       elsif start_time > end_time
         raise ArgumentError.new("The end time is before the start time.")
       end
@@ -42,7 +42,9 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      if @rating == nil 
+        # Do nothing
+      elsif @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
 
