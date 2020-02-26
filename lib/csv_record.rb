@@ -30,7 +30,7 @@ module RideShare
 
     private
     
-    def self.from_csv(record)
+    def self.from_csv(record) # empty class in this parent csv class, to be overiden on a child class
       raise NotImplementedError, 'Implement me in a child class!'
     end
 

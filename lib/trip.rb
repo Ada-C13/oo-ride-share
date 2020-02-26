@@ -28,8 +28,20 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      @start_time = start_time
+      if start_time.class == String
+        start_time = Time.parse(start_time) # added Time.parse to turn string into time, if it was passed as a string.
+      end
+      @start_time = start_time 
+
+      if end_time.class == String
+        end_time = Time.parse(end_time) # added Time.parse to turn string into time
+      end
       @end_time = end_time
+
+      if @end_time < @start_time
+        raise ArgumentError, "End time cannot be before start time."
+      end
+      
       @cost = cost
       @rating = rating
 
@@ -51,14 +63,20 @@ module RideShare
       passenger.add_trip(self)
     end
 
-    private
+    def duration
+      return @end_time - @start_time
+    end
 
-    def self.from_csv(record)
+
+    private # only the class can call these, not from an instance of the class
+
+    # This is how we load the csv file. We create a new object here.
+    def self.from_csv(record) # overiding empty method from csv
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
                start_time: record[:start_time],
-               end_time: record[:end_time],
+               end_time: record[:end_time], 
                cost: record[:cost],
                rating: record[:rating]
              )
