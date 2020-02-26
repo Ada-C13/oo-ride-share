@@ -25,6 +25,13 @@ module RideShare
       return (cost_array).inject(:+)
     end
 
+    # 1.2 #2 total_time_spent method
+    def total_time_spent
+      time_duration = (@trips).map do |trip|
+        Time.parse(trip.end_time) - Time.parse(trip.start_time)
+      end
+      return (time_duration).inject(:+)
+    end
 
     private
 
