@@ -28,8 +28,16 @@ module RideShare
       end
     end
 
+
+    # private means can only be called 
+    # for this class or any
+    # of its descendants
     private
     
+    # self.from_csv -> template/abstract methods: 
+    # doesn't know how to do this job
+    # child class must do this
+
     def self.from_csv(record)
       raise NotImplementedError, 'Implement me in a child class!'
     end
@@ -48,3 +56,4 @@ module RideShare
     end
   end
 end
+
