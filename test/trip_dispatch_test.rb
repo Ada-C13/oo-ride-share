@@ -121,4 +121,24 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request_trip method" do
+    before do
+      @td = RideShare::TripDispatcher.new
+    end
+
+    it "passenger_id must be kind of integer" do
+      passenger_id = @td.passengers[0].id
+      expect(passenger_id).must_be_kind_of Integer
+    end
+
+    # it "assigns the first driver who's status is available" do
+    #   new_trip = @td.request_trip(1)
+
+    #   expect(new_trip.driver.id).must_equal 1
+    #   expect(new_trip.driver.status).must_equal :AVAILABLE
+    # end
+
+  end
+
 end
