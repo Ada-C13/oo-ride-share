@@ -34,7 +34,6 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -44,18 +43,19 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE
+        )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Test Driver",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-          )
+        driver: @driver
         )
 
       @passenger.add_trip(trip)
@@ -74,8 +74,8 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
-    it "net expenditure is calculated appropriately if no trips" do
+  describe "net_expenditures and total time spent" do
+    it "net expenditure and time is 0 if no trips" do
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -86,47 +86,43 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_equal 0
     end
   
-    it "net expenditure is calculated appropriately if there are trips" do
+    it "net expenditure and time is calculated if there are trips" do
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE
+        )
       trip_one = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
+        start_time: Time.new(2020, 8, 8),
+        end_time: Time.new(2020, 8, 9),
         rating: 5,
         cost: 10,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Test Driver",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-          )
+        driver: @driver
         )
       trip_two = RideShare::Trip.new(
         id: 9,
         passenger: @passenger,
-        start_time: Time.new(2016, 9, 8),
-        end_time: Time.new(2016, 9, 9),
+        start_time: Time.new(2020, 9, 8),
+        end_time: Time.new(2020, 9, 9),
         rating: 5,
         cost: 25,
-        driver: RideShare::Driver.new(
-          id: 54,
-          name: "Test Driver",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-          )
+        driver: @driver
         )
       
       @passenger.add_trip(trip_one)
       @passenger.add_trip(trip_two)
 
       expect(@passenger.net_expenditures).must_equal 35
-      expect(@passenger.total_time_spent).must_equal (Time.new(2016, 8, 9)-Time.new(2016, 8, 8))+(Time.new(2016, 9, 9)-Time.new(2016, 9, 8))
+      expect(@passenger.total_time_spent).must_equal 172800 # two days
     end
   end
 end
