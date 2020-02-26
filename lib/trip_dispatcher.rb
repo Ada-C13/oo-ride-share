@@ -6,7 +6,7 @@ require_relative 'trip'
 
 module RideShare
   class TripDispatcher
-    attr_reader :drivers, :passengers, :trips
+    attr_reader :drivers, :passengers, :trips 
 
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
