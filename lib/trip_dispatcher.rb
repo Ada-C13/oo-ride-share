@@ -4,6 +4,8 @@ require 'time'
 require_relative 'passenger'
 require_relative 'trip'
 
+# can't call from_csv because privately declared in CsvRecord (Passenger and Trip can call this though)
+
 module RideShare
   class TripDispatcher
     attr_reader :drivers, :passengers, :trips
@@ -29,12 +31,14 @@ module RideShare
 
     private
 
+    #Dispatcher.connect_trips is not allowed by external code, only TripDispatcher can call it on itself.
+
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
         trip.connect(passenger)
       end
-
+      # return trips or @trips?
       return trips
     end
   end

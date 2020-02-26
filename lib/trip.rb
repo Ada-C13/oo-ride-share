@@ -1,10 +1,11 @@
 require 'csv'
-
+require 'time'
 require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    # Took out the :id below because redundant (inherited from CsvRecord's attr_reader).
+    attr_reader :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
           id:,
@@ -15,6 +16,7 @@ module RideShare
           cost: nil,
           rating:
         )
+        raise ArgumentError if @start_time > @end_time
       super(id)
 
       if passenger
@@ -54,9 +56,11 @@ module RideShare
     private
 
     def self.from_csv(record)
-      return self.new(
+      # parse Time here?
+      return new(
                id: record[:id],
                passenger_id: record[:passenger_id],
+              # start_time: Time.parse(record[:start_time])
                start_time: record[:start_time],
                end_time: record[:end_time],
                cost: record[:cost],
