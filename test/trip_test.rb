@@ -35,7 +35,7 @@ describe "Trip class" do
       expect(difference).must_equal(3543.0)
     end
 
-    it "raises error when end_time is less than start_time" do
+    it "raises error when end_time or start_time is not Time object" do
       test_trip = {
         id: 8,
         passenger: RideShare::Passenger.new(
@@ -45,6 +45,24 @@ describe "Trip class" do
         ),
         start_time: "2018-12-27 03:38:08 -0800",
         end_time: "2018-12-27 02:39:05 -0800",
+        cost: 23.45,
+        rating: 3,
+        trip_time: 3543.0
+      }
+
+      expect {RideShare::Trip.new(test_trip)}.must_raise ArgumentError
+    end
+
+    it "raises error when end_time is less than start_time" do
+      test_trip = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.parse("2018-12-27 03:38:08 -0800"),
+        end_time: Time.parse("2018-12-27 02:39:05 -0800"),
         cost: 23.45,
         rating: 3,
         trip_time: 3543.0

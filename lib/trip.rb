@@ -30,6 +30,10 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
+      if start_time.class != Time || start_time.class != Time
+        raise ArgumentError.new("Value is not a Time object.")
+      end
+
       @start_time = start_time
       @end_time = end_time
       @cost = cost
@@ -82,16 +86,5 @@ module RideShare
                rating: record[:rating]
              )
     end
-  end
-end
-
-def time_difference(time_a, time_b)
-  difference = time_b - time_a
-
-
-  if difference > 0
-    return difference
-  else
-   return  24 * 3600 + difference
   end
 end
