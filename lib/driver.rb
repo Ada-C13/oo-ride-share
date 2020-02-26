@@ -51,26 +51,8 @@ module RideShare
     end
 
 
-    drivers =RideShare::Driver.load_all(full_path: '../support/drivers.csv')
-    ap drivers
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   end
 
-drivers =RideShare::Driver.load_all(full_path: '../support/drivers.csv')
-ap drivers
+# drivers =RideShare::Driver.load_all(full_path: '../support/drivers.csv')
+# ap drivers

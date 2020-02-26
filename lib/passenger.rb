@@ -48,5 +48,5 @@ module RideShare
   end
 end
 
-passengers =RideShare::Passenger.load_all(full_path: '../support/passengers.csv')
-ap passengers 
+# passengers =RideShare::Passenger.load_all(full_path: '../support/passengers.csv')
+# ap passengers 

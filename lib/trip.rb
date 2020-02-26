@@ -78,5 +78,5 @@ module RideShare
   end
 end
 
-trips =RideShare::Trip.load_all(full_path: '../support/trips.csv')
-ap trips
+# trips =RideShare::Trip.load_all(full_path: '../support/trips.csv')
+# ap trips
