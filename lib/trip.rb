@@ -4,7 +4,7 @@ require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver_id, :driver
 
     def initialize(
           id:,
@@ -13,20 +13,30 @@ module RideShare
           start_time:,
           end_time:,
           cost: nil,
-          rating:
+          rating:,
+          driver_id: nil,
+          driver: nil
         )
       super(id)
 
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
+
+
+      # if driver
+      #   @driver = driver
+      #   @driver_id = driver.id
+      # elsif driver_id
+      #   @driver_id = driver_id
+      # else
+      #   raise ArgumentError, 'Driver or driver_id is required'
+      # end
 
       if start_time.class == String
         start_time = Time.parse(start_time) # added Time.parse to turn string into time, if it was passed as a string.
