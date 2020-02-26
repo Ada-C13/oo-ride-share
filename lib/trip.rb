@@ -1,6 +1,6 @@
 require 'csv'
 require 'time'
-
+require 'awesome_print'
 require_relative 'csv_record'
 
 module RideShare
@@ -77,3 +77,6 @@ module RideShare
     end
   end
 end
+
+trips =RideShare::Trip.load_all(full_path: '../support/trips.csv')
+ap trips

@@ -1,4 +1,5 @@
 require_relative 'csv_record'
+require 'awesome_print'
 
 module RideShare
   class Passenger < CsvRecord
@@ -46,3 +47,6 @@ module RideShare
     end
   end
 end
+
+passengers =RideShare::Passenger.load_all(full_path: '../support/passengers.csv')
+ap passengers 
