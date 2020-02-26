@@ -1,33 +1,32 @@
 require 'csv'
 require 'time'
 
-require_relative 'csv_record'
+require_relative "csv_record"
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver_id, :driver
 
-    def initialize(
-          id:,
-          passenger: nil,
-          passenger_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:
-        )
+    def initialize(id:, passenger: nil, passenger_id: nil, start_time:, end_time:, cost: nil, rating:, driver_id: nil, driver: nil)
       super(id)
 
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
-        raise ArgumentError, 'Passenger or passenger_id is required'
+        raise ArgumentError, "Passenger or passenger_id is required"
       end
+
+      # if driver
+      #   @driver = driver
+      #   @driver_id = driver.id
+      # elsif driver_id
+      #   @driver_id = driver_id
+      # else
+      #   raise ArgumentError, "Driver or driver_id is required"
+      # end
 
       @start_time = start_time
       @end_time = end_time
@@ -37,6 +36,8 @@ module RideShare
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+
+      raise ArgumentError.new("The start time should be before the end time") if @end_time < @start_time
     end
 
     def inspect
@@ -52,16 +53,20 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    def duration
+      return end_time - start_time
+    end
+
     private
 
     def self.from_csv(record)
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
-               rating: record[:rating]
+               rating: record[:rating],
              )
     end
   end

@@ -1,4 +1,4 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
 describe "Driver class" do
   describe "Driver instantiation" do
@@ -7,7 +7,7 @@ describe "Driver class" do
         id: 54,
         name: "Test Driver",
         vin: "12345678901234567",
-        status: :AVAILABLE
+        status: :AVAILABLE,
       )
     end
 
@@ -50,12 +50,12 @@ describe "Driver class" do
       pass = RideShare::Passenger.new(
         id: 1,
         name: "Test Passenger",
-        phone_number: "412-432-7640"
+        phone_number: "412-432-7640",
       )
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
-        vin: "12345678912345678"
+        vin: "12345678912345678",
       )
       @trip = RideShare::Trip.new(
         id: 8,
@@ -63,7 +63,7 @@ describe "Driver class" do
         passenger: pass,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
-        rating: 5
+        rating: 5,
       )
     end
 
@@ -83,7 +83,7 @@ describe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
+        vin: "1C9EVBRM0YBC564DZ",
       )
       trip = RideShare::Trip.new(
         id: 8,
@@ -91,7 +91,7 @@ describe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
-        rating: 5
+        rating: 5,
       )
       @driver.add_trip(trip)
     end
@@ -110,7 +110,7 @@ describe "Driver class" do
       driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
+        vin: "1C9EVBRM0YBC564DZ",
       )
       expect(driver.average_rating).must_equal 0
     end
@@ -122,7 +122,7 @@ describe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 1
+        rating: 1,
       )
       @driver.add_trip(trip2)
 
