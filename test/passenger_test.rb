@@ -79,33 +79,26 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
-      trip = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: "#{Time.now - 60 * 60}",
-        end_time: "#{Time.now + 60 * 60}",
-        rating: 5,
-        cost: 10
-        )
-      @passenger.add_trip(trip)
-
-      trip = RideShare::Trip.new(
-        id: 90,
-        passenger: @passenger,
-        start_time: "#{Time.now - 60 * 60}",
-        end_time: "#{Time.now + 60 * 60}",
-        rating: 2,
-        cost: 20
-        )
-
-        @passenger.add_trip(trip)
     end
 
     it "returns the correct total amount of money that a passenger has spent" do
-      expect ((@passenger).net_expenditures).must_equal 30
+      2.times do
+        trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: "#{Time.now - 60 * 60}",
+          end_time: "#{Time.now + 60 * 60}",
+          rating: 5,
+          cost: 10
+          )
+        @passenger.add_trip(trip)
+      end
+      
+      expect ((@passenger).net_expenditures).must_equal 20
     end
 
     it "returns a cost of 0 if a passenger has no trips" do
+      expect ((@passenger).net_expenditures).must_equal 0
     end
 
   end
@@ -121,29 +114,26 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
-      trip = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: "#{Time.now - 60 * 60}",
-        end_time: "#{Time.now + 60 * 60}",
-        rating: 5,
-        cost: 10
-        )
-      @passenger.add_trip(trip)
-
-      trip = RideShare::Trip.new(
-        id: 90,
-        passenger: @passenger,
-        start_time: "#{Time.now - 60 * 60}",
-        end_time: "#{Time.now + 60 * 60}",
-        rating: 2,
-        cost: 20
-        )
-
-        @passenger.add_trip(trip)
     end
+
     it "returns the total time that passenger has spent on their trips" do
+      2.times do
+        trip = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: "#{Time.now - 60 * 60}",
+          end_time: "#{Time.now + 60 * 60}",
+          rating: 5,
+          cost: 10
+          )
+        @passenger.add_trip(trip)
+      end
+
       expect ((@passenger).total_time_spent).must_equal 14400
+    end
+
+    it "returns a time of 0 if a passenger has no trips" do
+      expect ((@passenger).total_time_spent).must_equal 0
     end
   end
 

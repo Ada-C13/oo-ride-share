@@ -19,18 +19,27 @@ module RideShare
 
     # 1.2 #1 net_expenditures method
     def net_expenditures
-      cost_array = (@trips).map do |trip|
-        trip.cost
+      if @trips.empty? == true
+        return 0
+      else
+        cost_array = (@trips).map do |trip|
+          trip.cost
+        end
+          return (cost_array).inject(:+)
       end 
-      return (cost_array).inject(:+)
+      
     end
 
     # 1.2 #2 total_time_spent method
     def total_time_spent
-      time_duration = (@trips).map do |trip|
-        Time.parse(trip.end_time) - Time.parse(trip.start_time)
+      if @trips.empty? == true
+        return 0
+      else
+        time_duration = (@trips).map do |trip|
+          Time.parse(trip.end_time) - Time.parse(trip.start_time)
+        end
+        return (time_duration).inject(:+)
       end
-      return (time_duration).inject(:+)
     end
 
     private
