@@ -18,8 +18,7 @@ module RideShare
           cost: nil,
           rating: nil,
           driver: nil,
-          driver_id: nil,
-          trip_completed: false
+          driver_id: nil
         )
       super(id)
 
@@ -48,9 +47,12 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @start_time && @end_time && @cost && @rating
+      if @end_time && @cost && @rating
         @trip_completed = true
+      else
+        @trip_completed = false
       end
+
       if @trip_completed == true  
         if @rating > 5 || @rating < 1
           raise ArgumentError.new("Invalid rating #{@rating}")
