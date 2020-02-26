@@ -91,6 +91,16 @@ describe "Driver class" do
     end
   end
 
+  describe "assign_driver method" do
+    it "changes the driver status to UNAVAILABLE" do
+    
+    end
+
+    it "adds the trip to driver trips" do
+    
+    end
+  end
+
   describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
