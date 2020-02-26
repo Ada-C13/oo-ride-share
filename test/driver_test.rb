@@ -172,6 +172,40 @@ describe "Driver class" do
       driver2.add_trip(trip2)
 
       expect(driver2.total_revenue).must_equal ((43 + 56)- (1.65*2)) * 0.8
+
+    end
+
+      it "returns zero if revenue is less than 1.65 per trip" do
+        driver3 = RideShare::Driver.new(
+          id: 33,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ",
+          status: :AVAILABLE,
+          trips: []
+        )
+        trip = RideShare::Trip.new(
+          id: 8,
+          driver: driver3,
+          passenger_id: 4,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          cost: 1,
+          rating: 5
+        )
+        trip2 = RideShare::Trip.new(
+          id: 8,
+          driver: driver3,
+          passenger_id: 5,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 1.2,
+          rating: 1
+        )
+        driver3.add_trip(trip)
+        driver3.add_trip(trip2)
+  
+        expect(driver3.total_revenue).must_equal 0
+
     end
   end
 end

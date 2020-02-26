@@ -70,8 +70,12 @@ module RideShare
           revenue += trip.cost
         end
       end
+      if revenue > (1.65*@trips.length)
       total_revenue = (revenue - (1.65 * @trips.length))* 0.8
       return total_revenue
+      else 
+        return 0
+      end
     end
 
 
