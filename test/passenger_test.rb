@@ -153,7 +153,25 @@ describe "Passenger class" do
     it "calculates trip duration" do
       expect(@passenger.total_time_spent).must_equal 7200
     end
-    
   end
   
+  
+  describe "total_time no trips" do
+    
+    before do #create trips & passenger
+      # TODO:  Add another trip
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+    end
+
+    it "accounts for total_time with no trips" do
+      # we would expect duration to be nil
+      expect(@passenger.total_time_spent).must_be_nil
+    end
+  
+  end
 end # end "Passenger class" 

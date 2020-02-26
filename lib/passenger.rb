@@ -26,9 +26,11 @@ module RideShare
     end
 
     def total_time_spent
-
-      duration = @trips.map { |trip| trip.trip_duration }.sum
-
+      if @trips.empty? || @trips == nil 
+        return nil
+      else
+        duration = @trips.map { |trip| trip.trip_duration }.sum
+      end
       return duration
     end
 
