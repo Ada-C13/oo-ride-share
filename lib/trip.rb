@@ -84,8 +84,8 @@ module RideShare
                id: record[:id],
                driver_id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[Time.parse(:start_time)],
-               end_time: record[Time.parse(:end_time)],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
