@@ -29,7 +29,7 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
-      
+
       if start_time.class == String 
         start_time = Time.parse(start_time)
       end
@@ -51,10 +51,14 @@ module RideShare
       if end_time < start_time
         raise ArgumentError.new("End time #{end_time} is before  start time #{start_time}")
       end
+    end #end of initialize
 
+
+    def trip_duration_in_seconds
+      trip_duration = @end_time - @start_time
+      return trip_duration
     end
 
-      
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
