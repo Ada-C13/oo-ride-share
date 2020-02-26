@@ -14,9 +14,7 @@ module RideShare
 			@status = status
 			@trips = trips || []
 			
-			if @vin.length != 17
-				raise ArgumentError, "Invalid vin"
-			end
+			raise ArgumentError, "Invalid vin" if @vin.length != 17
     end
 
 		def add_trip(trip)
