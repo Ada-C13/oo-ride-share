@@ -131,6 +131,47 @@ describe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    it "returns zero revenue if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE,
+        trips: []
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "correctly calculates the total revenue" do
+      driver2 = RideShare::Driver.new(
+        id: 33,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE,
+        trips: []
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: driver2,
+        passenger_id: 4,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 43,
+        rating: 5
+      )
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: driver2,
+        passenger_id: 5,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 56,
+        rating: 1
+      )
+      driver2.add_trip(trip)
+      driver2.add_trip(trip2)
+
+      expect(driver2.total_revenue).must_equal ((43 + 56)- (1.65*2)) * 0.8
+    end
   end
 end

@@ -61,6 +61,19 @@ module RideShare
       return sum_rating/@trips.length
     end
 
+    def total_revenue
+      revenue = 0.0
+      if @trips.length == 0
+        return 0
+      else
+        @trips.each do |trip|
+          revenue += trip.cost
+        end
+      end
+      total_revenue = (revenue - (1.65 * @trips.length))* 0.8
+      return total_revenue
+    end
+
 
     # RideShare::Driver.load_all was not working before because it expected a keyword argument first, then the full path value
     # Status was expecting a symbol but is read from the CSV.read method as a string. So, we had to change the from_csv method for status to be a symbol
