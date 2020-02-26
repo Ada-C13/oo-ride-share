@@ -35,6 +35,24 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def request_trip(passenger_id)
+      driver = @drivers.find {|driver|driver.status == :AVAILABLE}
+      start_time = Time.now
+      end_time = nil
+      rating = nil
+      id = 601
+
+      new_trip = Trip.new(id: id, passenger_id: passenger_id, start_time: start_time, end_time: end_time, rating: rating, driver: driver)
+      @trips << new_trip
+      
+      passenger = @passengers.find {|passenger|passenger.id == passenger_id}
+
+      new_trip.connect(passenger, driver)
+      driver.make_driver_unavailable
+      
+      return new_trip
+    end
+
     private
 
     def connect_trips

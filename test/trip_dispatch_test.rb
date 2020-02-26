@@ -121,5 +121,39 @@ describe "TripDispatcher class" do
         end
       end
     end
+
+    describe "request_trip(passenger_id)" do
+      before do
+        passenger_id = 1
+        @dispatcher = build_test_dispatcher
+        @example = @dispatcher.request_trip(passenger_id)
+      end
+
+      it "returns an instance of a trip " do
+
+        expect(@example).must_be_kind_of RideShare::Trip
+      end
+
+      it "picks the first available driver" do
+
+        expect(@example.driver.name).must_equal "Driver 2"
+      end
+
+      it " makes the chosen driver unavailable" do
+
+      end
+
+      it "adds the trip to the driver's trips" do
+
+      end
+
+      it "adds the trip to the passenger's trips" do
+
+      end
+
+      it "adds the trip to the dispatcher's trips" do
+
+      end
+    end
   end
 end

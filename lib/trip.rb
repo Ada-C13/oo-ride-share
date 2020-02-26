@@ -45,9 +45,8 @@ module RideShare
         raise ArgumentError, 'Driver or driver_id  is required'
       end
 
-      raise ArgumentError if @end_time < @start_time
-
-      raise ArgumentError.new("Invalid rating #{@rating}") if !(1..5).include? (@rating)
+      raise ArgumentError if @end_time < @start_time unless end_time == nil
+      raise ArgumentError.new("Invalid rating #{@rating}") if !(1..5).include? (@rating) unless rating == nil
         
     end
 
