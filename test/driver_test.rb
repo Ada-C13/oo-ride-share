@@ -208,20 +208,9 @@ describe "Driver class" do
 
     it "returns accurate drivers revenue when in progress trips" do
       tripdispatcher = RideShare::TripDispatcher.new
-      available_driver = ""
-
-      # get the first available driver id
-      tripdispatcher.drivers.each do |driver|
-        if driver.status == :AVAILABLE
-          available_driver = driver
-          break
-        end
-      end
-
+      available_driver = tripdispatcher.pick_driver_for_trip
       current_revenue = available_driver.total_revenue
-
       requested_trip = tripdispatcher.request_trip(1)
-      p available_driver.trips
 
       expect(available_driver.total_revenue).must_equal current_revenue
     end
