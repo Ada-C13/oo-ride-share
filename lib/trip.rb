@@ -35,7 +35,6 @@ module RideShare
       if driver
         @driver = driver
         @driver_id = driver.id
-      
       elsif driver_id
         @driver_id = driver_id
       else
@@ -67,8 +66,8 @@ module RideShare
     def connect(passenger,driver)
       @passenger = passenger
       @driver = driver
-      driver.add_trip(self)
       passenger.add_trip(self)
+      driver.add_trip(self)
     end
 
 
@@ -83,6 +82,7 @@ module RideShare
     def self.from_csv(record)
       return self.new(
                id: record[:id],
+               driver_id: record[:id],
                passenger_id: record[:passenger_id],
                start_time: record[Time.parse(:start_time)],
                end_time: record[Time.parse(:end_time)],

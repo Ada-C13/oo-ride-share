@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Passenger class" do
+describe "Passenger class" do
 
   describe "Passenger instantiation" do
     before do
@@ -46,6 +46,7 @@ xdescribe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 5,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -79,6 +80,7 @@ xdescribe "Passenger class" do
         )
       trip1 = RideShare::Trip.new(
         id: 8,
+        driver_id: 5,
         passenger: @passenger,
         start_time: Time.parse('2019-12-30 02:30:00 -0800'),
         end_time: Time.parse('2019-12-30 02:40:00 -0800'),
@@ -87,6 +89,7 @@ xdescribe "Passenger class" do
         )
       trip2 = RideShare::Trip.new(
         id: 9,
+        driver_id: 6,
         passenger: @passenger,
         start_time: Time.parse('2019-12-31 02:30:00 -0800'),
         end_time: Time.parse('2019-12-31 02:35:00 -0800'),
@@ -114,6 +117,7 @@ xdescribe "Passenger class" do
         )
       trip1 = RideShare::Trip.new(
         id: 8,
+        driver_id: 22,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -122,6 +126,7 @@ xdescribe "Passenger class" do
         )
       trip2 = RideShare::Trip.new(
         id: 9,
+        driver_id: 5,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 10),
         end_time: Time.new(2016, 8, 11),
