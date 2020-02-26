@@ -49,5 +49,23 @@ module RideShare
       return (sum_of_ratings / @trips.length)
     end
 
+    def total_revenue
+      return 0.0 if @trips.length == 0
+
+      sum_of_trip_costs = 0.0
+
+      @trips.each do |trip|
+        if trip.cost < 1.65
+          net_trip = trip.cost
+        else
+          net_trip = trip.cost - 1.65
+        end
+
+        sum_of_trip_costs += net_trip
+      end
+
+      return (sum_of_trip_costs * 0.80)
+    end
+
   end
 end
