@@ -1,6 +1,15 @@
 require_relative 'test_helper'
 
 describe "Passenger class" do
+  before do #Created this driver to use across all passenger_test
+    @driver = RideShare::Driver.new(
+      id: 7,
+      name: "Lak Kate",
+      vin: "1C9YKKLR1BV5564A7",
+      status: :AVAILABLE,
+      trips: nil
+    )
+  end
 
   describe "Passenger instantiation" do
     before do
@@ -47,6 +56,7 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5
@@ -80,6 +90,7 @@ describe "Passenger class" do
         )
       trip1 = RideShare::Trip.new(
         id: 1,
+        driver: @driver,
         passenger: @passenger,
         start_time: Time.new(2020, 8, 8),
         end_time: Time.new(2020, 8, 9),
@@ -90,6 +101,7 @@ describe "Passenger class" do
 
       trip2 = RideShare::Trip.new(
         id: 2,
+        driver: @driver,
         passenger: @passenger,
         start_time: Time.new(2020, 8, 8),
         end_time: Time.new(2020, 8, 9),
