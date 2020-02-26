@@ -14,12 +14,24 @@ module RideShare
 
     def add_trip(trip)
       @trips << trip
+      #or self.trips<< trip
     end
+
+    # 1.2 #1 net_expenditures method
+    def net_expenditures
+      cost_array = (@trips).map do |trip|
+        trip.cost
+      end 
+      return (cost_array).inject(:+)
+    end
+
 
     private
 
     def self.from_csv(record)
       return new(
+      # or can use Passenger.new(
+      # or can use new(
         id: record[:id],
         name: record[:name],
         phone_number: record[:phone_num]
@@ -27,3 +39,4 @@ module RideShare
     end
   end
 end
+
