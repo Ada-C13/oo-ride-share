@@ -7,13 +7,16 @@ module RideShare
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
 
+      # TODO 
+      # test for the correct statuses
+
 			raise ArgumentError.new("Driver status is not valid") unless %i[AVAILABLE UNAVAILABLE].include?(status)
       raise ArgumentError.new("VIN must be at least 17 characters") unless vin.length == 17
       raise ArgumentError.new("Invalid driver ID") unless id > 0
 
       @name = name
 			@vin = vin
-			@status = status || :UNAVAILABLE
+			@status = status
       @trips = trips || []
     end
 
@@ -34,12 +37,6 @@ module RideShare
         return revenue.sum.round(2)
       end
     end
-    
-#     def total_time_spent
-#       # calculating total amount of time in seconds.
-#       durations = @trips.map {|trip| trip.duration}
-#       return durations.sum
-#     end
 
     private
 
