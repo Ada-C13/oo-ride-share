@@ -34,7 +34,6 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -68,6 +67,7 @@ describe "Passenger class" do
     end
   end
 
+  # Test net_expenditures Method
   describe "net_expenditures" do
 
     before do
@@ -143,4 +143,25 @@ describe "Passenger class" do
     end
 
   end
+
+  # Test total_time_spent Method
+  describe "total_time_spent" do
+    before do
+      @passenger = RideShare::Passenger.new(id: 9, name: "Merl Glover III", phone_number: "1-602-620-2330 x3723", trips: [])
+      @trip1     = RideShare::Trip.new(id: 4, passenger: @passenger, start_time: Time.new(2016,8,1), end_time: Time.new(2016,8,2),rating: 5)
+      @trip2     = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.new(2016,8,4), end_time: Time.new(2016,8,5),rating: 5)
+    end
+
+    it "returns the total time that passenger has spent on trips " do
+      expect(@passenger.total_time_spent).must_be_kind_of Numeric
+      expect(@passenger.total_time_spent).must_equal 0
+      @passenger.add_trip(@trip1)
+      expect(@passenger.total_time_spent).must_equal 24 * 60 * 60 # one day in seconds
+      @passenger.add_trip(@trip2)
+      expect(@passenger.total_time_spent).must_equal 2 * 24 * 60 * 60 # two days in seconds
+    end
+
+  end
+
+
 end

@@ -67,14 +67,20 @@ module RideShare
       passenger.add_trip(self)
     end
 
-    private
+    def duration
+      return @end_time - @start_time
+    end
 
-    def self.from_csv(record)
+
+    private # only the class can call these, not from an instance of the class
+
+    # This is how we load the csv file. We create a new object here.
+    def self.from_csv(record) # overiding empty method from csv
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
                start_time: record[:start_time],
-               end_time: record[:end_time],
+               end_time: record[:end_time], 
                cost: record[:cost],
                rating: record[:rating]
              )
