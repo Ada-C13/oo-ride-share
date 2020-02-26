@@ -28,6 +28,19 @@ describe "Driver class" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
 
+    it "accepts all legal statuses" do
+      valid_statuses = %i[AVAILABLE UNAVAILABLE]
+
+      valid_statuses.each do |driver_status|
+        driver = RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: driver_status)
+        expect(driver.status).must_equal driver_status
+      end
+    end
+
+    it "throws an argumuent error unless status is available or unavailable" do
+      expect{RideShare::Driver.new(id: 0, name: "George", vin: "33133313331333133", status: :GOOD)}.must_raise ArgumentError
+    end
+
     it "sets driven trips to an empty array if not provided" do
       expect(@driver.trips).must_be_kind_of Array
       expect(@driver.trips.length).must_equal 0
