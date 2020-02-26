@@ -138,9 +138,24 @@ describe "TripDispatcher class" do
       end
 
       it "will select an available driver" do
+        selected_driver = nil
+
         available_drivers = @dispatcher.drivers.select { |driver| driver.status == :AVAILABLE}
-        @dispatcher.request_trip(4)
-        expect(@dispatcher.trips[-1].driver).must_equal available_drivers[0]
+        
+        available_drivers.each do |driver|
+          if driver.trips.length == 0
+            selected_driver = driver
+          end
+        end
+
+        if selected_driver == nil
+          available_drivers.sort! { |driver| driver.trips[-1].end_time}
+          selected_driver = available_drivers[-1]
+        end
+
+        @dispatcher.request_trip(2)
+
+        expect(@dispatcher.trips[-1].driver).must_equal selected_driver
       end
 
       it "will return an error if there are no available drivers" do

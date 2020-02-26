@@ -37,14 +37,7 @@ module RideShare
     def request_trip(passenger_id)
       passenger = self.find_passenger(passenger_id)
       trip_id = 601
-      available_drivers = @drivers.select { |driver| driver.status == :AVAILABLE}
-
-      available_drivers.each do |driver|
-      end
-
-      if available_drivers.length == 0
-        raise ArgumentError.new("There are no available drivers!")
-      end
+      driver = find_driver_for_trip
       
       trip = RideShare::Trip.new(
         id: trip_id,
@@ -54,15 +47,34 @@ module RideShare
         end_time: nil,
         cost: nil,
         rating: nil,
-        driver_id: available_drivers[0].id,
-        driver: available_drivers[0]
+        driver_id: driver.id,
+        driver: driver
       )
-      available_drivers[0].change_driver_status
-      available_drivers[0].add_trip(trip)
+      driver.change_driver_status
+      driver.add_trip(trip)
       passenger.add_trip(trip)
       @trips << trip
       trip_id += 1
       return trip
+    end
+
+    def find_driver_for_trip
+
+      available_drivers = self.drivers.select { |driver| driver.status == :AVAILABLE}
+
+      if available_drivers.length == 0
+        raise ArgumentError.new("There are no available drivers!")
+      end
+
+      available_drivers.each do |driver|
+        if driver.trips.length == 0
+          return driver
+        end
+      end
+
+      available_drivers.sort! { |driver| driver.trips[-1].end_time}
+
+      return available_drivers[-1]
     end
 
     private
