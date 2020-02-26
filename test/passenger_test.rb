@@ -24,7 +24,7 @@ describe "Passenger class" do
 
     it "is set up for specific attributes and data types" do
       [:id, :name, :phone_number, :trips].each do |prop|
-        expect(@passenger).must_respond_to prop
+        expect(@passenger).must_respond_to prop 
       end
 
       expect(@passenger.id).must_be_kind_of Integer

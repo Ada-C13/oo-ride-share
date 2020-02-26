@@ -11,7 +11,7 @@ module RideShare
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
-      connect_trips
+      connect_trips #private method 
     end
 
     def find_passenger(id)
@@ -32,7 +32,7 @@ module RideShare
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
-        trip.connect(passenger)
+        trip.connect(passenger) #method in trip that 
       end
 
       return trips

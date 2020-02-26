@@ -12,13 +12,13 @@ module RideShare
       @trips = trips || []
     end
 
-    def add_trip(trip)
-      @trips << trip
+    def add_trip(trip) #where is add_trip being called?? 
+      @trips << trip 
     end
 
     private
 
-    def self.from_csv(record)
+    def self.from_csv(record) #Passenger.new, new, @new, self.new 
       return new(
         id: record[:id],
         name: record[:name],
