@@ -52,7 +52,7 @@ describe "Passenger class" do
         cost: 15,
         rating: 5
       )
-    
+      
       
       @passenger.add_trip(trip)
     end
@@ -68,32 +68,72 @@ describe "Passenger class" do
         expect(trip.passenger.id).must_equal 9
       end
     end
-
+    
   end
-
+  
   describe "net_expenditures" do
     before do
-    @passenger = RideShare::Passenger.new(
-      id: 9,
-      name: "Merl Glover III",
-      phone_number: "1-602-620-2330 x3723",
-      trips: []
-    )
-
-    trip = RideShare::Trip.new(
-      id: 66,
-      passenger: @passenger,
-      start_time: Time.new(2018, 12, 30, 14, 33, 20),
-      end_time: Time.new(2018, 12, 31, 15, 33, 20),
-      cost: 17,
-      rating: 5
-    )
-
-    @passenger.add_trip(trip)
+      # TODO:  Add another trip
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      
+      trip = RideShare::Trip.new(
+        id: 66,
+        passenger: @passenger,
+        start_time: Time.new(2018, 12, 30, 14, 33, 20),
+        end_time: Time.new(2018, 12, 31, 15, 33, 20),
+        cost: 17,
+        rating: 5
+      )
+      
+      @passenger.add_trip(trip)
     end
-
+    
     it "calculates net_expenditures" do
       expect(@passenger.net_expenditures).must_equal 17
     end
+  end # end net expenditures
+  
+  describe "trip_duration" do
+    
+    before do #create trips & passenger
+      # TODO:  Add another trip
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      
+      trip = RideShare::Trip.new(
+        id: 66,
+        passenger: @passenger,
+        start_time: Time.new(2018, 12, 30, 14, 33, 20),
+        end_time: Time.new(2018, 12, 30, 15, 33, 20),
+        cost: 17,
+        rating: 5
+      )
+      @passenger.add_trip(trip)
+      
+      trip2 = RideShare::Trip.new(
+        id: 67,
+        passenger: @passenger,
+        start_time: Time.new(2018, 12, 30, 17, 50, 20),
+        end_time: Time.new(2018, 12, 30, 18, 50, 20),
+        cost: 15,
+        rating: 5
+      )
+      @passenger.add_trip(trip2)
+    end
+    
+    it "calculates trip duration" do
+      expect(@passenger.total_time_spent).must_equal 7200
+    end
+    
   end
-end
+  
+end # end "Passenger class" 

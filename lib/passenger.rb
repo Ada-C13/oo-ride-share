@@ -20,6 +20,11 @@ module RideShare
       return @trips.map { |trip| trip.cost }.sum
     end
 
+    def total_time_spent
+      duration = @trips.map { |trip| trip.trip_duration }.sum
+
+      return duration
+    end
     
 
     private
