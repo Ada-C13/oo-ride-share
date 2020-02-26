@@ -27,26 +27,23 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
-      @driver = driver
-      @driver_id = driver_id
-
-
-      # if driver
-      #   @driver = driver
-      #   @driver_id = driver.id
-      # elsif driver_id
-      #   @driver_id = driver_id
-      # else
-      #   raise ArgumentError, 'Driver or driver_id is required'
-      # end
+      
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+      elsif driver_id
+        @driver_id = driver_id
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
+      end
 
       if start_time.class == String
-        start_time = Time.parse(start_time) # added Time.parse to turn string into time, if it was passed as a string.
+        start_time = Time.parse(start_time)
       end
       @start_time = start_time 
 
       if end_time.class == String
-        end_time = Time.parse(end_time) # added Time.parse to turn string into time
+        end_time = Time.parse(end_time)
       end
       @end_time = end_time
 
@@ -63,7 +60,7 @@ module RideShare
     end
 
     def duration
-      return (@end_time - @start_time)
+      return @end_time - @start_time
     end
 
     def inspect
@@ -81,11 +78,6 @@ module RideShare
       driver.add_trip(self)
 
     end
-
-    def duration
-      return @end_time - @start_time
-    end
-
 
     private # only the class can call these, not from an instance of the class
 

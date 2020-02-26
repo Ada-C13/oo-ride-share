@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -52,11 +52,13 @@ xdescribe "Driver class" do
         name: "Test Passenger",
         phone_number: "412-432-7640"
       )
+
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
         vin: "12345678912345678"
       )
+
       @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -83,9 +85,10 @@ xdescribe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ",
-        
+        vin: "1C9EVBRM0YBC564DZ"
+        # status: :AVAILABLE      
       )
+
       trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -94,6 +97,7 @@ xdescribe "Driver class" do
         end_time: Time.new(2016, 8, 8),
         rating: 5
       )
+
       @driver.add_trip(trip)
     end
 
@@ -132,6 +136,54 @@ xdescribe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE      
+      )
+
+      @trip1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 21.65
+      )
+
+      @trip2 = RideShare::Trip.new(
+        id: 7,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 11.65
+      )
+
+      @trip3 = RideShare::Trip.new(
+        id: 7,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 4,
+        cost: 1.6
+      )
+    end
+
+    it "returns the total driver revenue" do
+      expect(@driver.total_revenue).must_be_kind_of Numeric
+      expect(@driver.total_revenue).must_equal 0 # without trips
+      @driver.add_trip(@trip1)
+      expect(@driver.total_revenue).must_equal 16
+      @driver.add_trip(@trip2)
+      expect(@driver.total_revenue).must_equal 24 # 8 + 16
+      @driver.add_trip(@trip3)
+      expect(@driver.total_revenue).must_equal 24 # 0 + 8 + 16
+    end
   end
 end
