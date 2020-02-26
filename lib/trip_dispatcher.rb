@@ -12,7 +12,7 @@ module RideShare
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
-      @drivers =  []#Driver.load_all(directory: directory)
+      @drivers = Driver.load_all(directory: directory)
       connect_trips
     end
 
@@ -23,8 +23,14 @@ module RideShare
 
     #Wave 2: Loading Drivers- add find_driver
     def find_driver(id)
-      check_id(id)
-      return @drivers.find { |driver| driver.id == id }
+      Driver.validate_id(id)
+      # return @drivers.find { |driver| driver.id == id }
+      drivers.each do |driver|
+        if driver.id == id
+          return driver
+        end
+      end
+      return nil
     end
 
     def inspect
@@ -37,10 +43,12 @@ module RideShare
 
     private
 
+    #Wave 2: Updating the Trip to connect the driver
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
-        trip.connect(passenger)
+        driver = find_driver(trip.driver_id)
+        trip.connect(passenger, driver)
       end
 
       return trips

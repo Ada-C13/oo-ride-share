@@ -79,9 +79,7 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 1,
         name: "Kate Lak",
@@ -117,6 +115,15 @@ describe "Passenger class" do
       expect(total).must_equal 300 
     end
   end
+  describe "add_trip" do
+    # TODO
+  end
+
+  describe "total_time_spent" do
+    # TODO
+  end
+
+  
 end
 
 

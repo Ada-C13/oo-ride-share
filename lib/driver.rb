@@ -18,7 +18,7 @@ module RideShare
 
       @name = name 
       @vin = vin
-      @status = status
+      @status = status.to_sym #need to convert this to symbol
       @trips = trips || []
     
       #Raise argument for vin
@@ -27,7 +27,9 @@ module RideShare
       end
 
       #Raise argument for status
-      if ![:AVAILABLE, :UNAVAILABLE].include?(@status)
+      if ![:AVAILABLE, :UNAVAILABLE].include?(@status) #status is symbol here
+        puts @id
+        puts @name
         raise ArgumentError.new("Invalid status.")
       end
     end
@@ -56,6 +58,8 @@ module RideShare
       end
       return total_revenue
     end
+
+    #Wave 2: Loading All Drivers
 
     private 
 
