@@ -7,6 +7,7 @@ describe "Trip class" do
       end_time = start_time + 25 * 60 # 25 minutes
       @trip_data = {
         id: 8,
+        driver_id: 5,
         passenger: RideShare::Passenger.new(
           id: 1,
           name: "Ada",
@@ -58,7 +59,5 @@ describe "Trip class" do
       expect(@trip.duration).must_be_kind_of Float
       expect(@trip.duration).must_equal 1500.0
     end
-
-    
   end
 end

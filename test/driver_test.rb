@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -84,8 +84,9 @@ xdescribe "Driver class" do
         id: 54,
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ",
-        
+        status: :AVAILABLE      
       )
+
       trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -94,6 +95,7 @@ xdescribe "Driver class" do
         end_time: Time.new(2016, 8, 8),
         rating: 5
       )
+
       @driver.add_trip(trip)
     end
 

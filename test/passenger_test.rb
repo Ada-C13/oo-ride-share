@@ -43,8 +43,17 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE      
+        )
+
       trip = RideShare::Trip.new(
         id: 8,
+        driver: driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
@@ -78,16 +87,27 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE      
+        )
+  
       @trip1 = RideShare::Trip.new(
         id: 8,
+        driver: driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 10,
         rating: 5
         )
+
       @trip2 = RideShare::Trip.new(
         id: 10,
+        driver: driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 11),
         end_time: Time.new(2016, 8, 12),
@@ -116,16 +136,27 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE      
+        )
+        
       @trip1 = RideShare::Trip.new(
         id: 8,
+        driver: driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 10,
         rating: 5
         )
+
       @trip2 = RideShare::Trip.new(
         id: 10,
+        driver: driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 11),
         end_time: Time.new(2016, 8, 12),
@@ -148,8 +179,8 @@ describe "Passenger class" do
   describe "total_time_spent" do
     before do
       @passenger = RideShare::Passenger.new(id: 9, name: "Merl Glover III", phone_number: "1-602-620-2330 x3723", trips: [])
-      @trip1     = RideShare::Trip.new(id: 4, passenger: @passenger, start_time: Time.new(2016,8,1), end_time: Time.new(2016,8,2),rating: 5)
-      @trip2     = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.new(2016,8,4), end_time: Time.new(2016,8,5),rating: 5)
+      @trip1     = RideShare::Trip.new(id: 4, driver_id: 5, passenger: @passenger, start_time: Time.new(2016,8,1), end_time: Time.new(2016,8,2),rating: 5)
+      @trip2     = RideShare::Trip.new(id: 8, driver_id: 5, passenger: @passenger, start_time: Time.new(2016,8,4), end_time: Time.new(2016,8,5),rating: 5)
     end
 
     it "returns the total time that passenger has spent on trips " do
