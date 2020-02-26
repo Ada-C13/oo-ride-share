@@ -81,6 +81,7 @@ describe "Passenger class" do
         end_time: Time.parse("2016-08-09"),
         rating: 5,
         cost: 7,
+        driver_id: 8,
       )
 
       @passenger.add_trip(trip)
@@ -92,6 +93,7 @@ describe "Passenger class" do
         end_time: Time.parse("2016-08-11"),
         rating: 5,
         cost: 9,
+        driver_id: 8,
       )
       @passenger.add_trip(trip2)
     end
@@ -124,7 +126,7 @@ describe "Passenger class" do
         end_time: Time.parse("2016-08-09"), # difference 86400
         rating: 5,
         cost: 10,
-
+        driver_id: 8,
       )
       @passenger.add_trip(trip)
       trip2 = RideShare::Trip.new(
@@ -134,6 +136,7 @@ describe "Passenger class" do
         end_time: Time.parse("2016-08-11"), # difference 86400
         rating: 5,
         cost: 9,
+        driver_id: 8,
       )
       @passenger.add_trip(trip2)
 
