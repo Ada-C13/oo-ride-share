@@ -57,5 +57,15 @@ describe "Trip class" do
       trip_duration = RideShare::Trip.new(@trip_data)
       expect(trip_duration.duration).must_equal 60
     end
+
+    it "will raise ArugmentError if there is negative income" do
+      [-1, -10].each do |cost|
+        @trip_data[:cost] = cost
+        expect do
+          RideShare::Trip.new(@trip_data)
+        binding.pry
+        end.must_raise ArgumentError
+      end
+    end
   end
 end

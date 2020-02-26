@@ -54,7 +54,12 @@ module RideShare
         check_rating
         check_time
       end
+
+      if @cost.to_f < 0
+        raise ArgumentError.new("This is not a valid cost!!") 
+      end
     end
+
 
     def check_rating
       if @rating > 5 || @rating < 1
