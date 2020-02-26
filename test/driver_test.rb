@@ -132,5 +132,57 @@ describe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 5,
+        rating: 5
+      )
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 20,
+        rating: 5
+      )
+      @driver.add_trip(trip1)
+      @driver.add_trip(trip2)
+    end
+
+    it "calculates total revenue of all trips" do
+      expect(@driver.total_revenue).must_equal 17.36
+    end
+
+    it "calculates correct total when there are trips less than 1.65" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 1.25,
+        rating: 5
+      )
+      @driver.add_trip(trip3)
+      
+      expect(@driver.total_revenue).must_equal 17.36
+    end
+
+    it "returns 0 if driver has no trips" do
+      @driver.trips.clear
+
+      expect(@driver.total_revenue).must_equal 0
+    end
   end
 end
