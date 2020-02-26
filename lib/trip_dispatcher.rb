@@ -3,6 +3,7 @@ require 'time'
 
 require_relative 'passenger'
 require_relative 'trip'
+require_relative 'driver'
 
 # can't call from_csv because privately declared in CsvRecord (Passenger and Trip can call this though)
 
@@ -14,6 +15,7 @@ module RideShare
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
       connect_trips
+      @drivers = Driver.load_all(directory: directory)
     end
 
     def find_passenger(id)

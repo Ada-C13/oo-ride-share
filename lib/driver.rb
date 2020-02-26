@@ -1,5 +1,6 @@
 require 'csv'
 require_relative 'csv_record'
+require_relative 'trip'
 
 # From already inside lib, load into pry by doing: pry -r ./becca_driver.rb 
 # From root directory:  pry -r ./lib/driver.rb"
@@ -28,8 +29,6 @@ module RideShare
         raise ArgumentError
       end
       @trips = trips || []
-      @drivers = []
-      # return self
     end
 
     # def inspect
@@ -44,8 +43,8 @@ module RideShare
     #   @passenger = passenger
     #   passenger.add_trip(self)
     # end
-    def add_driver(driver)
-      @drivers << driver
+    def add_trip(trip)
+      @trips << trip
     end
 
 

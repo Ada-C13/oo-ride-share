@@ -1,11 +1,12 @@
 require 'csv'
 require 'time'
 require_relative 'csv_record'
+require_relative 'driver'
 
 module RideShare
   class Trip < CsvRecord
     # Took out the :id below because redundant (inherited from CsvRecord's attr_reader).
-    attr_reader :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver, :driver_id
 
     def initialize(
           id:,
@@ -14,7 +15,9 @@ module RideShare
           start_time:,
           end_time:,
           cost: nil,
-          rating:
+          rating:, 
+          driver_id: nil,
+          driver: nil
         )
       super(id)
 
@@ -27,6 +30,17 @@ module RideShare
 
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
+      end
+
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+
+      elsif driver_id
+        @driver_id = driver_id
+
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
       end
 
       @start_time = start_time
@@ -52,9 +66,12 @@ module RideShare
         "PassengerID=#{passenger&.id.inspect}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      # update connect method to connect the driver as well as passenger (added in as a param too)
+      @driver = driver
+      driver.add_trip(self)
     end
 
     def trip_duration
