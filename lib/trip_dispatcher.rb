@@ -35,18 +35,40 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    # def first_available_driver
+    #   counter = 0
+    #   temp_status = self.drivers[counter].status
+    #   until temp_status == :AVAILABLE 
+    #     counter += 1
+
+    #     raise ArgumentError, "There is no available driver!" if self.drivers.length == counter 
+
+    #     temp_status = self.drivers[counter].status
+    #   end
+
+    #   counter
+    # end
+
     def first_available_driver
-      counter = 0
-      temp_status = self.drivers[counter].status
-      until temp_status == :AVAILABLE 
-        counter += 1
+      # counter = 0
+      # temp_status = self.drivers[counter].status
+      counter = nil
+      max_time = Time.now()
+      self.drivers.each_with_index do |driver, index|
+        # binding.pry
+        if driver.status == :AVAILABLE 
+          # binding.pry
+          return index if driver.trips.length == 0
 
-        raise ArgumentError, "There is no available driver!" if self.drivers.length == counter 
-
-        temp_status = self.drivers[counter].status
+          if driver.trips.last.end_time < max_time
+            max_time = driver.trips.last.end_time
+            counter = index
+          end
+        end
       end
+      raise ArgumentError, "There is no available driver!" if nil == counter 
 
-      counter
+      return counter
     end
 
 

@@ -139,21 +139,33 @@ describe "TripDispatcher class" do
   describe 'requests and creates new trip' do
     it 'adds trip to passengers' do
       @dispatcher = build_test_dispatcher
-      old_num_trips = @dispatcher.trips.length
-      chosen_driver = @dispatcher.first_available_driver
-      driver_num_trips = @dispatcher.drivers[chosen_driver].trips.length
       passenger_num_trips = @dispatcher.find_passenger(5).trips.length
 
+      request_trip_result = @dispatcher.request_trip(5)
+    
+      expect(@dispatcher.find_passenger(5).trips.length).must_equal (passenger_num_trips + 1)
+    end
+    
+    it 'adds trip to driver' do
+      @dispatcher = build_test_dispatcher
+      chosen_driver = @dispatcher.first_available_driver
+      driver_num_trips = @dispatcher.drivers[chosen_driver].trips.length
+  
+      request_trip_result = @dispatcher.request_trip(5)
+    
+      expect(@dispatcher.drivers[chosen_driver].id).must_equal 3
+      expect(@dispatcher.drivers[chosen_driver].status).must_equal :UNAVAILABLE
+      expect(@dispatcher.drivers[chosen_driver].trips.length).must_equal (driver_num_trips + 1)
+    end
+
+    it 'confirms trip was added to trips' do
+      @dispatcher = build_test_dispatcher
+      old_num_trips = @dispatcher.trips.length
 
       request_trip_result = @dispatcher.request_trip(5)
     
       expect(request_trip_result).must_be_kind_of RideShare::Trip
-      expect(@dispatcher.drivers[chosen_driver].id).must_equal 2
-      expect(@dispatcher.drivers[chosen_driver].status).must_equal :UNAVAILABLE
-
-      expect(@dispatcher.drivers[chosen_driver].trips.length).must_equal (driver_num_trips + 1)
       expect(@dispatcher.trips.length).must_equal (old_num_trips + 1)
-      expect(@dispatcher.find_passenger(5).trips.length).must_equal (passenger_num_trips + 1)
     end
   end
 
