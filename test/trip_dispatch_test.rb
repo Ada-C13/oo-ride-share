@@ -125,8 +125,9 @@ describe "TripDispatcher class" do
 
   describe "requesting a trip" do
     it "creates a trip" do
+      tripdispatcher = RideShare::TripDispatcher.new
       passenger_id = 1
-      request_trip = RideShare::TripDispatcher.request_trip(passenger_id)
+      request_trip = tripdispatcher.request_trip(passenger_id)
 
       expect(request_trip.passenger_id).must_equal passenger_id
       expect(request_trip.driver_id).must_equal 1
