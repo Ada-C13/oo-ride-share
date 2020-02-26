@@ -8,7 +8,8 @@ module RideShare
       super(id)
 
 			raise ArgumentError.new("Driver status is not valid") unless %i[AVAILABLE UNAVAILABLE].include?(status)
-			raise ArgumentError.new("VIN must be at least 17 characters") unless vin.length == 17
+      raise ArgumentError.new("VIN must be at least 17 characters") unless vin.length == 17
+      raise ArgumentError.new("Invalid driver ID") unless id > 0
 
       @name = name
 			@vin = vin
@@ -20,11 +21,20 @@ module RideShare
       @trips << trip
     end
 
-#     def net_expenditures
-#       costs = @trips.map {|trip| trip.cost}
-#       return costs.sum
-#     end
+    def average_rating
+      ratings = @trips.map {|trip| trip.rating}
+      return @trips.length == 0 ? 0 : (ratings.sum / @trips.length).to_f.round(1)
+    end
 
+    def total_revenue
+      if @trips.length == 0
+        return 0
+      else
+        revenue = @trips.map {|trip| ((trip.cost - 1.65)* 0.8)}
+        return revenue.sum.round(2)
+      end
+    end
+    
 #     def total_time_spent
 #       # calculating total amount of time in seconds.
 #       durations = @trips.map {|trip| trip.duration}
