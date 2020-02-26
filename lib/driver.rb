@@ -3,6 +3,7 @@ require_relative 'csv_record'
 module RideShare
   class Driver < CsvRecord
     attr_reader :name, :vin, :status, :trips
+    attr_writer :status
 
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
@@ -22,6 +23,11 @@ module RideShare
 
     def add_trip(trip)
       @trips << trip
+    end
+
+    def assign_driver(driver, trip)
+      driver.status = :UNAVAILABLE
+      add_trip(trip)
     end
 
     def average_rating
