@@ -1,7 +1,8 @@
 require 'csv'
 require_relative 'csv_record'
 
-# To load into pry, do : pry -r ./becca_driver.rb 
+# From already inside lib, load into pry by doing: pry -r ./becca_driver.rb 
+# From root directory:  pry -r ./lib/driver.rb"
 
 module RideShare
   class Driver < CsvRecord
@@ -12,13 +13,16 @@ module RideShare
           id:,
           name:,
           vin:,
-          status: :UNAVAILABLE,
+          status: :AVAILABLE,
           trips: nil
         )
       super(id)
 
       @name = name
       @vin = vin
+      unless vin.length == 17
+        raise ArgumentError
+      end
       @status = status
       unless (status == :AVAILABLE || status == :UNAVAILABLE)
         raise ArgumentError
@@ -45,6 +49,9 @@ module RideShare
     end
 
 
+    # RideShare::Driver.load_all was not working before because it expected a keyword argument first, then the full path value
+    # Status was expecting a symbol but is read from the CSV.read method as a string. So, we had to change the from_csv method for status to be a symbol
+
     private
 
     def self.from_csv(record)
@@ -52,7 +59,7 @@ module RideShare
                id: record[:id],
                name: record[:name],
                vin: record[:vin],
-               status: record[:status],
+               status: record[:status].to_sym,
                trips: record[:trips]
              )
     end

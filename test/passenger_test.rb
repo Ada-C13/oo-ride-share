@@ -34,7 +34,6 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -52,8 +51,8 @@ describe "Passenger class" do
         rating: 5,
         cost: 40
         )
+        @passenger.add_trip(trip)
 
-      @passenger.add_trip(trip)
       trip_2 = RideShare::Trip.new(
         id: 777,
         passenger: @passenger,
@@ -62,9 +61,7 @@ describe "Passenger class" do
         rating: 5,
         cost: 10
         )
-
       @passenger.add_trip(trip_2)
-
     end
 
     it "each item in array is a Trip instance" do
@@ -101,8 +98,8 @@ describe "Passenger class" do
         rating: 5,
         cost: 40
         )
-
       @passenger.add_trip(trip)
+
       trip_2 = RideShare::Trip.new(
         id: 777,
         passenger: @passenger,
@@ -111,7 +108,6 @@ describe "Passenger class" do
         rating: 5,
         cost: 10
         )
-
       @passenger.add_trip(trip_2)
     end
 

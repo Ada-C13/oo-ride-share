@@ -3,8 +3,8 @@ require_relative 'test_helper'
 describe "Trip class" do
   describe "initialize" do
     before do
-       start_time = Time.now - 60 * 60 # 60 minutes
-       end_time = start_time + 25 * 60 # 25 minutes
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time + 25 * 60 # 25 minutes
     
       @trip_data = {
         id: 8,
@@ -14,7 +14,7 @@ describe "Trip class" do
           phone_number: "412-432-7640"
         ),
         start_time: start_time,
-        end_time:  end_time,
+        end_time: end_time,
         cost: 23.45,
         rating: 3
       }
@@ -22,6 +22,8 @@ describe "Trip class" do
     end
     
     it "start time should come before end time" do
+      # can the below just be written as: expect{@trip}.must_raise ArgumentError, since it is essentially saying 
+      # expect{RideShare::Trip.new(RideShare::Trip.new(@trip_data))}?
       expect{RideShare::Trip.new(@trip)}.must_raise ArgumentError
     end
 
@@ -29,8 +31,12 @@ describe "Trip class" do
       expect(@trip).must_be_kind_of RideShare::Trip
     end
 
-    it "is an instance of time" do
+    it "start_time is an instance of Time" do
       expect(@trip.start_time).must_be_kind_of Time
+    end
+
+    it "end_time is an instance of Time" do
+      expect(@trip.end_time).must_be_kind_of Time
     end
 
     it "stores an instance of passenger" do
@@ -53,7 +59,6 @@ describe "Trip class" do
   end
 
   describe "trip_duration" do 
-
     before do
       start_time = Time.now - 60 * 60 # 60 minutes
       end_time = start_time + 25 * 60 # 25 minutes
@@ -66,7 +71,7 @@ describe "Trip class" do
          phone_number: "412-432-7640"
        ),
        start_time: start_time,
-       end_time:  end_time,
+       end_time: end_time,
        cost: 23.45,
        rating: 3
      }
@@ -76,12 +81,7 @@ describe "Trip class" do
     it "calculates the duration of the trip in seconds" do
       expect(@trip.trip_duration).must_equal 1500
     end
-
-
-
   end
-
-
 
   # describe "from csv" do
   #   it "trip start_time is an instance of time" do
@@ -105,5 +105,4 @@ describe "Trip class" do
   #   end
   # end
 
-  
 end
