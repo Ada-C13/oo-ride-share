@@ -27,7 +27,6 @@ module RideShare
         raise ArgumentError.new ('You must provide one of the following statuses :available, :unavailable')
       end
 
-    
 
 
     end
