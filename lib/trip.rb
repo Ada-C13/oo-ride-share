@@ -67,6 +67,9 @@ module RideShare
     def connect(passenger)
       @passenger = passenger
       passenger.add_trip(self)
+
+      # @driver = driver
+      # driver.add_trip(self)
     end
 
     def calculate_duration

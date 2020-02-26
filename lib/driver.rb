@@ -33,8 +33,8 @@ module RideShare
       )
     end
 
-    def add_trip
-
+    def add_trip(trip)
+      @trips << trip
     end
 
   end
