@@ -25,12 +25,39 @@ module RideShare
     @trips << trip
   end
 
+  # Wave 2 get average rating for a driver
+  def average_rating
+    if @trips.empty? == true
+      return 0
+    else
+      average_rating = (@trips).map do |trip|
+        (trip.rating).to_f
+      end
+        return ((average_rating).inject(:+))/(average_rating.length)
+    end
+  end
+
+  # Wave 2 total revenue method
+  def total_revenue
+    if @trips.empty? == true
+      return 0
+    else
+      cost_array = (@trips).map do |trip|
+        trip.cost
+      end
+    end 
+
+    total = (cost_array.sum - 1.65) * 0.80
+
+    total <= 0? 0 : total
+
+  end
+
+
   private
 
   def self.from_csv(record)
     return new(
-    # or can use Passenger.new(
-    # or can use new(
       id: record[:id],
       name: record[:name],
       vin: record[:vin],
