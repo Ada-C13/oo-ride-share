@@ -35,19 +35,29 @@ module RideShare
 
     def request_trip(passenger_id)
       # TODO: finish writing method and make it work
-      driver_id = 0
+      available_driver = ""
 
       # get the first available driver id
       @drivers.each do |driver|
         if driver.status == :AVAILABLE
-          driver_id = driver.id
+          available_driver = driver
           driver.status = :UNAVAILABLE
           break
         end
       end
 
+      raise "No drivers are currently available" if available_driver == ""
 
-      return Trip.new(id: @trips.length + 1, passenger: find_passenger(passenger_id), start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: driver_id, driver: find_driver(driver_id))
+      found_passenger = find_passenger(passenger_id)
+
+      new_trip = Trip.new(id: @trips.length + 1, passenger: found_passenger, start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: available_driver.id, driver: available_driver)
+
+      available_driver.trips.push(new_trip)
+      found_passenger.trips.push(new_trip)
+      @trips.push(new_trip)
+
+
+      return new_trip
     end
 
     private
