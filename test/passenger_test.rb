@@ -47,19 +47,12 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
+        start_time: Time.new(2016, 8, 8, 14, 33, 20),
+        end_time: Time.new(2016, 8, 9, 15, 33, 20),
         cost: 15,
         rating: 5
       )
-      trip = RideShare::Trip.new(
-        id: 66,
-        passenger: @passenger,
-        start_time: Time.new(2018, 12, 30),
-        end_time: Time.new(2018, 12, 31),
-        cost: 17,
-        rating: 5
-      )
+    
       
       @passenger.add_trip(trip)
     end
@@ -76,16 +69,31 @@ describe "Passenger class" do
       end
     end
 
-    it "calculates net_expenditures" do
-      expect(@passenger.net_expenditures).must_equal 32
+  end
+
+  describe "net_expenditures" do
+    before do
+    @passenger = RideShare::Passenger.new(
+      id: 9,
+      name: "Merl Glover III",
+      phone_number: "1-602-620-2330 x3723",
+      trips: []
+    )
+
+    trip = RideShare::Trip.new(
+      id: 66,
+      passenger: @passenger,
+      start_time: Time.new(2018, 12, 30, 14, 33, 20),
+      end_time: Time.new(2018, 12, 31, 15, 33, 20),
+      cost: 17,
+      rating: 5
+    )
+
+    @passenger.add_trip(trip)
     end
 
+    it "calculates net_expenditures" do
+      expect(@passenger.net_expenditures).must_equal 17
+    end
   end
-  
-  # it "net_expenditures" do
-  #   # act
-  #   total_spent = net_expenditures(9)
-  #   # assert
-  #   expect(total_spent).must_equal 32
-  # end
 end
