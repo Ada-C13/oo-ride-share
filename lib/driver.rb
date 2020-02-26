@@ -18,14 +18,25 @@ module RideShare
       
       if (@status == :AVAILABLE || @status == :UNAVAILABLE) == false 
         raise ArgumentError, 'status:#{@status} is not a valid status'
-      end 
-
-      
+      end
     end
 
     def add_trip(trip)
       @trips << trip
     end 
+
+    def average_rating
+      if trips.length == 0
+        return 0
+      end
+      
+      total_rating = 0.0
+
+      trips.each do |trip|
+        total_rating += trip.rating
+      end
+      return total_rating / trips.length
+    end
 
     private
 
@@ -37,6 +48,5 @@ module RideShare
         status: record[:status]
       )
     end
-
   end 
 end 
