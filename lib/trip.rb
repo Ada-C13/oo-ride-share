@@ -1,11 +1,11 @@
 require 'csv'
 require 'time'
-
 require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    # Took out the :id below because redundant (inherited from CsvRecord's attr_reader).
+    attr_reader :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
     def initialize(
           id:,
@@ -31,8 +31,9 @@ module RideShare
 
       @start_time = start_time
       @end_time = end_time
+
       if @start_time > @end_time
-      raise ArgumentError, 'Hala and Becca say this is not permissable'
+        raise ArgumentError, 'Trip start time cannot be after end time'
       end
 
       @cost = cost
@@ -57,7 +58,7 @@ module RideShare
     end
 
     def trip_duration
-    duration = (end_time-start_time)
+      duration = end_time - start_time
     return duration.to_i
 
     end
@@ -65,7 +66,7 @@ module RideShare
     private
 
     def self.from_csv(record)
-      return self.new(
+      return new(
                id: record[:id],
                passenger_id: record[:passenger_id],
                start_time: Time.parse(record[:start_time]),
@@ -75,6 +76,5 @@ module RideShare
              )
     end
     
-
   end
 end

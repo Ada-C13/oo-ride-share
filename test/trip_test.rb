@@ -29,6 +29,10 @@ describe "Trip class" do
       expect(@trip).must_be_kind_of RideShare::Trip
     end
 
+    it "is an instance of time" do
+      expect(@trip.start_time).must_be_kind_of Time
+    end
+
     it "stores an instance of passenger" do
       expect(@trip.passenger).must_be_kind_of RideShare::Passenger
     end

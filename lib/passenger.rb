@@ -17,7 +17,8 @@ module RideShare
       @trips << trip
     end
 
-    # Add an instance method, net_expenditures, to Passenger that will return the total amount of money that passenger has spent on their trips
+    # Add an instance method, net_expenditures, to Passenger that will return the total amount of money
+    # that passenger has spent on their trips
 
     def net_expenditures
       passenger_total = 0
@@ -38,10 +39,10 @@ module RideShare
       return passenger_time
     end
 
-
     private
 
     def self.from_csv(record)
+      # Since we're inside Passenger Class, return new syntax means we're creating a new passenger with an id, name, phone
       return new(
         id: record[:id],
         name: record[:name],
