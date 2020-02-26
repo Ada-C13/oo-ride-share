@@ -29,9 +29,9 @@ module RideShare
 		def total_revenue
 			return 0 if @trips == [] 
 
-			@trips.map {|trip| 
+			@trips.map do |trip| 
 				trip.cost < 1.65 ? 0 : (trip.cost - 1.65) * 0.80
-			}.inject(:+)
+			end.inject(:+)
 		end
 
 		def change_status
