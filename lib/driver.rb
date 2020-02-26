@@ -36,11 +36,6 @@ module RideShare
 			}.inject(:+)
 		end
 
-		# def self.all 
-		# 	total_trips = []
-		# 	return total_trips
-		# end
-
 		def change_status
 			@status == :AVAILABLE ? @status = :UNAVAILABLE : @status = :AVAILABLE
 		end

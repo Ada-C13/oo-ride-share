@@ -66,8 +66,8 @@ module RideShare
       )
 
       # Add new trip to driver and passenger
-      self.drivers[counter].add_trip(new_trip)
-      self.find_passenger(passenger_id).add_trip(new_trip)
+      new_trip.connect(find_passenger(passenger_id))
+      new_trip.connect_driver(self.drivers[counter])
       @trips << new_trip
       
       return new_trip
