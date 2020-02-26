@@ -64,11 +64,6 @@ describe "Driver class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
         rating: 5,
-        driver: RideShare::Driver.new(
-          id:99, 
-          name: "Sam", 
-          vin:"WBS76FYD47DJF7206"
-        ),
         driver_id: 5
       )
     end
@@ -98,11 +93,6 @@ describe "Driver class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
         rating: 5,
-        driver: RideShare::Driver.new(
-          id:99, 
-          name: "Sam", 
-          vin:"WBS76FYD47DJF7206"
-        ),
         driver_id: 5
       )
       @driver.add_trip(trip)
@@ -135,11 +125,6 @@ describe "Driver class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 1,
-        driver: RideShare::Driver.new(
-          id:99, 
-          name: "Sam", 
-          vin:"WBS76FYD47DJF7206"
-        ),
         driver_id: 5
       )
       @driver.add_trip(trip2)
