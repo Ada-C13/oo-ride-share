@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Trip class" do
+describe "Trip class" do
 
   describe "initialize" do
     before do
@@ -8,6 +8,11 @@ xdescribe "Trip class" do
       end_time = start_time + 25 * 60 # 25 minutes
       @trip_data = {
         id: 8,
+        driver: RideShare::Driver.new(
+          id: 5,
+          name: "Steve Park",
+          vin: "12345678901234567"
+        ),
         passenger: RideShare::Passenger.new(
           id: 1,
           name: "Ada",
@@ -39,6 +44,11 @@ xdescribe "Trip class" do
       this_start_time = this_end_time + 25 * 60 # 25 minutes
       @this_trip_data = {
         id: 8,
+        driver: RideShare::Driver.new(
+          id: 5,
+          name: "Steve Park",
+          vin: "12345678901234567"
+        ),
         passenger: RideShare::Passenger.new(
           id: 1,
           name: "Ada",
@@ -72,6 +82,11 @@ xdescribe "Trip class" do
 
       @this_trip_data = {
         id: 8,
+        driver: RideShare::Driver.new(
+          id: 5,
+          name: "Steve Park",
+          vin: "12345678901234567"
+        ),
         passenger: RideShare::Passenger.new(
           id: 1,
           name: "Ada",
