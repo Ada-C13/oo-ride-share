@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 1
         )
 
       @passenger.add_trip(trip)
@@ -89,7 +90,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 11),
         end_time: Time.new(2016, 8, 11),
         cost: 23,
-        rating: 3
+        rating: 3,
+        driver_id: 1
       )
 
       trip_2 = RideShare::Trip.new(id: 9,
@@ -97,7 +99,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 11),
         end_time: Time.new(2016, 8, 11),
         cost: 60,
-        rating: 4
+        rating: 4,
+        driver_id: 1
       )
 
       passenger.add_trip(trip_1)
@@ -141,7 +144,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 11),
         end_time: Time.new(2016, 8, 11) + 2*60*60,
         cost: 123,
-        rating: 3
+        rating: 3,
+        driver_id: 1
       )
 
       trip_2 = RideShare::Trip.new(id: 9,
@@ -149,14 +153,14 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 11),
         end_time: Time.new(2016, 8, 11) + 60*60,
         cost: 60,
-        rating: 4
+        rating: 4,
+        driver_id: 1
       )
 
       passenger.add_trip(trip_1)
       passenger.add_trip(trip_2)
 
       expect(passenger.total_time_spent).must_equal 10800
-
     end
 
     it "returns 0 if a passenger has not yet taken a trip" do
@@ -168,7 +172,6 @@ describe "Passenger class" do
       )
 
       expect(passenger.total_time_spent).must_equal 0
-
     end
   end
 end

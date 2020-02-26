@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -132,5 +132,75 @@ xdescribe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 5
+      )
+      trip_2 = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 10
+      )
+      @driver.add_trip(trip_1)
+      @driver.add_trip(trip_2)
+    end
+
+    it "returns the driver's total profit" do
+      expect(@driver.total_revenue).must_equal 9.36
+    end
+
+    it "returns 0 if the driver has no trips" do
+      poor_driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(poor_driver.total_revenue).must_equal 0
+    end
+
+    it "returns the driver's total profit accurately when some trips are less than $3" do
+      sad_driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        driver: sad_driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 5
+      )
+      trip_2 = RideShare::Trip.new(
+        id: 9,
+        driver: sad_driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 2
+      )
+      sad_driver.add_trip(trip_1)
+      sad_driver.add_trip(trip_2)
+
+      expect(sad_driver.total_revenue).must_equal 4.68
+    end
   end
 end
