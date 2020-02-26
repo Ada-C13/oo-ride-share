@@ -46,7 +46,7 @@ module RideShare
       end
     end
 
-    # Wave 1: Add an instance method to the Trip class to calculate the duration of the trip in seconds, and a corresponding test
+    # Wave 1: Add an instance method to the Trip class to calculate the duration of the trip in seconds
     def calculate_duration
       duration = @end_time - @start_time
       return duration

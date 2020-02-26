@@ -16,6 +16,24 @@ module RideShare
       @trips << trip
     end
 
+    # Wave 1: method to return the total amount of money that passenger has spent on their trips + tests
+    def net_expenditures
+      total_cost = 0
+      @trips.each do |trip|
+        total_cost += trip.cost
+      end
+      return total_cost
+    end
+
+    # Wave 1: method to return the total amount of time that passenger has spent on their trips + tests
+    def total_time_spent
+      total_time = 0
+      @trips.each do |trip|
+        total_time += trip.calculate_duration
+      end
+      return total_time
+    end
+
     private
 
     def self.from_csv(record)
