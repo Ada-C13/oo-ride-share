@@ -1,3 +1,5 @@
+require 'time'
+
 require_relative 'csv_record'
 
 module RideShare
@@ -9,7 +11,7 @@ module RideShare
 
       @name = name
       @phone_number = phone_number
-      @trips = trips || []
+      @trips = trips || [] 
     end
 
     def add_trip(trip)

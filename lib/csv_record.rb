@@ -1,3 +1,4 @@
+require 'time'
 require 'csv'
 
 module RideShare
@@ -12,6 +13,7 @@ module RideShare
     # Takes either full_path or directory and optional file_name
     # Default file name matches class name
     def self.load_all(full_path: nil, directory: nil, file_name: nil)
+      #if full_path exists use it, if not build_path
       full_path ||= build_path(directory, file_name)
 
       return CSV.read(
@@ -39,6 +41,8 @@ module RideShare
         raise ArgumentError, "Either full_path or directory is required"
       end
 
+
+      ###WHERE IT GETS CSV NAME FOR BABY CLASSES
       unless file_name
         class_name = self.to_s.split('::').last
         file_name = "#{class_name.downcase}s.csv"

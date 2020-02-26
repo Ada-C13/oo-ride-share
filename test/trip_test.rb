@@ -20,6 +20,39 @@ describe "Trip class" do
       @trip = RideShare::Trip.new(@trip_data)
     end
 
+    it "accurately finds time length of ride" do
+      time_a = "2018-12-27 02:39:05 -0800"
+      time_b = "2018-12-27 03:38:08 -0800"
+  
+      difference = Time.parse(time_b) - Time.parse(time_a)
+
+      if difference > 0
+        return difference
+      else
+       return  24 * 3600 + difference
+      end
+
+      expect(difference).must_equal(3543.0)
+    end
+
+    it "raises error when end_time is less than start_time" do
+      test_trip = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: "2018-12-27 03:38:08 -0800",
+        end_time: "2018-12-27 02:39:05 -0800",
+        cost: 23.45,
+        rating: 3,
+        trip_time: 3543.0
+      }
+
+      expect {RideShare::Trip.new(test_trip)}.must_raise ArgumentError
+    end
+
     it "is an instance of Trip" do
       expect(@trip).must_be_kind_of RideShare::Trip
     end
@@ -36,9 +69,7 @@ describe "Trip class" do
     it "raises an error for an invalid rating" do
       [-3, 0, 6].each do |rating|
         @trip_data[:rating] = rating
-        expect do
-          RideShare::Trip.new(@trip_data)
-        end.must_raise ArgumentError
+        expect {RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
       end
     end
   end
