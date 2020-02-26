@@ -131,6 +131,17 @@ xdescribe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+
+    it "will equal zero" do 
+      driver = RideShare::Driver.new(id: 54,
+      name: "Rogers Bartell IV",
+      vin: "1C9EVBRM0YBC564DZ",
+      status: "AVAILABLE")
+
+      expect(driver.total_revenue).must_equal 0 
+    end 
+
   end
+
+
 end

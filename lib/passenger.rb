@@ -40,7 +40,7 @@ module RideShare
       end 
         return total
     end 
-    
+  
     
     private
 

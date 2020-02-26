@@ -66,6 +66,12 @@ describe "TripDispatcher class" do
         expect(last_passenger.name).must_equal "Passenger 8"
         expect(last_passenger.id).must_equal 8
       end
+      # def build_test_dispatcher
+      #   return RideShare::TripDispatcher.new(
+      #     directory: TEST_DATA_DIRECTORY
+      #   )
+      # end
+
 
       it "connects trips and passengers" do
         dispatcher = build_test_dispatcher
@@ -79,7 +85,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher

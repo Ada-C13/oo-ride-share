@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5, 
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
         )
 
       @passenger.add_trip(trip)
@@ -84,8 +85,9 @@ describe "Passenger class" do
         start_time: Time.parse("2018-12-18 03:56:08 -0800"),
         end_time: Time.parse("2018-12-18 04:08:08 -0800"),
         cost: 10,
-        rating:4)
-
+        rating: 3,
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
+        )
         @passenger.add_trip(ride)
 
 
@@ -114,7 +116,9 @@ describe "Passenger class" do
         start_time: Time.parse("2018-12-18 03:56:08 -0800"),
         end_time: Time.parse("2018-12-18 04:08:08 -0800"),
         cost: 10,
-        rating:4)
+        rating: 3,
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
+      )
 
         @passenger.add_trip(ride)
 
