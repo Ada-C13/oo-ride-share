@@ -11,7 +11,7 @@ module RideShare
 
     @name = name
     @vin = vin
-    @status = status
+    @status = status.to_sym
     @trips = trips || []
   
     vin_pattern = /^[A-Z0-9]{17}$/i
@@ -19,6 +19,23 @@ module RideShare
       raise ArgumentError, "Invalid VIN"
     end
 
+  end
+
+  def add_trip(trip)
+    @trips << trip
+  end
+
+  private
+
+  def self.from_csv(record)
+    return new(
+    # or can use Passenger.new(
+    # or can use new(
+      id: record[:id],
+      name: record[:name],
+      vin: record[:vin],
+      status: record[:status]
+    )
   end
 
   end
