@@ -69,7 +69,7 @@ module RideShare
         "PassengerID=#{passenger ? passenger.id.inspect : passenger_id}>"
     end
 
-    #Wave 2: Loading Driver: Adding driver to connect
+    #Wave 2: Loading Driver: Adding driver to connect 
     def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)

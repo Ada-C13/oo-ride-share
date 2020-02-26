@@ -63,6 +63,7 @@ xdescribe "Driver class" do
         passenger: pass,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
+        cost: 100,
         rating: 5
       )
     end
@@ -91,6 +92,7 @@ xdescribe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
+        cost: 100,
         rating: 5
       )
       @driver.add_trip(trip)
@@ -122,6 +124,7 @@ xdescribe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
+        cost: 200,
         rating: 1
       )
       @driver.add_trip(trip2)
@@ -130,7 +133,17 @@ xdescribe "Driver class" do
     end
   end
 
+  #Wave 2: total revenue test
   describe "total_revenue" do
     # TODO You add tests for the total_revenue method
+    it 'total revenue of the drivere object' do
+      # passenger.trips.cost
+      total = @driver.total
+      expect(total).must_equal 300 
+    end
   end
+
+ 
+
+  
 end

@@ -52,11 +52,9 @@ module RideShare
 
     #Wave 2: Total_revenue
     def total_revenue
-      total_revenue = 0
-      @trips.each do |trip|
-        total_revenue += trip.cost
-      end
-      return total_revenue
+      fee = 1.65
+      # total_revenue = 0
+      @trips.map {|trip| trip.cost < fee ? 0 : trip.cost - fee}.sum * 0.8
     end
 
     #Wave 2: Loading All Drivers

@@ -115,6 +115,7 @@ describe "Passenger class" do
       expect(total).must_equal 300 
     end
   end
+  
   describe "add_trip" do
     # TODO
   end
