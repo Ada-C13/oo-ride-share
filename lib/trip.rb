@@ -1,6 +1,7 @@
 require 'csv'
 require 'time'
 require_relative 'csv_record'
+require_relative 'passenger'
 require_relative 'driver'
 
 module RideShare
@@ -10,14 +11,15 @@ module RideShare
 
     def initialize(
           id:,
+          driver_id: nil,
+          driver: nil,
           passenger: nil,
           passenger_id: nil,
           start_time:,
           end_time:,
           cost: nil,
-          rating:, 
-          driver_id: nil,
-          driver: nil
+          rating:
+        
         )
       super(id)
 
@@ -82,9 +84,20 @@ module RideShare
 
     private
 
+    # id:,
+    #       driver_id: nil,
+    #       driver: nil,
+    #       passenger: nil,
+    #       passenger_id: nil,
+    #       start_time:,
+    #       end_time:,
+    #       cost: nil,
+    #       rating:
+
     def self.from_csv(record)
       return new(
                id: record[:id],
+               driver_id: record[:driver_id],
                passenger_id: record[:passenger_id],
                start_time: Time.parse(record[:start_time]),
                end_time: Time.parse(record[:end_time]),

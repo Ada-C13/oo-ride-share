@@ -1,6 +1,5 @@
 require 'csv'
 require_relative 'csv_record'
-require_relative 'trip'
 
 # From already inside lib, load into pry by doing: pry -r ./becca_driver.rb 
 # From root directory:  pry -r ./lib/driver.rb"
@@ -29,6 +28,9 @@ module RideShare
         raise ArgumentError
       end
       @trips = trips || []
+      unless super(id)> 0 
+        raise ArgumentError
+      end
     end
 
     # def inspect
@@ -44,8 +46,19 @@ module RideShare
     #   passenger.add_trip(self)
     # end
     def add_trip(trip)
-      trip.each do |trip|
       @trips << trip
+    end
+    
+    def average_rating
+      sum_rating = 0.0
+      if @trips.length == 0
+        return 0
+      else
+        @trips.each do |trip|
+          sum_rating += trip.rating 
+        end
+      end
+      return sum_rating/@trips.length
     end
 
 

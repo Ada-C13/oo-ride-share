@@ -36,7 +36,7 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+      # done TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -45,25 +45,25 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 4,
+        driver: nil,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5,
-        cost: 40, 
-        driver_id: 999,
-        driver: nil
+        cost: 40 
         )
         @passenger.add_trip(trip)
 
       trip_2 = RideShare::Trip.new(
         id: 777,
+        driver_id: 99234,
+        driver: nil,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5,
         cost: 10, 
-        driver_id: 99234,
-        driver: nil
         )
       @passenger.add_trip(trip_2)
     end
@@ -83,7 +83,7 @@ describe "Passenger class" do
 
   describe "net_expenditures" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+      # done TODO: you'll need to add a driver at some point here.
       start_time = Time.now - 60 * 60 # 60 minutes
       end_time = start_time + 25 * 60 # 25 minutes
       start_time_2 = Time.now - 60 * 60 # 60 minutes
@@ -96,25 +96,25 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver_id: 434,
+        driver: nil,
         passenger: @passenger,
         start_time: start_time,
         end_time: end_time,
         rating: 5,
-        cost: 40, 
-        driver_id: 949425,
-        driver: nil
+        cost: 40
         )
       @passenger.add_trip(trip)
 
       trip_2 = RideShare::Trip.new(
         id: 777,
+        driver_id: 3848534,
+        driver: nil,
         passenger: @passenger,
         start_time: start_time_2,
         end_time: end_time_2,
         rating: 5,
-        cost: 10, 
-        driver_id: 3848534,
-        driver: nil
+        cost: 10
         )
       @passenger.add_trip(trip_2)
     end
