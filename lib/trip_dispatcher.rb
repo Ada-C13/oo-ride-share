@@ -13,6 +13,7 @@ module RideShare
       @passengers = Passenger.load_all(directory: directory)
       @drivers = Driver.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
+      @trip_id = 601
       connect_trips
     end
 
@@ -36,29 +37,28 @@ module RideShare
 
     def request_trip(passenger_id)
       driver_available = find_available_driver
-
-      trip_number = ((Trip.from_csv).length + 1)
-      current_trip = Trip.new(id: trip_number, 
+      current_trip = Trip.new(id: @trip_id, 
         passenger_id: passenger_id, 
         start_time: Time.now(), 
         end_time: nil, 
         cost: nil, 
         rating: nil, 
         driver: driver_available)
-
+      #driver 
       driver_available.add_trip(current_trip)
-      driver_available.status = "UNAVAILABLE"
+      #passenger 
       passenger_object = find_passenger(passenger_id)
       passenger_object.add_trip(current_trip)
+      @trip_id +=1
+      driver_available.status = :UNAVAILABLE
       @trips << current_trip
       return current_trip
-      
     end 
 
 
     def find_available_driver
-      drivers = Driver.load_all 
-      drivers.each do |driver|
+      
+      @drivers.each do |driver|
         if driver.status == :AVAILABLE
           return driver 
         end 
@@ -77,5 +77,7 @@ module RideShare
 
       return trips
     end
+
+
   end
 end

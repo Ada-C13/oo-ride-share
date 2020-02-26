@@ -66,11 +66,7 @@ describe "TripDispatcher class" do
         expect(last_passenger.name).must_equal "Passenger 8"
         expect(last_passenger.id).must_equal 8
       end
-      # def build_test_dispatcher
-      #   return RideShare::TripDispatcher.new(
-      #     directory: TEST_DATA_DIRECTORY
-      #   )
-      # end
+
 
 
       it "connects trips and passengers" do
@@ -126,6 +122,32 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
-    end
-  end
+    end 
+
+  
+  
+     describe "request trip" do
+      before do
+          @dispatcher = build_test_dispatcher
+        end
+
+        it "will return instance of Trip" do      
+            trip = @dispatcher.request_trip(2)
+            expect(trip).must_be_instance_of RideShare::Trip
+        end 
+
+        it "will update the driver's status to unavailable" do
+          trip = @dispatcher.request_trip(2)
+          expect(trip.driver.status).must_equal :UNAVAILABLE
+        end
+
+        it "will add the trip to drivers trip array" do 
+          trip = @dispatcher.request_trip(2) 
+          driver = trip.driver
+          expect(driver.trips).must_include(trip)
+
+        end  
+      end
+  end 
+   
 end
