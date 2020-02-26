@@ -124,20 +124,41 @@ describe "TripDispatcher class" do
   end
 
   describe "requesting a trip" do
+    before do
+      @tripdispatcher = RideShare::TripDispatcher.new
+      @passenger_id = 1
+      @requested_trip = @tripdispatcher.request_trip(@passenger_id)
+    end
+
+
     it "creates a trip" do
-      tripdispatcher = RideShare::TripDispatcher.new
-      passenger_id = 1
-      request_trip = tripdispatcher.request_trip(passenger_id)
-
-      expect(request_trip.passenger_id).must_equal passenger_id
-      expect(request_trip.driver_id).must_equal 1
-      expect(request_trip.end_time).must_equal nil
-      expect(request_trip.cost).must_equal nil
-      expect(request_trip.rating).must_equal nil
-      expect(request_trip.driver.status).must_equal :UNAVAILABLE
+      expect(@requested_trip.passenger_id).must_equal @passenger_id
+      expect(@requested_trip.driver_id).must_equal 1
+      expect(@requested_trip.end_time).must_be_nil
+      expect(@requested_trip.cost).must_be_nil
+      expect(@requested_trip.rating).must_be_nil
     end
 
-    it "updates the driver and passenger" do
+    it "updates the driver" do
+      expect(@requested_trip.driver.trips.include?(@requested_trip)).must_equal true
+      expect(@requested_trip.driver.status).must_equal :UNAVAILABLE
     end
+
+    it "updates the passenger" do
+      expect(@requested_trip.passenger.trips.include?(@requested_trip)).must_equal true
+    end
+
+    it "adds trip to tripdispatcher list of trips" do
+      expect(@tripdispatcher.trips.include?(@requested_trip)).must_equal true
+    end
+
+    it "raises Runtime Error if no drivers are currently available" do
+      @tripdispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect{@tripdispatcher.request_trip(@passenger_id)}.must_raise RuntimeError
+    end
+
+
   end
 end
