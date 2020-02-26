@@ -15,7 +15,7 @@ module RideShare
         raise ArgumentError.new("Wrong length of vin!")
       end
 
-      @status = status
+      @status = status.to_sym
 
       if ![:AVAILABLE, :UNAVAILABLE].include?@status.upcase.to_sym
         raise ArgumentError.new("Invalid status.")
