@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +120,23 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "requesting a trip" do
+    it "creates a trip" do
+      passenger_id = 1
+      request_trip = RideShare::TripDispatcher.request_trip(passenger_id)
+
+      expect(request_trip.passenger_id).must_equal passenger_id
+      expect(request_trip.driver_id).must_equal 1
+      expect(request_trip.end_time).must_equal nil
+      expect(request_trip.cost).must_equal nil
+      expect(request_trip.rating).must_equal nil
+      expect(request_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "updates the driver and passenger" do
     end
   end
 end
