@@ -19,7 +19,7 @@ module RideShare
 
       approved_status = [:AVAILABLE, :UNAVAILABLE]
 
-      unless @vin.length != 17 || @vin.is_a?String
+      unless @vin.length == 17 && (@vin.is_a?String)
         raise ArgumentError.new ('Your VIN is wrong.')
       end
 
