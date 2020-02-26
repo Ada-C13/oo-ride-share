@@ -28,18 +28,19 @@ module RideShare
       @trips << trip
     end
 
-    # def net_expenditures
-    #   cost_array = @trips.map {|trip|trip.cost}
-    #   total_cost = cost_array.sum
-    #   return total_cost
-    # end
+    def average_rating
+      all_ratings = @trips.map{|trip|trip.rating.to_f}
+      return 0 if all_ratings.length == 0
+      average_rating = all_ratings.sum / all_ratings.length
+      return average_rating
+    end
 
-    # def total_time_spent
-    #   time_array = @trips.map{|trip|trip.duration}
-    #   total_time = (time_array.sum / 60).to_i
-    #   puts "The total time spent on trips is #{total_time} minutes" 
-    #   return total_time
-    # end
+    def total_revenue
+      all_costs = @trips.map{|trip|trip.cost}
+      return 0 if all_costs.length == 0
+      total_revenue = (all_costs.sum - 1.65) * 0.8
+      return total_revenue.round(2)
+    end
 
     private
 

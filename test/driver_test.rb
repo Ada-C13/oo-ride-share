@@ -102,6 +102,7 @@ describe "Driver class" do
 
     it "returns a float within range of 1.0 to 5.0" do
       average = @driver.average_rating
+      expect(average).must_be_kind_of Float
       expect(average).must_be :>=, 1.0
       expect(average).must_be :<=, 5.0
     end
@@ -131,6 +132,38 @@ describe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 40,
+        rating: 5
+      )
+      @driver.add_trip(trip)
+
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 20,
+        rating: 1
+      )
+      @driver.add_trip(trip2)
+    end
+
+    it "Calculates the total revenue a driver makes" do
+      expect(@driver.total_revenue).must_equal 46.68
+    end
+    
   end
 end
