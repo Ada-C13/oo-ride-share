@@ -86,8 +86,8 @@ describe "Driver class" do
         vin: "1C9EVBRM0YBC564DZ"
       )
       trip = RideShare::Trip.new(
-        driver_id: 8,
-        driver_name: @driver,
+        id: 8,
+        driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
@@ -117,8 +117,8 @@ describe "Driver class" do
 
     it "correctly calculates the average rating" do
       trip2 = RideShare::Trip.new(
-        driver_id: 8,
-        driver_name: @driver,
+        id: 8,
+        driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),

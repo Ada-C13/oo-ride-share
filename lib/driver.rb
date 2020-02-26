@@ -1,5 +1,3 @@
-require 'csv'
-
 require_relative 'csv_record'
 
 module RideShare
@@ -15,10 +13,7 @@ module RideShare
       @status = status
       @trips = trips || []
 
-      case @status
-      when :AVAILABLE
-      when :UNAVAILABLE
-      else
+      unless @status == :AVAILABLE || @status == :UNAVAILABLE
         raise ArgumentError.new("#{@status} is not a valid status.")
       end
 
@@ -26,15 +21,47 @@ module RideShare
         raise ArgumentError.new("#{@vin} is not a valid VIN number.")
       end
 
+    end
 
-    def self.from_csv(record)
-      return new(
-        id: record[:id],
-        name: record[:name],
-        vin: record[:vin],
-        status: record[:status]
-      )
+  def add_trip(trip)
+    unless trip.end_time == nil
+      @trips << trip
     end
   end
-end
+
+  def average_rating
+    ratings = []
+    if @trips.length == 0
+      return 0
+    end
+
+    @trips.each do |trip|
+      unless trip.end_time == nil
+        ratings << trip.rating
+      end
+    end
+
+    return (ratings.sum.to_f / ratings.length.to_f)
+  end
+
+  def change_driver_status
+    if @status == :AVAILABLE
+      @status = :UNAVAILABLE
+    else
+      @status = :AVAILABLE
+    end
+  end
+
+  private
+
+  def self.from_csv(record)
+    return new(
+      id: record[:id],
+      name: record[:name],
+      vin: record[:vin],
+      status: record[:status].to_sym
+    )
+  end
+
+  end
 end

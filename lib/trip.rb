@@ -1,6 +1,8 @@
 require 'csv'
 
 require_relative 'csv_record'
+require_relative 'driver'
+require_relative 'passenger'
 
 module RideShare
   class Trip < CsvRecord
@@ -10,14 +12,25 @@ module RideShare
           id:,
           passenger: nil,
           passenger_id: nil,
+          driver_id: nil,
+          driver: nil,
           start_time:,
           end_time:,
           cost: nil,
-          rating:,
-          driver_id: nil,
-          driver: nil
+          rating:
         )
       super(id)
+
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+
+      elsif driver_id
+        @driver_id = driver_id
+
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
+      end
 
       if passenger
         @passenger = passenger
@@ -35,12 +48,16 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      valid_ratings = [1, 2, 3, 4, 5, nil]
+
+      unless valid_ratings.include?(@rating)
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
 
-      if @end_time - @start_time < 0
-        raise ArgumentError.new("End time: #{@end_time} cannot be less than start time: #{@start_time}")
+      if end_time != nil
+        if @end_time - @start_time < 0
+          raise ArgumentError.new("End time: #{@end_time} cannot be less than start time: #{@start_time}")
+        end
       end
 
     end
@@ -53,9 +70,11 @@ module RideShare
         "PassengerID=#{passenger&.id.inspect}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
+      @driver = driver
       passenger.add_trip(self)
+      driver.add_trip(self)
     end
 
     def duration
@@ -68,11 +87,11 @@ module RideShare
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
+               driver_id: record[:driver_id],
                start_time: Time.parse(record[:start_time]),
                end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
-               rating: record[:rating],
-               driver_id: record[:driver_id]
+               rating: record[:rating]
              )
     end
   end

@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -121,5 +121,40 @@ describe "TripDispatcher class" do
         end
       end
     end
+
+    describe "Request Trip method tests" do
+      before do
+        @dispatcher = build_test_dispatcher
+      end
+
+      it "will create the trip properly" do
+        expect(@dispatcher.request_trip(4)).must_be_instance_of RideShare::Trip
+      end
+
+      it "will update the lists for the selected passenger and driver" do
+        passenger = @dispatcher.find_passenger(4)
+        @dispatcher.request_trip(4)
+        expect(passenger.trips.length).must_equal 2
+      end
+
+      it "will select an available driver" do
+        available_drivers = @dispatcher.drivers.select { |driver| driver.status == :AVAILABLE}
+        @dispatcher.request_trip(4)
+        expect(@dispatcher.trips[-1].driver).must_equal available_drivers[0]
+      end
+
+      it "will return an error if there are no available drivers" do
+        # 3.times do |i|
+        #   @dispatcher.request_trip(i + 1)
+        # end
+
+        expect {
+          3.times do |i|
+            @dispatcher.request_trip(i + 1)
+          end
+        }.must_raise ArgumentError
+      end
+    end
+
   end
 end
