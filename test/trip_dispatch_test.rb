@@ -125,15 +125,14 @@ describe "TripDispatcher class" do
 
   describe "requesting a trip" do
     before do
-      @tripdispatcher = RideShare::TripDispatcher.new
+      @tripdispatcher = build_test_dispatcher
       @passenger_id = 1
       @requested_trip = @tripdispatcher.request_trip(@passenger_id)
     end
 
-
     it "creates a trip" do
       expect(@requested_trip.passenger_id).must_equal @passenger_id
-      expect(@requested_trip.driver_id).must_equal 1
+      expect(@requested_trip.driver_id).must_equal 3
       expect(@requested_trip.end_time).must_be_nil
       expect(@requested_trip.cost).must_be_nil
       expect(@requested_trip.rating).must_be_nil
@@ -157,6 +156,17 @@ describe "TripDispatcher class" do
         driver.status = :UNAVAILABLE
       end
       expect{@tripdispatcher.request_trip(@passenger_id)}.must_raise RuntimeError
+    end
+
+    it "picks first driver with no rides" do 
+      tripdispatcher = build_test_dispatcher
+      expect(tripdispatcher.pick_driver_for_trip.id).must_equal 3
+    end
+
+    it "picks driver whose most recent trip ended the longest time ago if they all have rides" do
+      tripdispatcher = build_test_dispatcher
+      tripdispatcher.request_trip(1)
+      expect(tripdispatcher.pick_driver_for_trip.id).must_equal 2
     end
 
 
