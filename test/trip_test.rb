@@ -2,6 +2,7 @@ require_relative 'test_helper'
 
 describe "Trip class" do
   describe "initialize" do
+    # TODO: Change to let
     before do
       start_time = Time.now - 60 * 60 # 60 minutes
       end_time = start_time + 25 * 60 # 25 minutes
@@ -42,37 +43,12 @@ describe "Trip class" do
       end
     end
 
-    it "accurately calculates time in seconds" do
-      # Arrange
-      @start_time = Time.parse("Thu Nov 29 14:33:20 2020")
-      @end_time = Time.parse("Thu Nov 29 15:33:20 2020")
-
-      # Act
-      time_in_seconds = @end_time - @start_time
-      
-      # Assert
-      expect(time_in_seconds).must_equal 3600
+    it "accurately calculates duration in seconds" do
+      # if we call trip_duration on an instance of a trip
+      # it will return the duration in seconds
+      expect(@trip.trip_duration).must_equal 1500
     end
   end
-
-    # describe "initializing ArgumentErrors" do
-    #   before do
-    #     start_time = Time.parse("Thu Nov 29 15:33:20 2020")
-    #     end_time = Time.parse("Thu Nov 29 14:33:20 2020")
-    #     @trip_data = {
-    #       id: 8,
-    #       passenger: RideShare::Passenger.new(
-    #         id: 1,
-    #         name: "Ada",
-    #         phone_number: "412-432-7640"
-    #       ),
-    #       start_time: start_time,
-    #       end_time: end_time,
-    #       cost: 23.45,
-    #       rating: 3
-    #     }
-    #     # @trip = RideShare::Trip.new(@trip_data)
-    #   end
    
     describe "initializing ArgumentErrors" do
       it "must raise argument error if end_time is before start_time" do
