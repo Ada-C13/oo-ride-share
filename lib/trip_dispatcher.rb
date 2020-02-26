@@ -25,7 +25,7 @@ module RideShare
 
     def find_driver(id)
       Driver.validate_id(id)
-      return @drivers.find { |passenger| passenger.id == id }
+      return @drivers.find { |driver| driver.id == id }
     end
 
     def inspect

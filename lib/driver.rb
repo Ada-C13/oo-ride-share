@@ -44,6 +44,7 @@ module RideShare
     #   passenger.add_trip(self)
     # end
     def add_trip(trip)
+      trip.each do |trip|
       @trips << trip
     end
 
