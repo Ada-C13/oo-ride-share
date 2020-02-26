@@ -15,7 +15,8 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 2
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -55,7 +56,8 @@ describe "Trip class" do
         start_time: Time.parse("2018-12-20 16:09:21 -0800"),
         end_time: Time.parse("2018-12-17 16:09:21 -0800"),
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 2
       }
       
       expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
@@ -75,19 +77,16 @@ describe "Trip class" do
         start_time: Time.parse("12:00"),
         end_time: Time.parse("14:00"),
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 2
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
 
     it "wil calculate and return the time in seconds" do 
-
       expect(@trip.calculate_duration).must_equal 7200.0
     end
 
   end
-
-
-
 
 end

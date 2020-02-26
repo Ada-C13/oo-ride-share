@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
 
       @passenger.add_trip(trip)
@@ -82,7 +83,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 10,
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
 
       @passenger.add_trip(trip)
@@ -101,7 +103,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 25.50,
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
       @passenger.add_trip(next_trip)
 
@@ -134,7 +137,8 @@ describe "Passenger class" do
         start_time: Time.parse("2020-02-25 15:00:00 -0800"),
         end_time: Time.parse("2020-02-25 16:00:00 -0800"),
         cost: 10,
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
 
       trip_two = RideShare::Trip.new(
@@ -143,7 +147,8 @@ describe "Passenger class" do
         start_time: Time.parse("2020-02-25 15:00:00 -0800"),
         end_time: Time.parse("2020-02-25 17:00:00 -0800"),
         cost: 10,
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
 
       @passenger.add_trip(trip)
@@ -161,7 +166,8 @@ describe "Passenger class" do
         start_time: Time.parse("2020-02-25 15:00:00 -0800"),
         end_time: Time.parse("2020-02-25 18:00:00 -0800"),
         cost: 10,
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
 
       @passenger.add_trip(trip_three)
@@ -176,7 +182,8 @@ describe "Passenger class" do
         start_time: Time.parse("2020-02-25 15:00:00 -0800"),
         end_time: Time.parse("2020-02-25 18:00:00 -0800"),
         cost: 10,
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
 
       @passenger.add_trip(trip_three)
@@ -187,7 +194,8 @@ describe "Passenger class" do
         start_time: Time.parse("2020-02-25 15:00:00 -0800"),
         end_time: Time.parse("2020-02-25 15:05:00 -0800"),
         cost: 10,
-        rating: 5
+        rating: 5,
+        driver_id: 2
         )
 
       @passenger.add_trip(trip_four)

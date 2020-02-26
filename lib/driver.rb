@@ -5,7 +5,7 @@ module RideShare
 
     attr_reader :id, :name, :vin, :status, :trips
 
-    def initialize(id:, name:, vin:, status:, trips: nil)
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
 
       @name = name
@@ -17,13 +17,25 @@ module RideShare
 
       @status = status
 
-      statuses = [:AVAILABLE, :UNAVAILABLE]
-      if !statuses.include?@status.upcase.to_sym
+      if ![:AVAILABLE, :UNAVAILABLE].include?@status.upcase.to_sym
         raise ArgumentError.new("Invalid status.")
       end
       
-      
       @trips = [] || trips
     end
+
+    def self.from_csv(record)
+      return new(
+        id: record[:id],
+        name: record[:name],
+        vin: record[:vin],
+        status: record[:status]
+      )
+    end
+
+    def add_trip
+
+    end
+
   end
 end
