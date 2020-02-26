@@ -36,6 +36,10 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def request_trip
+      puts "Requesting"
+    end
+
     private
 
     #Dispatcher.connect_trips is not allowed by external code, only TripDispatcher can call it on itself.
