@@ -38,12 +38,12 @@ module RideShare
       end
 
       if start_time.class == String
-        start_time = Time.parse(start_time) # added Time.parse to turn string into time, if it was passed as a string.
+        start_time = Time.parse(start_time)
       end
       @start_time = start_time 
 
       if end_time.class == String
-        end_time = Time.parse(end_time) # added Time.parse to turn string into time
+        end_time = Time.parse(end_time)
       end
       @end_time = end_time
 

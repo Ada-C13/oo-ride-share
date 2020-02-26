@@ -52,11 +52,13 @@ describe "Driver class" do
         name: "Test Passenger",
         phone_number: "412-432-7640"
       )
+
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
         vin: "12345678912345678"
       )
+
       @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -83,8 +85,8 @@ describe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ",
-        status: :AVAILABLE      
+        vin: "1C9EVBRM0YBC564DZ"
+        # status: :AVAILABLE      
       )
 
       trip = RideShare::Trip.new(
@@ -175,7 +177,7 @@ describe "Driver class" do
 
     it "returns the total driver revenue" do
       expect(@driver.total_revenue).must_be_kind_of Numeric
-      expect(@driver.total_revenue).must_equal 0 # without any trips
+      expect(@driver.total_revenue).must_equal 0 # without trips
       @driver.add_trip(@trip1)
       expect(@driver.total_revenue).must_equal 16
       @driver.add_trip(@trip2)
