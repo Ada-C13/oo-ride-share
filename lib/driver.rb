@@ -22,6 +22,11 @@ module RideShare
 
     end
 
+    def trip_in_progress(trip)
+      @status = :UNAVAILABLE
+      add_trip(trip)
+    end
+
     def add_trip(trip)
       @trips << trip
     end
