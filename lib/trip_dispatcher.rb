@@ -25,7 +25,7 @@ module RideShare
 
     def find_driver(id)
       Driver.validate_id(id)
-      return @drivers.find { |passenger| passenger.id == id }
+      return @drivers.find { |driver| driver.id == id }
     end
 
     def inspect
@@ -43,7 +43,8 @@ module RideShare
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
-        trip.connect(passenger)
+        driver = find_driver(trip.driver_id)
+        trip.connect(passenger, driver)
       end
       # return trips or @trips?
       return trips
