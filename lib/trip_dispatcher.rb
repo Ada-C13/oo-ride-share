@@ -70,10 +70,8 @@ module RideShare
       )
 
       # Add new trip to driver and passenger
-      new_trip.connect(find_passenger(passenger_id))
-      new_trip.connect_driver(self.drivers[counter])
+      new_trip.connect(find_passenger(passenger_id),self.drivers[counter])
       @trips << new_trip
-      
       return new_trip
     end
 
@@ -81,10 +79,7 @@ module RideShare
 
     def connect_trips
       @trips.each do |trip|
-        passenger = find_passenger(trip.passenger_id)
-        trip.connect(passenger)
-        driver = find_driver(trip.driver_id)
-        trip.connect_driver(driver)
+        trip.connect(find_passenger(trip.passenger_id),find_driver(trip.driver_id))
       end
 
       return trips
