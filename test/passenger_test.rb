@@ -49,10 +49,22 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        cost: 40
         )
 
       @passenger.add_trip(trip)
+      trip_2 = RideShare::Trip.new(
+        id: 777,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 5,
+        cost: 10
+        )
+
+      @passenger.add_trip(trip_2)
+
     end
 
     it "each item in array is a Trip instance" do
@@ -69,6 +81,46 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time + 25 * 60 # 25 minutes
+      start_time_2 = Time.now - 60 * 60 # 60 minutes
+      end_time_2 = start_time + 30 * 60 # 25 minutes
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: start_time,
+        end_time: end_time,
+        rating: 5,
+        cost: 40
+        )
+
+      @passenger.add_trip(trip)
+      trip_2 = RideShare::Trip.new(
+        id: 777,
+        passenger: @passenger,
+        start_time: start_time_2,
+        end_time: end_time_2,
+        rating: 5,
+        cost: 10
+        )
+
+      @passenger.add_trip(trip_2)
+    end
+
+    it "returns the total expenditures of a passenger" do
+    expect(@passenger.net_expenditures).must_equal 50
+    end
+
+    it "returns the total time spent for all of a passenger's rides" do
+      expect(@passenger.total_time_spent).must_equal 3299
+      end
   end
 end

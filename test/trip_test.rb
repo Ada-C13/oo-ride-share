@@ -3,8 +3,9 @@ require_relative 'test_helper'
 describe "Trip class" do
   describe "initialize" do
     before do
-      start_time = Time.now - 60 * 60 # 60 minutes
-      end_time = start_time + 25 * 60 # 25 minutes
+       start_time = Time.now - 60 * 60 # 60 minutes
+       end_time = start_time + 25 * 60 # 25 minutes
+    
       @trip_data = {
         id: 8,
         passenger: RideShare::Passenger.new(
@@ -13,11 +14,15 @@ describe "Trip class" do
           phone_number: "412-432-7640"
         ),
         start_time: start_time,
-        end_time: end_time,
+        end_time:  end_time,
         cost: 23.45,
         rating: 3
       }
       @trip = RideShare::Trip.new(@trip_data)
+    end
+    
+    it "start time should come before end time" do
+      expect{RideShare::Trip.new(@trip)}.must_raise ArgumentError
     end
 
     it "is an instance of Trip" do
@@ -42,4 +47,59 @@ describe "Trip class" do
       end
     end
   end
+
+  describe "trip_duration" do 
+
+    before do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time + 25 * 60 # 25 minutes
+   
+     @trip_data = {
+       id: 8,
+       passenger: RideShare::Passenger.new(
+         id: 1,
+         name: "Ada",
+         phone_number: "412-432-7640"
+       ),
+       start_time: start_time,
+       end_time:  end_time,
+       cost: 23.45,
+       rating: 3
+     }
+     @trip = RideShare::Trip.new(@trip_data)
+    end
+
+    it "calculates the duration of the trip in seconds" do
+      expect(@trip.trip_duration).must_equal 1500
+    end
+
+
+
+  end
+
+
+
+  # describe "from csv" do
+  #   it "trip start_time is an instance of time" do
+  #     #arrange
+  #     # id:,
+  #     #     passenger: nil,
+  #     #     passenger_id: nil,
+  #     #     start_time:,
+  #     #     end_time:,
+  #     #     cost: nil,
+  #     #     rating:
+  #     # record = [{id: 581,passenger: nil,passenger_id: 7,start_time: "3,2019-01-09 21:28:43 -0800",end_time: "2019-01-09 22:22:16 -0800",cost: 11,rating: 5 }]
+      
+  #     record = "581,7,3,2019-01-09 21:28:43 -0800,2019-01-09 22:22:16 -0800,11,5"
+  #     trip = RideShare::Trip.from_csv(record)
+  #     start_time = trip.start_time
+  #     end_time = trip.end_time
+  #     #assert
+  #     expect(start_time).must_be_instance_of Time
+  #     expect(end_time).must_be_instance_of Time
+  #   end
+  # end
+
+  
 end

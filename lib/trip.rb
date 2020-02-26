@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
@@ -30,6 +31,10 @@ module RideShare
 
       @start_time = start_time
       @end_time = end_time
+      if @start_time > @end_time
+      raise ArgumentError, 'Hala and Becca say this is not permissable'
+      end
+
       @cost = cost
       @rating = rating
 
@@ -51,17 +56,25 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    def trip_duration
+    duration = (end_time-start_time)
+    return duration.to_i
+
+    end
+
     private
 
     def self.from_csv(record)
       return self.new(
                id: record[:id],
                passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
                rating: record[:rating]
              )
     end
+    
+
   end
 end
