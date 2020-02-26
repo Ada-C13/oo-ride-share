@@ -17,15 +17,21 @@ module RideShare
     end
 
     def net_expenditures
+      # if trips is empty or nil return nil
+      if @trips.empty? || @trips == nil 
+        return nil
+      else
       return @trips.map { |trip| trip.cost }.sum
+      end 
     end
 
     def total_time_spent
+
       duration = @trips.map { |trip| trip.trip_duration }.sum
 
       return duration
     end
-    
+
 
     private
 

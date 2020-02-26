@@ -97,6 +97,26 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 17
     end
   end # end net expenditures
+
+  describe "net_expenditures no trips" do
+
+    before do 
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+    end
+
+    it "accounts for no trips" do
+      # we would expect duration to be nil
+      expect(@passenger.net_expenditures).must_be_nil
+    end
+
+
+
+  end
   
   describe "trip_duration" do
     
