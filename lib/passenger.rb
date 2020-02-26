@@ -24,8 +24,8 @@ module RideShare
 
     def total_time_spent
       time_array = @trips.map{|trip|trip.duration}
-      total_time = (time_array.sum / 60).to_i
-      puts "The total time spent on trips is #{total_time} minutes" 
+      total_time = time_array.sum.to_i
+      puts "The total time spent on trips is #{(total_time / 60).to_i} minutes" 
       return total_time
     end
 

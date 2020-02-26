@@ -63,8 +63,7 @@ describe "Driver class" do
         passenger: pass,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
-        rating: 5,
-        driver_id: 5
+        rating: 5
       )
     end
 
@@ -92,8 +91,7 @@ describe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
-        rating: 5,
-        driver_id: 5
+        rating: 5
       )
       @driver.add_trip(trip)
     end
@@ -124,8 +122,7 @@ describe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 1,
-        driver_id: 5
+        rating: 1
       )
       @driver.add_trip(trip2)
 

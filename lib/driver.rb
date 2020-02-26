@@ -16,7 +16,7 @@ module RideShare
       end
 
       if status == :AVAILABLE || status == :UNAVAILABLE
-        @status = status.to_sym
+        @status = status
       else
         raise ArgumentError.new("Status must be AVAILABLE or UNAVAILABLE")
       end

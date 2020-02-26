@@ -23,10 +23,8 @@ module RideShare
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
@@ -35,17 +33,17 @@ module RideShare
       @end_time = end_time
       @cost = cost
       @rating = rating
-      @driver = driver
-      @driver_id = driver_id
+      # @driver = driver
+      # @driver_id = driver_id
 
-      # if driver
-      #   @driver = driver
-      #   @driver_id = driver.id
-      # elsif driver_id
-      #   @driver_id = driver_id
-      # else
-      #   raise ArgumentError, 'driver or driver_id  is required'
-      # end
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+      elsif driver_id
+        @driver_id = driver_id
+      else
+        raise ArgumentError, 'Driver or driver_id  is required'
+      end
 
       raise ArgumentError if @end_time < @start_time
 

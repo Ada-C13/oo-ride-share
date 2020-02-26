@@ -20,8 +20,7 @@ describe "Trip class" do
           id:99, 
           name: "Sam", 
           vin:"WBS76FYD47DJF7206"
-        ),
-        driver_id: 5
+        )
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -35,7 +34,6 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -74,8 +72,7 @@ describe "Trip class" do
           id:99, 
           name: "Sam", 
           vin:"WBS76FYD47DJF7206"
-        ),
-        driver_id: 5
+        )
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
