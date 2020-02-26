@@ -14,7 +14,7 @@ module RideShare
       end
       @status = status.to_sym
       valid_status = [:AVAILABLE, :UNAVAILABLE]
-
+      
       if !(valid_status.include? status.to_sym)
         raise ArgumentError, "invalid status"
       end
@@ -25,6 +25,19 @@ module RideShare
     
     def add_trip(trip)
       @trips << trip
+    end
+    
+    def avg_rating 
+      all_trips = @trips.map { |trip| trip.rating }.sum
+      trip_count = @trips.length
+      
+      average_rating = all_trips / trip_count
+      
+      return average_rating
+    end
+
+    def total_revenue
+
     end
     
     private
