@@ -17,13 +17,13 @@ module RideShare
       @trips << trip
     end
 
-    def net_expenditures #(passenger id?)
-      # result = @trips.cost.sum
+    def net_expenditures
       return @trips.map {|trip| trip.cost}.sum
-      #sum costs  #total amount of money pax as spent 
+    end
 
-      # return @trips.map {|trip| trip.cost}.sum
-
+    # Add an instance method, total_time_spent to Passenger that will return the total amount of time that passenger has spent on their trips
+    def total_time_spent
+      return @trips.map {|trip| trip.trip_duration_in_seconds}.sum 
     end
 
     private
@@ -38,10 +38,3 @@ module RideShare
 
   end
 end
-
-# # Add an instance method, net_expenditures, to Passenger that will return the total amount of money that passenger has spent on their trips
-# def net_expenditures#(passenger id?)
-#   restult = @trips.cost.sum
-#   return result
-#   #sum costs  #total amount of money pax as spent 
-# end
