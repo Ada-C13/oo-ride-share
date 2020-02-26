@@ -33,18 +33,21 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
-    def self.request_trip(passenger_id)
+    def request_trip(passenger_id)
       # TODO: finish writing method and make it work
-      # driver_id = 0
+      driver_id = 0
 
-      # @drivers.each do |driver|
-      #   if driver.status == :AVAILABLE
-      #     driver_id = driver.id
-      #     break
-      #   end
-      # end
+      # get the first available driver id
+      @drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          driver_id = driver.id
+          driver.status = :UNAVAILABLE
+          break
+        end
+      end
 
-      # return Trip.new(@trips.length + 1, passenger_id, Time.now, end_time = nil, cost = nil, rating = nil, driver_id)
+
+      return Trip.new(id: @trips.length + 1, passenger: find_passenger(passenger_id), start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: driver_id, driver: find_driver(driver_id))
     end
 
     private
