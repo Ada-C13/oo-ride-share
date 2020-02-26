@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -27,6 +27,7 @@ xdescribe "Driver class" do
     it "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
+    # TODO ADD TEST FOR STATUS
 
     it "sets driven trips to an empty array if not provided" do
       expect(@driver.trips).must_be_kind_of Array
