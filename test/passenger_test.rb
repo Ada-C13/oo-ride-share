@@ -49,7 +49,13 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
         )
 
       @passenger.add_trip(trip)
@@ -83,7 +89,13 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 20,
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
         )
 
       @passenger.add_trip(trip)
@@ -94,7 +106,13 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 15,
-        rating: 4
+        rating: 4,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
         )
 
       @passenger.add_trip(trip2)
@@ -105,7 +123,13 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         cost: 10,
-        rating: 4
+        rating: 4,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
         )
 
       @passenger.add_trip(trip3)
@@ -146,7 +170,13 @@ describe "Passenger class" do
         start_time: start_time,
         end_time: end_time,
         cost: 20,
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
         )
 
       @passenger.add_trip(trip)
@@ -160,7 +190,13 @@ describe "Passenger class" do
         start_time: start_time,
         end_time: end_time,
         cost: 20,
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
         )
 
       @passenger.add_trip(trip2)
@@ -174,7 +210,13 @@ describe "Passenger class" do
         start_time: start_time,
         end_time: end_time,
         cost: 20,
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
         )
 
       @passenger.add_trip(trip3)

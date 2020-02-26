@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -63,7 +63,13 @@ xdescribe "Driver class" do
         passenger: pass,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
       )
     end
 
@@ -91,7 +97,13 @@ xdescribe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
       )
       @driver.add_trip(trip)
     end
@@ -122,7 +134,13 @@ xdescribe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 1
+        rating: 1,
+        driver: RideShare::Driver.new(
+          id:99, 
+          name: "Sam", 
+          vin:"WBS76FYD47DJF7206"
+        ),
+        driver_id: 5
       )
       @driver.add_trip(trip2)
 
