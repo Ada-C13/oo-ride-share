@@ -38,13 +38,15 @@ module RideShare
     end
 
     def average_rating
-      # sum_of_ratings = 0
+      sum_of_ratings = 0.0
 
-      # @trips.length.each do |trip|
-      #   sum_of_ratings += trip.rating
-      # end
+      return 0 if @trips.length == 0
 
-      # return (sum_of_ratings / @trips.length)
+      @trips.each do |trip|
+        sum_of_ratings += trip.rating
+      end
+
+      return (sum_of_ratings / @trips.length)
     end
 
   end

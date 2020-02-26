@@ -78,7 +78,7 @@ describe "Driver class" do
     end
   end
 
-  xdescribe "average_rating method" do
+  describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
