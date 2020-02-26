@@ -125,17 +125,6 @@ describe "TripDispatcher class" do
     end
   end
 
-  # describe "calling a new trip"
-  # before do
-  #   @dispatcher = build_test_dispatcher
-  # end
-
-  # describe "Initializer" do
-  #   it "is an instance of TripDispatcher" do
-  #     dispatcher = build_test_dispatcher
-  #     expect(dispatcher).must_be_kind_of RideShare::TripDispatcher
-  #   end
-  # end
   describe 'requests and creates new trip' do
     it 'adds trip to passengers' do
       @dispatcher = build_test_dispatcher
