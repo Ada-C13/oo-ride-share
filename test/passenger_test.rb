@@ -49,7 +49,9 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5,
-        cost: 40
+        cost: 40, 
+        driver_id: 999,
+        driver: nil
         )
         @passenger.add_trip(trip)
 
@@ -59,7 +61,9 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5,
-        cost: 10
+        cost: 10, 
+        driver_id: 99234,
+        driver: nil
         )
       @passenger.add_trip(trip_2)
     end
@@ -96,7 +100,9 @@ describe "Passenger class" do
         start_time: start_time,
         end_time: end_time,
         rating: 5,
-        cost: 40
+        cost: 40, 
+        driver_id: 949425,
+        driver: nil
         )
       @passenger.add_trip(trip)
 
@@ -106,7 +112,9 @@ describe "Passenger class" do
         start_time: start_time_2,
         end_time: end_time_2,
         rating: 5,
-        cost: 10
+        cost: 10, 
+        driver_id: 3848534,
+        driver: nil
         )
       @passenger.add_trip(trip_2)
     end

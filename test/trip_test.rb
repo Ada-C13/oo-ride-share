@@ -16,7 +16,9 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 999,
+        driver: nil
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -73,7 +75,9 @@ describe "Trip class" do
        start_time: start_time,
        end_time: end_time,
        cost: 23.45,
-       rating: 3
+       rating: 3, 
+       driver_id: 9913,
+       driver: nil
      }
      @trip = RideShare::Trip.new(@trip_data)
     end
