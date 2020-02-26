@@ -53,10 +53,47 @@ describe "Trip class" do
       # Assert
       expect(time_in_seconds).must_equal 3600
     end
-
-    # it "raises an ArgumentError if end time is before start time" do
-    #   expect { (@end_time - @start_time) < 0 }.must_raise ArgumentError
-    # end
-
   end
+
+    # describe "initializing ArgumentErrors" do
+    #   before do
+    #     start_time = Time.parse("Thu Nov 29 15:33:20 2020")
+    #     end_time = Time.parse("Thu Nov 29 14:33:20 2020")
+    #     @trip_data = {
+    #       id: 8,
+    #       passenger: RideShare::Passenger.new(
+    #         id: 1,
+    #         name: "Ada",
+    #         phone_number: "412-432-7640"
+    #       ),
+    #       start_time: start_time,
+    #       end_time: end_time,
+    #       cost: 23.45,
+    #       rating: 3
+    #     }
+    #     # @trip = RideShare::Trip.new(@trip_data)
+    #   end
+   
+    describe "initializing ArgumentErrors" do
+      it "must raise argument error if end_time is before start_time" do
+        start_time = Time.parse("Thu Nov 29 15:33:20 2020")
+        end_time = Time.parse("Thu Nov 29 14:33:20 2020")
+        @trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(
+            id: 1,
+            name: "Ada",
+            phone_number: "412-432-7640"
+          ),
+          start_time: start_time,
+          end_time: end_time,
+          cost: 23.45,
+          rating: 3
+        }
+
+        expect{ RideShare::Trip.new(@trip_data) }.must_raise ArgumentError
+      end
+    end
+
 end
+
