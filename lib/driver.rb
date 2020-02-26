@@ -67,5 +67,10 @@ module RideShare
       return (sum_of_trip_costs * 0.80)
     end
 
+    def update_status(trip)
+      self.add_trip(trip)
+      @status = :UNAVAILABLE
+    end
+
   end
 end

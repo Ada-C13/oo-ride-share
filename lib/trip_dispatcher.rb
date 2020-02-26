@@ -26,6 +26,31 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
+    def request_trip(passenger_id)
+      available_driver = @drivers.find do 
+        |driver| driver.status == :AVAILABLE 
+      end
+
+      current_passenger = find_passenger(passenger_id)
+
+      id = trips.length + 1
+      new_trip = RideShare::Trip.new(
+        id: id, 
+        passenger_id: passenger_id, 
+        start_time: Time.now, 
+        end_time: nil, 
+        cost: nil, 
+        rating: nil, 
+        driver: available_driver
+      )
+
+      available_driver.update_status(new_trip)
+      current_passenger.add_trip(new_trip)
+      @trips << new_trip
+
+      return new_trip
+    end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
@@ -35,7 +60,7 @@ module RideShare
     end
 
     private
-5
+
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
