@@ -64,10 +64,15 @@ module RideShare
         "PassengerID=#{passenger&.id.inspect}>"
     end
 
-    def connect(passenger)
+    def connect(passenger,driver)
       @passenger = passenger
+      @driver = driver
+      driver.add_trip(self)
       passenger.add_trip(self)
     end
+
+
+
 
     def duration
       return @end_time - @start_time
