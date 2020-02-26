@@ -15,7 +15,13 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Dan",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        )
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -29,7 +35,6 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -50,7 +55,13 @@ describe "Trip class" do
         start_time: Time.now,
         end_time: Time.now - 25 * 60,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Dan",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        )
       }
       # Act & Assert
       expect {RideShare::Trip.new(trip_data2)}.must_raise ArgumentError

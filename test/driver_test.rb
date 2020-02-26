@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -91,7 +91,13 @@ xdescribe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Dan",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        )
       )
       @driver.add_trip(trip)
     end
@@ -122,7 +128,13 @@ xdescribe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 1
+        rating: 1,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Dan",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        ) 
       )
       @driver.add_trip(trip2)
 
@@ -130,8 +142,56 @@ xdescribe "Driver class" do
     end
   end
 
-  # TODO
-  describe "total_revenue" do
+  xdescribe "total_revenue" do
     # You add tests for the total_revenue method
+    it "returns 0 if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect (driver.total_revenue).must_equal 0
+    end
+    
+    it "correctly calculates the total revenue" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        driver: driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 32,
+        rating: 1,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Dan",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        )    
+      )
+      trip2 = RideShare::Trip.new(
+        id: 9,
+        driver: driver,
+        passenger_id: 5,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 20,
+        rating: 1,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Dan",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        )   
+      )
+      driver.add_trip(trip2)
+      driver.add_trip(trip1)
+      expect(driver.total_revenue).must_equal 38.96
+    end
   end
 end

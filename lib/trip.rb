@@ -1,11 +1,12 @@
 require 'csv'
 require 'time'
 require_relative 'csv_record'
-
+# Trip inherits from CsvRecord
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver, :driver_id
 
+    # Initialize new trip
     def initialize(
           id:,
           passenger: nil,
@@ -13,19 +14,28 @@ module RideShare
           start_time:,
           end_time:,
           cost: nil,
-          rating:
+          rating:,
+          driver_id: nil,
+          driver: nil
         )
       super(id)
 
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
+      end
+
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+      elsif driver_id
+        @driver_id = driver_id
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
       end
 
       if end_time < start_time || end_time == nil 
@@ -49,18 +59,22 @@ module RideShare
         "ID=#{id.inspect} " +
         "PassengerID=#{passenger&.id.inspect}>"
     end
-
-    def connect(passenger)
+    
+    # Add trip to corresponding passenger and driver
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      @driver = driver
+      driver.add_trip(self)
     end
     
+    # Calculate trip's duration in seconds
     def duration
       start_in_sec = (@start_time.hour * 3600) + (@start_time.min * 60) + @start_time.sec
       end_in_sec = (@end_time.hour * 3600) + (@end_time.min * 60) + @end_time.sec
       return end_in_sec - start_in_sec
     end
-    # while private methods' availability is restricted within the instance of a class and its descendants.
+
     private
 
     def self.from_csv(record)
@@ -72,7 +86,8 @@ module RideShare
                start_time: start_time,
                end_time: end_time,
                cost: record[:cost],
-               rating: record[:rating]
+               rating: record[:rating],
+               driver_id: record[:driver_id]
              )
     end
   end

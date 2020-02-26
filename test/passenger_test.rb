@@ -37,7 +37,6 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -49,7 +48,13 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Dan",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        )
         )
 
       @passenger.add_trip(trip)
@@ -70,7 +75,6 @@ describe "Passenger class" do
 
   describe "net_expenditures" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -99,8 +103,8 @@ describe "Passenger class" do
   end
 
   describe "total_time_spent" do 
+
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -112,11 +116,18 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Dan",
+          vin: "1B6CF40K1J3Y74UY2",
+          status: :AVAILABLE
+        )
         )
 
       @passenger.add_trip(trip)
     end
+
     it "returns int" do
       # Arrange
       td = RideShare::TripDispatcher.new
@@ -125,6 +136,7 @@ describe "Passenger class" do
         expect(passenger.total_time_spent).must_be_kind_of Integer
       end
     end
+
     it "calculates the total amount of money a passenger has spent on their trips" do
       td = RideShare::TripDispatcher.new
       passenger = td.passengers[0]
@@ -134,5 +146,6 @@ describe "Passenger class" do
     it "returns 0 when trips is empty array" do
       expect(@passenger.total_time_spent).must_equal 0
     end
+    
   end
 end
