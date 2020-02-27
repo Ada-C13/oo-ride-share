@@ -5,13 +5,14 @@ require 'awesome_print'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :id, :name, :vin, :status, :trips
+    attr_reader :id, :name, :vin, :trips
+    attr_accessor :status #Wave 3: overriding status in dispatch, need to make this attr accessor
     
     def initialize(
       id:,
       name:,
       vin:,
-      status:AVAILABLE,
+      status: :AVAILABLE,
       trips: nil
       )
       super(id)

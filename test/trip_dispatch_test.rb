@@ -125,7 +125,7 @@ describe "TripDispatcher class" do
 
   describe "Does request_trip actually work" do
     before do
-      @dispatcher = build_test_dispatcher
+      @dispatcher = build_test_dispatcher #this load test_data
 
       @driver =  driver = RideShare::Driver.new(
         id: 54,
@@ -133,9 +133,21 @@ describe "TripDispatcher class" do
         vin: "1C9EVBRM0YBC564DZ",
         status: :AVAILABLE
       )
-      expect(@dispatcher.request_trip(9).new_driver.status).must_equal :AVAILABLE
+    end
+    it "driver status " do
+      #using (1) from passenger_test
+      #method returns a trip. the driver WAS available then when a passenger was found and he takes the trip, he becomes unvailable
+      inprogress_trip = @dispatcher.request_trip(1)
+      #driver status
+      expect(inprogress_trip.driver.status).must_equal :UNAVAILABLE
+      #passenger status
+      expect(inprogress_trip.passenger.id).must_equal 1
+      #is trip in progress?..no end time means in progress
+      expect(inprogress_trip.end_time).must_equal nil
     end
   end
+
+
 
 
 

@@ -16,7 +16,7 @@ module RideShare
       start_time:,
       end_time:,
       cost: nil,
-      rating:
+      rating: nil
       )
       super(id)
 
@@ -45,13 +45,20 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      #Wave 3: check for nil. If not nil, rating has a value, raise if invalid rating
+      if @rating != nil
+        if @rating > 5 || @rating < 1 
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
       
+      #Wave 3: Check for nil bc end_time in trip_dispatcher set to nil. 
+      #If not nil in time, time has a value enter next if stmt.
       #Wave 1.1 #3: Adding check for raising argument 
-      if start_time > end_time #https://ruby-doc.org/core-2.6.3/Time.html
-        raise ArgumentError.new("Invalid, start time must be before end time")
+      if end_time != nil
+        if start_time > end_time #https://ruby-doc.org/core-2.6.3/Time.html
+          raise ArgumentError.new("Invalid, start time must be before end time")
+        end
       end
 
     end

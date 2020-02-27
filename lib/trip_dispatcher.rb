@@ -55,22 +55,33 @@ module RideShare
     #Wave 3: request_trip method
     #Wave 3: added new instance of trip
     def request_trip(passenger_id)
-      new_driver = @driver.select {|driver| driver.status == :AVAILABLE}.first
-      new_trip = Trip.new(     
-        id: @trips.id[-1] + 1,
-        driver: new_driver, 
-        driver_id: new_driver.id, 
-        passenger_id: passenger_id,
-        start_time: Time.now,
-        end_time: nil,
-        cost: nil,
-        rating: nil
-      )
-      new_driver.add_trip(new_trip)
-      new_driver.status = :UNAVAILABLE 
-      passenger.find_passenger(passenger_id).add_trip(new_trip)
-      connect_trips
-      return trip
+      available_driver = @drivers.select {|driver| driver.status == :AVAILABLE}.first
+      passenger = self.find_passenger(passenger_id)
+
+      #Wave 3: .find_pass is in THIS class, need to call self not passenger
+      #Error checking in case of bad data:
+      # checks is there's a passenger and driver, if yes, connect trip.
+      # if no, no trip.
+      if (passenger != nil)  && (available_driver != nil)
+        new_trip = Trip.new(     
+          id: @trips[-1].id + 1, #fixed accessing this last trip in array then access id
+          driver: available_driver, 
+          driver_id: available_driver.id, 
+          passenger: passenger, #adding this back in to use
+          passenger_id: passenger_id,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+        )
+        available_driver.add_trip(new_trip)
+        available_driver.status = :UNAVAILABLE 
+        passenger.add_trip(new_trip)
+        connect_trips
+        return new_trip
+      else
+        return nil #if there's no passenger and driver, return nil
+      end
     end
 
     private

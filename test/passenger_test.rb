@@ -120,9 +120,17 @@ describe "Passenger class" do
     # TODO
   end
 
-  describe "total_time_spent" do
-    # TODO
-  end
+  # describe "total_time_spent" do
+  #   it "calculates the amount of time rider spent on  trips" do
+  #     start_time =
+  #     end_time =
+
+  #     driver = RideShare:: Driver.new(id:)
+  #     passenger = RideShare: Passenger.new
+  #     trip = RideShare:: Trip.new
+
+
+  # end
 
   
 end
