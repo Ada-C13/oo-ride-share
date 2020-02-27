@@ -31,7 +31,6 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 

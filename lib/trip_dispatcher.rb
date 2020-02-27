@@ -15,7 +15,6 @@ module RideShare
       @trips = Trip.load_all(directory: directory)
       # Wave 2: load Drivers
       @drivers = Driver.load_all(directory: directory)
-      connect_trips
     end
 
     def find_passenger(id)
@@ -35,15 +34,31 @@ module RideShare
               #{trips.count} trips, \
               #{drivers.count} drivers, \
               #{passengers.count} passengers>"
+      end
     end
 
+    # Wave 3
+    # creates a trip and assigns an available driver 
+    def request_trip(passenger_id)
+      if driver.each do |driver|
+        if driver.status == :AVAILABLE
+          return driver
+        end
+      end
 
-
+      Trip.new(
+        id: driver.id,
+        passenger: @passenger_id, # function
+        passenger_id: @passenger_id,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver: driver,
+        driver_id: driver.id
+      )
+    end
     
-
-
-
-
 
     private
 
@@ -59,9 +74,3 @@ module RideShare
     end
   end
 end
-
-# Loading Drivers
-# Update the TripDispatcher class as follows:
-
-# Update the Trip#connect method to connect the driver as well as the passenger (you'll want to create add trip on driver first - see below)
-# Add a find_driver method that looks up a driver by ID
