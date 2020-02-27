@@ -33,7 +33,7 @@ module RideShare
     def request_trip(passenger_id) 
       #id_trip = @trips.  
       new_trip = RideShare::Trip.new(
-        id: nil, 
+        id: @trips.last.id +1, 
         passenger: find_passenger(passenger_id),
         passenger_id: passenger_id,
         start_time: Time.now,
