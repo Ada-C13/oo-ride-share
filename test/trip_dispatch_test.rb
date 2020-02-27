@@ -122,4 +122,42 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request_trip method" do
+    it "creates an instance of Trip" do
+      dispatcher = build_test_dispatcher
+      new_length = dispatcher.trips.length + 1
+
+      dispatcher.request_trip(1)
+
+      expect(dispatcher.trips.length).must_equal new_length
+      expect(dispatcher.trips.last).must_be_instance_of RideShare::Trip
+    end
+
+    it "will return first available driver" do
+      dispatcher = build_test_dispatcher
+      
+      dispatcher.request_trip(1)
+      #find the passenger id 1 and then see if the driver id is 2
+      expect(dispatcher.trips.last.driver_id).must_equal 2
+    end
+
+    it "will change driver's status to unavailable" do
+      dispatcher = build_test_dispatcher
+
+      dispatcher.request_trip(1)
+
+      expect(dispatcher.find_driver(2).status).must_equal :UNAVAILABLE
+    end
+
+    it "will have a cost, rating, and end time of nil for new trip" do
+      dispatcher = build_test_dispatcher
+      
+      dispatcher.request_trip(1)
+
+      expect(dispatcher.trips.last.end_time).must_be_nil
+      expect(dispatcher.trips.last.cost).must_be_nil
+      expect(dispatcher.trips.last.rating).must_be_nil
+    end
+  end
 end

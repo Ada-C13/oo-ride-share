@@ -55,6 +55,10 @@ module RideShare
       return (total * 0.8).round(2)
     end
 
+    def change_status
+      @status = :UNAVAILABLE
+    end
+
     private
 
     def self.from_csv(record)

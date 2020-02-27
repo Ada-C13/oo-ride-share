@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Passenger class" do
+describe "Passenger class" do
 
   describe "Passenger instantiation" do
     before do

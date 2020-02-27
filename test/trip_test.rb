@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Trip class" do
+describe "Trip class" do
 
   describe "initialize" do
     before do
