@@ -167,3 +167,15 @@ describe "Driver class" do
     expect(@driver.total_revenue).must_equal 9.6
   end
 end
+
+it "returns zero if no driven trips" do
+  driver = RideShare::Driver.new(
+    id: 54,
+    name: "Rogers Bartell IV",
+    vin: "1C9EVBRM0YBC564DZ"
+  )
+  @driver.add_trip(trip1)
+
+  expect(driver.total_revenue).must_equal 0
+end
+end
