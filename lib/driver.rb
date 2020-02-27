@@ -28,8 +28,11 @@ module RideShare
     end
 
     def average_rating
-      ratings = @trips.map {|trip| trip.rating}
-      return @trips.length == 0 ? 0 : (ratings.sum / @trips.length).to_f.round(1)
+			ratings = []
+			@trips.each do |trip|
+				ratings << trip.rating unless trip.rating == nil
+			end
+      return @trips.length == 0 ? 0 : (ratings.sum / ratings.length).to_f.round(1)
     end
 
     def total_revenue
