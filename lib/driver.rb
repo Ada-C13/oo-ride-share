@@ -25,6 +25,10 @@ module RideShare
     @trips << trip
   end
 
+  def change_status
+    @status = :UNAVAILABLE
+  end
+
   # Wave 2 get average rating for a driver
   def average_rating
     if @trips.empty? == true
@@ -52,6 +56,7 @@ module RideShare
     total <= 0? 0 : total
 
   end
+
 
 
   private

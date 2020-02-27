@@ -187,4 +187,20 @@ describe "Driver class" do
     end
 
   end
+  # Wave 3 method to test change of status
+  describe "change_status" do
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE
+      )
+    end
+
+    it "changes driver status to unavailable" do
+      @driver.change_status
+      expect(@driver.status).must_equal :UNAVAILABLE
+    end
+  end
 end

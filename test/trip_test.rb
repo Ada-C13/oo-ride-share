@@ -48,12 +48,7 @@ describe "Trip class" do
       end
     end
 
-  # wave 3 test
-    it "creates a trip properly when using request_trip method" do
-      passenger_id = 1
-      expect(RideShare::TripDispatcher.request_trip(passenger_id)).must_be_kind_of RideShare::Trip
-    end
-  
+
   # 1.1 #3 raise ArgumentError if end time is before start time
     it "raises an error if the end time is before start time" do
       # Arrange

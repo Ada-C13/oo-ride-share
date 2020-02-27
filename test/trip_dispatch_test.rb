@@ -122,4 +122,33 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  # Wave 3
+  describe "request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    # make sure correct passenger info is in trip instance
+    
+    it "creates a trip properly when using request_trip method" do
+      passenger_id = 1
+      expect(@dispatcher.request_trip(passenger_id)).must_be_kind_of RideShare::Trip
+    end
+
+  end 
+
+  describe "select_available_driver" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "selected driver that was first available" do
+      chosen_driver = @dispatcher.drivers[1]
+      expect(@dispatcher.select_available_driver).must_equal chosen_driver
+    end
+  end
+
+
+
 end
