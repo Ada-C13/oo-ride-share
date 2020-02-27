@@ -12,21 +12,21 @@ module RideShare
       @trips = trips || []
     end
 
-    def add_trip(trip) #where is add_trip being called?? 
+    def add_trip(trip)
       @trips << trip 
     end
 
     # ! TODO add no trips
     def net_expenditures
-      # if @trips == nil
-      #   raise ArgumentError.new("This passenger has no trips")
-      # else
+      if @trips == nil
+        raise ArgumentError.new("This passenger has no trips")
+      else
       total_cost = 0
-      @trips.each do |trip|
-        total_cost += trip.cost
-      end
+        @trips.each do |trip|
+          total_cost += trip.cost
+        end
+      end 
       return total_cost
-      # end
     end
 
     # total_trips = @trips.map do |trip|
