@@ -8,7 +8,9 @@ module RideShare
         def initialize(id:, name:, vin:, status: nil, trips: nil)
             super(id)
             @name = name
+            # Add ArgumentError
             @vin = vin
+            # Add ArgumentError
             @status = status
             @trips = trips || []
         end
@@ -44,6 +46,8 @@ module RideShare
             end
             return total_revenue
         end
+
+        private
         
         def self.from_csv(record)
             return self.new(

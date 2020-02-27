@@ -31,6 +31,21 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
+      # Raises an ArgumentError if the end time is before the start time
+      if end_time > start_time
+        @start_time = start_time
+        @end_time = end_time
+      else
+        raise ArgumentError, 'Those are invalid times'
+      end
+
+      @cost = cost
+      @rating = rating
+
+      if @rating > 5 || @rating < 1
+        raise ArgumentError.new("Invalid rating #{@rating}")
+      end
+
       # Wave 2: When a Trip is constructed, either driver_id or driver must be provided.
       if driver
         @driver = driver
@@ -40,29 +55,8 @@ module RideShare
       else
         raise ArgumentError, 'Driver or driver_id is required'
       end
-
-      # Raises an ArgumentError if the end time is before the start time
-      if end_time > start_time
-        @start_time = start_time
-        @end_time = end_time
-      else
-        raise ArgumentError, 'Those are invalid times'
-      end
       
-
-      @cost = cost
-      @rating = rating
-
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
-      end
-    end
-
-    # Wave 1: Add an instance method to the Trip class to calculate the duration of the trip in seconds
-    def calculate_duration
-      duration = @end_time - @start_time
-      return duration
-    end
+    end # end initialize   
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
@@ -80,6 +74,12 @@ module RideShare
     def connect2(driver)
       @driver = driver
       driver.add_trip(self)
+    end
+
+    # Wave 1: Add an instance method to the Trip class to calculate the duration of the trip in seconds
+    def calculate_duration
+      duration = @end_time - @start_time
+      return duration
     end
 
 

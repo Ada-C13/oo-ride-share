@@ -58,7 +58,13 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id: 1, 
+          name: 'Da Vinci', 
+          vin: 'RFWNJWGU3Y8SD2VP0',
+          status: :AVAILABLE
+        )
       }
       expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
     end
@@ -80,7 +86,13 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id: 1, 
+          name: 'Da Vinci', 
+          vin: 'RFWNJWGU3Y8SD2VP0',
+          status: :AVAILABLE
+        )
       }
 
       @trip = RideShare::Trip.new(@trip_data)
