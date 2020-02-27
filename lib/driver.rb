@@ -30,7 +30,7 @@ module RideShare
 			return 0 if @trips == [] 
 			
 			@trips.map do |trip| 
-				trip.cost < 1.65 ? 0 : (trip.cost - 1.65) * 0.80
+				trip.cost.to_f < 1.65 ? 0 : (trip.cost.to_f - 1.65) * 0.80
 			end.inject(:+)
 		end
 

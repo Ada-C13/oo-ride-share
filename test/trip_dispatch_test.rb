@@ -170,11 +170,18 @@ describe "TripDispatcher class" do
   end
 
   describe 'find driver and passenger total for in-progress' do
-    it 'will return passenger total, excluding trip in-progress' do
+    before do
       @dispatcher = build_test_dispatcher
+    end
 
+    it 'will return passenger total, excluding trip in-progress' do
       request_trip_result = @dispatcher.request_trip(5)
       @dispatcher.find_passenger(5).net_expenditures.must_equal 0
+    end
+
+    it 'will return driver total, excluding trip in-progress' do
+      chosen_driver = @dispatcher.first_available_driver
+      @dispatcher.drivers[chosen_driver].total_revenue.must_equal 0
     end
   end
 
