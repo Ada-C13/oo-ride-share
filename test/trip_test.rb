@@ -27,7 +27,11 @@ describe "Trip class" do
     it "stores an instance of passenger" do
       expect(@trip.passenger).must_be_kind_of RideShare::Passenger
     end
-
+    
+    it "has a valid start and end time" do  # check if start time is less than end time which makes it valid
+      expect(@trip.start_time < @trip.end_time).must_equal true
+    end
+    
     it "stores an instance of driver" do
       skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver

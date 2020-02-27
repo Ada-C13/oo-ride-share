@@ -1,5 +1,5 @@
 require 'csv'
-
+require 'time'
 require_relative 'csv_record'
 
 module RideShare
@@ -12,7 +12,7 @@ module RideShare
           passenger_id: nil,
           start_time:,
           end_time:,
-          cost: nil,
+          cost: 0,
           rating:
         )
       super(id)
@@ -20,12 +20,14 @@ module RideShare
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
+      end
+
+      if start_time > end_time # added ArgumentError if start time is greater
+        raise ArgumentError, "Start time cannot be greater than end time"
       end
 
       @start_time = start_time
@@ -51,17 +53,21 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    def duration 
+      end_time - start_time 
+    end
+
     private
 
     def self.from_csv(record)
       return self.new(
-               id: record[:id],
-               passenger_id: record[:passenger_id],
-               start_time: record[:start_time],
-               end_time: record[:end_time],
-               cost: record[:cost],
-               rating: record[:rating]
-             )
+              id: record[:id],
+              passenger_id: record[:passenger_id],
+              start_time: Time.parse(record[:start_time]),
+              end_time: Time.parse(record[:end_time]),
+              cost: record[:cost],
+              rating: record[:rating]
+            )
     end
   end
 end
