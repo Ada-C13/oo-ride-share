@@ -7,7 +7,8 @@ require_relative 'csv_record'
 module RideShare
   class Driver < CsvRecord
 
-    attr_reader :name, :vin, :status, :trips
+    attr_reader :name, :vin, :trips
+    attr_accessor :status, :trips
     
     def initialize(
           id:,
@@ -81,6 +82,13 @@ module RideShare
 
     # RideShare::Driver.load_all was not working before because it expected a keyword argument first, then the full path value
     # Status was expecting a symbol but is read from the CSV.read method as a string. So, we had to change the from_csv method for status to be a symbol
+
+    def add_requested_trip(trip1)
+      trips.push trip1
+    end
+
+
+
 
     private
 

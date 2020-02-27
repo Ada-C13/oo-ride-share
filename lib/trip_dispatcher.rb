@@ -9,7 +9,8 @@ require_relative 'driver'
 
 module RideShare
   class TripDispatcher
-    attr_reader :drivers, :passengers, :trips
+    attr_reader :drivers, :passengers
+    attr_accessor :trips
 
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
@@ -36,9 +37,37 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
-    def request_trip
-      puts "Requesting"
+    def get_first_available
+      drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          driver.status = :UNAVAILABLE
+          return driver
+        end
+      end 
+    end 
+
+    def request_trip(passenger_id)
+    driver = get_first_available
+    appropriate_id = ((trips.last.id)+1)
+    trip1 = Trip.new(
+    id: appropriate_id,
+    driver_id: driver.id,
+    driver: driver,
+    passenger: find_passenger(passenger_id),
+    passenger_id: passenger_id,
+    start_time: Time.now,
+    end_time: nil,
+    cost: nil,
+    rating: nil
+    )
+    passenger.trips.push trip1
+    trips.push trip1
+    driver.add_requested_trip(trip1)
+
+    return trip1
     end
+
+    # Add the new trip to the collection of trips for that Driver
 
     private
 
@@ -53,5 +82,6 @@ module RideShare
       # return trips or @trips?
       return trips
     end
+
   end
 end

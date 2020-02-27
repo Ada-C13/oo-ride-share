@@ -82,15 +82,7 @@ module RideShare
 
     private
 
-    # id:,
-    #       driver_id: nil,
-    #       driver: nil,
-    #       passenger: nil,
-    #       passenger_id: nil,
-    #       start_time:,
-    #       end_time:,
-    #       cost: nil,
-    #       rating:
+   
 
     def self.from_csv(record)
       return new(

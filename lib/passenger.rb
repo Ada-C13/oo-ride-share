@@ -3,7 +3,8 @@ require_relative 'trip'
 
 module RideShare
   class Passenger < CsvRecord
-    attr_reader :name, :phone_number, :trips
+    attr_reader :name, :phone_number
+    attr_accessor :trips
 
     def initialize(id:, name:, phone_number:, trips: nil)
       super(id)
