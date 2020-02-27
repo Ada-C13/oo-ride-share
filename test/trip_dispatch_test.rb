@@ -146,9 +146,4 @@ describe "TripDispatcher class" do
       expect(inprogress_trip.end_time).must_equal nil
     end
   end
-
-
-
-
-
 end
