@@ -164,6 +164,6 @@ describe "Driver class" do
     )
     @driver.add_trip(trip2)
 
-    expect(@driver.total_revenue).must_equal 14.93
+    expect(@driver.total_revenue).must_equal 9.6
   end
 end
