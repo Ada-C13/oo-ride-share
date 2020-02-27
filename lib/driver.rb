@@ -68,7 +68,7 @@ module RideShare
     end
 
     def update_status(trip)
-      self.add_trip(trip)
+      add_trip(trip)
       @status = :UNAVAILABLE
     end
 

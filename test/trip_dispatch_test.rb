@@ -132,13 +132,54 @@ describe "TripDispatcher class" do
       expect(passenger_id).must_be_kind_of Integer
     end
 
-    # it "assigns the first driver who's status is available" do
-    #   new_trip = @td.request_trip(1)
+    it "assigns the first driver who's status is available" do
+      before_new_trip_status = @td.drivers[0].status
 
-    #   expect(new_trip.driver.id).must_equal 1
-    #   expect(new_trip.driver.status).must_equal :AVAILABLE
-    # end
+      new_trip = @td.request_trip(1)
 
+      expect(new_trip.driver.id).must_equal 1
+      expect(before_new_trip_status).must_equal :AVAILABLE
+      expect(new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "should use the current time for start time" do
+      new_trip = @td.request_trip(2)
+
+      expect(new_trip.start_time).must_be_kind_of Time
+    end
+
+    it "should be nil for end_date, cost and rating for the new trip" do
+      new_trip = @td.request_trip(2)
+
+      expect(new_trip.end_time).must_be_nil
+      expect(new_trip.cost).must_be_nil
+      expect(new_trip.rating).must_be_nil
+    end
+
+    it "creates an instance of a trip" do
+      expect(@td.request_trip(1)).must_be_kind_of RideShare::Trip
+    end
+
+    it "checks if the trip was added to driver's trips" do
+      before_new_trip = @td.drivers[0].trips.length
+
+      new_trip = @td.request_trip(1)
+      expect(@td.drivers[0].trips.length).must_equal before_new_trip + 1
+    end
+
+    it "checks if the trip was added to passenger's trips" do
+      before_new_trip = @td.passengers[0].trips.length
+
+      new_trip = @td.request_trip(1)
+      expect(@td.passengers[0].trips.length).must_equal before_new_trip + 1
+    end
+
+    it "checks if the trip was added to the whole trips list" do
+      before_new_trip = @td.trips.length
+
+      new_trip = @td.request_trip(1)
+      expect(@td.trips.length).must_equal before_new_trip + 1
+    end
   end
 
 end
