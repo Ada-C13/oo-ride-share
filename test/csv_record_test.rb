@@ -2,7 +2,7 @@ require_relative 'test_helper'
 
 TEST_DATA_DIR = 'test/test_data'
 
-xdescribe RideShare::CsvRecord do
+describe RideShare::CsvRecord do
   describe 'constructor' do
     it 'takes and saves an id' do
       id = 7
