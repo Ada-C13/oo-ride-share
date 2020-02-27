@@ -122,4 +122,19 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "find_available_driver" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "finds the first availale driver" do
+    @driver = @dispatcher.find_available_driver
+    # TODO: Update driver.id/other info to reflect future reqs
+    expect(@driver).must_be_kind_of RideShare::Driver
+    expect(@driver.status).must_equal :AVAILABLE
+    expect(@driver.id).must_equal 2
+    end
+  end
+    
 end

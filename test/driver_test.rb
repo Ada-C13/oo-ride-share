@@ -205,7 +205,7 @@ describe "Driver class" do
         rating: 5
       )
       @driver.add_trip(trip2)
-    end
+      end
 
       it "correctly calculates total_revenue for costs less than $1.65" do 
       expect(@driver.total_revenue).must_be_close_to 7.479

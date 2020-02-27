@@ -99,9 +99,9 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 17
     end
   end # end net expenditures
-
+  
   describe "net_expenditures no trips" do
-
+    
     before do 
       @passenger = RideShare::Passenger.new(
         id: 9,
@@ -110,14 +110,14 @@ describe "Passenger class" do
         trips: []
       )
     end
-
+    
     it "accounts for no trips" do
       # we would expect duration to be nil
       expect(@passenger.net_expenditures).must_be_nil
     end
-
-
-
+    
+    
+    
   end
   
   describe "trip_duration" do
@@ -171,11 +171,11 @@ describe "Passenger class" do
         trips: []
       )
     end
-
+    
     it "accounts for total_time with no trips" do
       # we would expect duration to be nil
       expect(@passenger.total_time_spent).must_be_nil
     end
-  
+    
   end
 end # end "Passenger class" 

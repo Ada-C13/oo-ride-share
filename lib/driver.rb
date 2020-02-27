@@ -12,10 +12,10 @@ module RideShare
       if @vin.length != 17
         raise ArgumentError, "vin length must be 17 characters"
       end
-      @status = status.to_sym
+      @status = status
       valid_status = [:AVAILABLE, :UNAVAILABLE]
       
-      if !(valid_status.include? status.to_sym)
+      if !(valid_status.include? status)
         raise ArgumentError, "invalid status"
       end
       
@@ -65,7 +65,7 @@ module RideShare
         id: record[:id],
         name: record[:name],
         vin: record[:vin],
-        status: record[:status]
+        status: record[:status].to_sym
       )
     end
     

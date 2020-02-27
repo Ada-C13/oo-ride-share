@@ -25,6 +25,12 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
     
+    def find_available_driver
+      available_driver = @drivers.select { |driver| driver.status == :AVAILABLE }[0]
+
+      return available_driver
+    end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
