@@ -5,16 +5,19 @@ require_relative "csv_record"
 module RideShare
     class Driver < CsvRecord
         attr_reader :name, :vin, :status, :trips
-        def initialize(id:, name:, vin:, status: nil, trips: nil)
+        def initialize(id:, name:, vin: nil, status: :AVAILABLE, trips: nil)
             super(id)
             @name = name
-            # Add ArgumentError
+
+            if vin.length != 17
+                raise ArgumentError, "vin must be 17 characters long"
+            end
             @vin = vin
-            # Add ArgumentError
+        
             @status = status
             @trips = trips || []
         end
-        
+
         def add_trip(trip)
             @trips << trip
         end

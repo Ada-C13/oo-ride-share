@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -90,7 +90,7 @@ xdescribe "Driver class" do
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 9, 9),
         rating: 5
       )
       @driver.add_trip(trip)
@@ -132,39 +132,43 @@ xdescribe "Driver class" do
 
   describe "total_revenue" do
     before do
+      all_trips = RideShare::Trip.load_all(directory: './support')
+
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-      trip = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
-        rating: 5,
-        total_revenue: 5
-      )
-      @driver.add_trip(trip)
+      # trip = RideShare::Trip.new(
+      #   id: 8,
+      #   driver: @driver,
+      #   passenger_id: 3,
+      #   start_time: Time.new(2016, 8, 8),
+      #   end_time: Time.new(2016, 8, 8),
+      #   rating: 5,
+      #   total_revenue: 5
+      # )
+      # @driver.add_trip(trip)
 
-      trip2 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 1,
-        total_revenue: 3
-      )
-      @driver.add_trip(trip2)
-    end
+      # trip2 = RideShare::Trip.new(
+      #   id: 8,
+      #   driver: @driver,
+      #   passenger_id: 3,
+      #   start_time: Time.new(2016, 8, 8),
+      #   end_time: Time.new(2016, 8, 9),
+      #   rating: 1,
+      #   total_revenue: 3
+      # )
+      # @driver.add_trip(trip2)
+      driver.add_trip(all_trips[0])
+      driver.add_trip(all_trips[1])
 
       it "returns the correct total revenue" do
       expect(@driver.total_revenue).must_equal 8
       end
       
     end
+  end
 
 
 #do not delete, this is for the class

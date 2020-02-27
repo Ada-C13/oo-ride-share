@@ -37,6 +37,14 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+
+
+    
+
+
+
+
+
     private
 
     def connect_trips

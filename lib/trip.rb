@@ -82,7 +82,6 @@ module RideShare
       return duration
     end
 
-
     private
 
     # Wave 1: Turn start_time and end_time into Time instances before passing them to Trip#initialize
