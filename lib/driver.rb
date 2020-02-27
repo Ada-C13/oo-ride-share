@@ -22,7 +22,7 @@ module RideShare
       @trips << trip
     end
 
-    def assign_driver(trip)
+    def start_trip(trip)
       @status = :UNAVAILABLE
       add_trip(trip)
     end

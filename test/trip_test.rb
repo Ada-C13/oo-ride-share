@@ -87,5 +87,16 @@ describe "Trip class" do
       expect(@trip.duration).must_be_kind_of Integer
     end
 
+    it "returns nil for in-progress trip" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver_id: 3,
+        passenger_id: 3,
+        start_time: Time.now,
+        end_time: nil,
+      )
+      expect(trip.duration).must_be_nil
+    end
+
   end
 end

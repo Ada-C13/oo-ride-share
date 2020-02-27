@@ -14,9 +14,9 @@ module RideShare
           passenger: nil,
           passenger_id: nil,
           start_time:,
-          end_time:,
+          end_time: nil,
           cost: nil,
-          rating:
+          rating: nil
         )
       super(id)
 
@@ -43,13 +43,13 @@ module RideShare
       end
 
       @start_time = start_time
-      @end_time = end_time || nil
+      @end_time = end_time
       unless @end_time == nil
         raise ArgumentError.new("Start time must be before the end time") if @start_time > @end_time
       end
 
-      @cost = cost || nil
-      @rating = rating || nil
+      @cost = cost 
+      @rating = rating 
 
       unless @rating == nil
         if @rating > 5 || @rating < 1
@@ -76,7 +76,8 @@ module RideShare
     end
 
     def duration
-      return (end_time - start_time).to_i
+      return nil if end_time.nil?
+      return (end_time - start_time).to_i 
     end
 
     private
