@@ -44,20 +44,38 @@ module RideShare
     #Wave 2: Driver's Average Rating
     def average_rating
       total_ratings = 0
+      average_rating = 0
+      total_trips = 0
+
       @trips.each do |trip|
-        total_ratings += trip.rating
+        # if trip not in progress, add rating and increment trip
+        if trip.end_time != nil 
+          total_ratings += trip.rating
+          total_trips += 1
+        end
       end
-      average_rating = total_ratings.to_f / @trips.length
+      #orginally using length of trip but ran into NaN
+      #now using total_trips that accounts for trips in progress
+      if @trips.length > 0 
+        average_rating = total_ratings.to_f / total_trips
+      end
+
       return average_rating
     end
 
     #Wave 2: Total_revenue
+    #Checked for in progress trip, if not in progress, then do total
     def total_revenue
+      total_revenue = 0
       fee = 1.65
-      # total_revenue = 0
-      @trips.map {|trip| trip.cost < fee ? 0 : trip.cost - fee}.sum * 0.8
+      @trips.each do |trip|
+        if (trip.end_time != nil) && (trip.cost > fee)
+            total_revenue += (trip.cost - fee) * 0.8
+        end
+      end
+      return total_revenue
     end
-
+# @trips.map {|trip| (trip.end_time != nil) && (trip.cost < fee) ? 0 : trip.cost - fee}.sum * 0.8
 
     # def self.find_driver_status(status)
     #   Driver.validate_id(status)

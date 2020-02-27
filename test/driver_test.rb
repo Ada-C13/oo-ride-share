@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -127,23 +127,72 @@ xdescribe "Driver class" do
         cost: 200,
         rating: 1
       )
-      @driver.add_trip(trip2)
-
+      @driver.add_trip(trip2) #added another trip to test trip in progress calculation for average
+      trip3 = RideShare::Trip.new(
+        id: 2,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: 1000,
+        rating: 1
+      )
+      @driver.add_trip(trip3)
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
   end
 
   #Wave 2: total revenue test
   describe "total_revenue" do
-    # TODO You add tests for the total_revenue method
-    it 'total revenue of the drivere object' do
-      # passenger.trips.cost
-      total = @driver.total
-      expect(total).must_equal 300 
+
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
     end
-  end
+   
+    it 'total revenue with no trips' do
+      total = @driver.total_revenue
+      expect(total).must_equal 0 
+    end
 
- 
-
-  
+    it 'total revenue with trips' do
+      #add trip
+      trip1 = RideShare::Trip.new(
+        id: 1,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 101.65,
+        rating: 1
+      )
+      @driver.add_trip(trip1)
+      trip2 = RideShare::Trip.new(
+        id: 2,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 201.65,
+        rating: 1
+      )
+      @driver.add_trip(trip2)
+      trip3 = RideShare::Trip.new(
+        id: 3,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: 400,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+      #expect total
+      expect(@driver.total_revenue).must_equal 240
+      
+    end
+  end  
 end
