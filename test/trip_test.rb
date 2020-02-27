@@ -81,7 +81,6 @@ describe "Trip class" do
           status: :AVAILABLE,
           trips: [1]
         )
-        #trip_time: 3543.0
       }
 
       expect {RideShare::Trip.new(test_trip)}.must_raise ArgumentError
@@ -96,7 +95,6 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
