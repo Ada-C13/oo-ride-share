@@ -35,7 +35,7 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      driver = @drivers.select{ |driver| driver.status == :AVAILABLE }.first
+      driver = @drivers.find{ |driver| driver.status == :AVAILABLE }
       new_trip = RideShare::Trip.new(
         id: @trips.length + 1,
         driver: driver,
