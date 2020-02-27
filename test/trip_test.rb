@@ -7,6 +7,12 @@ describe "Trip class" do
       end_time = start_time + 25 * 60 # 25 minutes
       @trip_data = {
         id: 8,
+        driver: RideShare::Driver.new(
+          id: 2,
+          name: "Yesenia",
+          vin: "08041995YSB",
+          status: :AVAILABLE  
+        ),
         passenger: RideShare::Passenger.new(
           id: 1,
           name: "Ada",
@@ -51,21 +57,20 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
-    it "raises an error for an invalid rating" do
-      [-3, 0, 6].each do |rating|
-        @trip_data[:rating] = rating
-        expect do
-          RideShare::Trip.new(@trip_data)
-        end.must_raise ArgumentError
-      end
-    end
-    it "return the correct duration time of a trip" do 
-      duration = @trip.end_time - @trip.start_time
-      expect(duration.to_i).must_equal 25 * 60 #25 mins (the difference) * seconds since this is in seconds 
-    end
+    # it "raises an error for an invalid rating" do
+    #   [-3, 0, 6].each do |rating|
+    #     @trip_data[:rating] = rating
+    #     expect do
+    #       RideShare::Trip.new(@trip_data)
+    #     end.must_raise ArgumentError
+    #   end
+    # end
+    # it "return the correct duration time of a trip" do 
+    #   duration = @trip.end_time - @trip.start_time
+    #   expect(duration.to_i).must_equal 25 * 60 #25 mins (the difference) * seconds since this is in seconds 
+    # end
   end
 end

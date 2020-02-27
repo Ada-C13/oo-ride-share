@@ -35,7 +35,12 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Yesenia",
+        vin: "08041995YSB",
+        status: :AVAILABLE  
+      )
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -44,13 +49,15 @@ describe "Passenger class" do
       )
       trip = RideShare::Trip.new(
         id: 8,
+        driver: @driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9), #TODO is the date original????????????
+        end_time: Time.new(2016, 8, 9),
         rating: 5,
       )
 
       @passenger.add_trip(trip)
+      @driver.add_trip(trip)
     end
 
     it "each item in array is a Trip instance" do
@@ -68,6 +75,12 @@ describe "Passenger class" do
 
   describe "net_expenditures and total_time_spent" do
     before do
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Yesenia",
+        vin: "08041995YSB",
+        status: :AVAILABLE  
+      )
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -79,6 +92,7 @@ describe "Passenger class" do
     let (:trip_a) {
       RideShare::Trip.new(
         id: 8,
+        driver: @driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8, 2, 2, 2),
         end_time: Time.new(2016, 8, 8, 2, 22, 2),
@@ -89,6 +103,7 @@ describe "Passenger class" do
     let (:trip_b) {
       RideShare::Trip.new(
         id: 9,
+        driver: @driver, 
         passenger: @passenger,
         start_time: Time.new(2018, 8, 8, 2, 2, 2),
         end_time: Time.new(2018, 8, 8, 2, 22, 2),
