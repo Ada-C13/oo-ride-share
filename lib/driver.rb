@@ -23,7 +23,8 @@ module RideShare
 		
 		def average_rating 
 			return 0 if @trips == []
-			@trips.map {|trip| trip.rating.to_f}.inject(:+) / @trips.length
+			completed_trips = @trips.reject {|trip| trip.rating == nil} 
+			completed_trips.map {|trip| trip.rating.to_f}.inject(:+) / completed_trips.length
 		end
 
 		def total_revenue

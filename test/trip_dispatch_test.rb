@@ -102,10 +102,9 @@ describe "TripDispatcher class" do
       end
 
       it "accurately loads driver information into drivers array" do
-        # binding.pry
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
-        # binding.pry
+
         expect(first_driver.name).must_equal "Driver 1 (unavailable)"
         expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
@@ -172,21 +171,27 @@ describe "TripDispatcher class" do
   describe 'find driver and passenger total for in-progress' do
     before do
       @dispatcher = build_test_dispatcher
+      request_trip_result = @dispatcher.request_trip(5)
+      @chosen_driver = @dispatcher.first_available_driver
+      request_trip_result = @dispatcher.request_trip(1)
     end
 
-    it 'will return passenger total, excluding trip in-progress' do
-      request_trip_result = @dispatcher.request_trip(5)
+    it 'will return passenger expend, excluding trip in-progress' do  
       @dispatcher.find_passenger(5).net_expenditures.must_equal 0
+      @dispatcher.find_passenger(1).net_expenditures.must_equal 10
+    end
+
+    it 'will return passenger time spent, excluding trip in-progress' do
+      @dispatcher.find_passenger(5).total_time_spent.must_equal 0
+      @dispatcher.find_passenger(1).total_time_spent.must_equal 1940
     end
 
     it 'will return driver revenue, excluding trip in-progress' do
-      chosen_driver = @dispatcher.first_available_driver
-      @dispatcher.drivers[chosen_driver].total_revenue.must_equal 0
+      @dispatcher.drivers[@chosen_driver].total_revenue.must_equal 40.04
     end
 
     it 'will return driver average, excluding trip in-progress' do
-      chosen_driver = @dispatcher.first_available_driver
-      @dispatcher.drivers[chosen_driver].average_rating.must_equal 0
+      @dispatcher.drivers[@chosen_driver].average_rating.must_equal 2
     end
   end
 
