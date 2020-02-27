@@ -78,7 +78,6 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -168,7 +167,5 @@ describe "TripDispatcher class" do
       tripdispatcher.request_trip(1)
       expect(tripdispatcher.pick_driver_for_trip.id).must_equal 2
     end
-
-
   end
 end

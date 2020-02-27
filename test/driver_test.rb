@@ -131,22 +131,15 @@ describe "Driver class" do
 
     it "returns accurate average rating when there are in progress trips" do
       tripdispatcher = RideShare::TripDispatcher.new
-      available_driver = ""
 
       # get the first available driver id
-      tripdispatcher.drivers.each do |driver|
-        if driver.status == :AVAILABLE
-          available_driver = driver
-          break
-        end
-      end
+      picked_driver = tripdispatcher.pick_driver_for_trip
+      current_rating = picked_driver.average_rating
 
-      current_rating = available_driver.average_rating
-
+      # add an in progress trip to the driver
       requested_trip = tripdispatcher.request_trip(1)
-      p available_driver.trips
 
-      expect(available_driver.average_rating).must_equal current_rating
+      expect(picked_driver.average_rating).must_equal current_rating
     end
 
   end
@@ -201,6 +194,7 @@ describe "Driver class" do
     end
 
     it "returns 0 if driver has no trips" do
+      # remove all trips from driver
       @driver.trips.clear
 
       expect(@driver.total_revenue).must_equal 0

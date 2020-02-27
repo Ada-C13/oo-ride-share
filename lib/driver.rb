@@ -14,6 +14,7 @@ module RideShare
       trips: nil
       )
       super(id)
+
       (vin.length == 17) ? (@vin = vin) : (raise ArgumentError)
       [:AVAILABLE, :UNAVAILABLE].include?(status) ? (@status = status.to_sym) : (raise ArgumentError)
 
@@ -32,6 +33,7 @@ module RideShare
     end
 
     def average_rating
+      # get all trips where rating is not nil
       completed_trips = trips.select{ |trip| trip.rating != nil }
 
       trip_ratings = completed_trips.map { |trip| trip.rating.to_f }
@@ -41,8 +43,11 @@ module RideShare
     end
 
     def total_revenue
+      # get all trips where cost is not nil and is more than 1.65
       completed_trips = trips.select{ |trip| trip.cost != nil && trip.cost > 1.65 }
+
       trip_revenues = completed_trips.map { |trip| (trip.cost - 1.65) * 0.8 }
+      
       return trip_revenues.sum.round(2)
     end
 

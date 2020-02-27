@@ -16,7 +16,11 @@ describe "Trip class" do
         end_time: end_time,
         cost: 23.45,
         rating: 3,
-        driver_id: 3
+        driver: RideShare::Driver.new(
+          id: 50,
+          name: "Test Driver",
+          vin: "eiwuqhf73829103j8"
+        ) 
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -30,7 +34,6 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 

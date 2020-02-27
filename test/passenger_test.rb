@@ -69,50 +69,7 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
-    before do
-      # TODO: you'll need to add a driver at some point here.
-      @passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: []
-        )
-      trip = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        cost: 10,
-        rating: 5,
-        driver_id: 2
-        )
-      trip2 = RideShare::Trip.new(
-        id: 2,
-        passenger: @passenger,
-        start_time: Time.new(2017, 8, 8),
-        end_time: Time.new(2017, 8, 9),
-        cost: 15,
-        rating: 5,
-        driver_id: 5
-        )
-      @passenger.add_trip(trip)
-      @passenger.add_trip(trip2)
-
-    end
-
-    # You add tests for the net_expenditures method
-    it "calculates total expenditures of trips" do
-      expect(@passenger.net_expenditures).must_equal 25
-    end 
-
-    it "returns 0 if passenger has no trips" do
-      @passenger.trips.clear
-      expect(@passenger.net_expenditures).must_equal 0      
-    end
-  end
-
-  describe "total_time_spent" do
+  describe "passanger calculations" do
     before do
       @passenger = RideShare::Passenger.new(
         id: 9,
@@ -142,14 +99,28 @@ describe "Passenger class" do
       @passenger.add_trip(trip2)
     end
 
-    it "calculates total time spent on trips" do
-      expect(@passenger.total_time_spent).must_equal 2700
+    describe "net_expenditures" do
+      it "calculates total expenditures of trips" do
+        expect(@passenger.net_expenditures).must_equal 25
+      end 
+
+      it "returns 0 if passenger has no trips" do
+        # remove all trips from passenger
+        @passenger.trips.clear
+        expect(@passenger.net_expenditures).must_equal 0      
+      end
     end
-    
-    it "returns 0 if there a 0 trips" do
-      @passenger.trips.clear
-      expect(@passenger.total_time_spent).must_equal 0
+
+    describe "total_time_spent" do
+      it "calculates total time spent on trips" do
+        expect(@passenger.total_time_spent).must_equal 2700
+      end
+      
+      it "returns 0 if there a 0 trips" do
+        @passenger.trips.clear
+        expect(@passenger.total_time_spent).must_equal 0
+      end
+      
     end
-    
   end
 end

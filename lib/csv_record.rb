@@ -23,9 +23,7 @@ module RideShare
     end
 
     def self.validate_id(id)
-      if id.nil? || id <= 0
-        raise ArgumentError, 'ID cannot be blank or less than one.'
-      end
+      raise ArgumentError.new('ID cannot be blank or less than one.') if id.nil? || id <= 0
     end
 
     private
@@ -35,9 +33,7 @@ module RideShare
     end
 
     def self.build_path(directory, file_name)
-      unless directory
-        raise ArgumentError, "Either full_path or directory is required"
-      end
+      raise ArgumentError.new("Either full_path or directory is required") unless directory
 
       unless file_name
         class_name = self.to_s.split('::').last
