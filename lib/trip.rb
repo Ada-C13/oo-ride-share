@@ -85,7 +85,9 @@ module RideShare
     end
 
     def trip_duration
+      unless end_time == nil
       duration = end_time.to_i - start_time.to_i
+      end
     return duration
 
     end
