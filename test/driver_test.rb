@@ -131,6 +131,40 @@ xdescribe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    it "returns the correct total revenue" do
+
+  before do
+    @driver = RideShare::Driver.new(
+      id: 54,
+      name: "Rogers Bartell IV",
+      vin: "1C9EVBRM0YBC564DZ"
+    )
+    trip = RideShare::Trip.new(
+      id: 8,
+      driver: @driver,
+      passenger_id: 3,
+      start_time: Time.new(2016, 8, 8),
+      end_time: Time.new(2016, 8, 8),
+      rating: 5,
+      total_revenue: 5
+    )
+    @driver.add_trip(trip)
+
+    trip2 = RideShare::Trip.new(
+      id: 8,
+      driver: @driver,
+      passenger_id: 3,
+      start_time: Time.new(2016, 8, 8),
+      end_time: Time.new(2016, 8, 9),
+      rating: 1,
+      total_revenue: 3
+    )
+    @driver.add_trip(trip2)
+    end
+    expect(@driver.total_revenue).must_be_equal_to 8
+    end
   end
+
+
+#do not delete, this is for the class
 end

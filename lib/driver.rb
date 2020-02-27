@@ -1,37 +1,63 @@
-require_relative 'csv_record'
+require_relative "csv_record"
 
 # Since Driver inherits from CsvRecord, you'll need to implement the from_csv template method. Once you do, Driver.load_all should work (test this in pry).
 # Use the provided tests to ensure that a Driver instance can be created successfully and that an ArgumentError is raised for an invalid status.
 module RideShare
     class Driver < CsvRecord
-        def initialize(id:, name: vin: status: trips:)
+        def initialize(id:, name:, vin:, status:, trips:, total_revenue:)
             super(id)
             @name = name
             @vin = vin
             @status = status
             @trips = trips || []
+            @total_revenue = total_revenue
         end
-
+        
+        def add_trip(trip)
+            @trips << trip
+        end
+        
+        def average_rating
+            rating_total = 0
+            if @trips.empty?
+                return 0
+            else
+                @trips.each do |trip|
+                    rating_total += trip.rating
+                end
+                return rating_total/@trips.length.to_f.round(2)
+            end
+        end
+        
+        def total_revenue
+            otal_revenue = 0
+            if @trips.empty?
+                return 0
+            else
+                @trips.each do |trip|
+                    if trip.cost >= 1.65
+                        total_revenue += trip.cost * 0.8 - 1.65
+                    else
+                        total_revenue
+                    end
+                end
+            end
+            return total_revenue
+        end
+        
         def self.from_csv(record)
             return self.new(
               id: record[:id],
               name: record[:name],
               vin: record[:vin],
-              status: record[:status].to_sym
+              status: record[:status].to_sym,
+              trips: record[:trips], 
+              total_revenue: record[:total_revenue]
             )
-          end
-
+        end
     end
 end
 
-# we will need to update the Trip class to include a reference to the trip's driver. 
-# Add the following attributes to the Trip class:
-
-# Attribute |	Description
-# driver_id |	The ID of the driver for this trip
-# driver    |	The Driver instance for the trip
-
-# When a Trip is constructed, either driver_id or driver must be provided.
 
 # Note: You have changed the method signature of the constructor for Trip. Some of your tests may now be failing. Go fix them!
 
