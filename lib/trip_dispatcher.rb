@@ -31,6 +31,10 @@ module RideShare
         |driver| driver.status == :AVAILABLE 
       end
 
+      if available_driver == nil
+        raise ArgumentError.new("No available drivers!")
+      end
+
       current_passenger = find_passenger(passenger_id)
 
       id = trips.length + 1
