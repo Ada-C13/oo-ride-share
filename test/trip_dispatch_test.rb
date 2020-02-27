@@ -179,9 +179,14 @@ describe "TripDispatcher class" do
       @dispatcher.find_passenger(5).net_expenditures.must_equal 0
     end
 
-    it 'will return driver total, excluding trip in-progress' do
+    it 'will return driver revenue, excluding trip in-progress' do
       chosen_driver = @dispatcher.first_available_driver
       @dispatcher.drivers[chosen_driver].total_revenue.must_equal 0
+    end
+
+    it 'will return driver average, excluding trip in-progress' do
+      chosen_driver = @dispatcher.first_available_driver
+      @dispatcher.drivers[chosen_driver].average_rating.must_equal 0
     end
   end
 
