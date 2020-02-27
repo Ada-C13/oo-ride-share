@@ -51,6 +51,7 @@ describe "Passenger class" do
         end_time: Time.new(2016, 8, 9),
         rating: 5
         )
+      
 
       @passenger.add_trip(trip)
     end
@@ -69,6 +70,100 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+
+    it "adds up all costs of all trips" do
+    #Arrange
+    passenger = RideShare::Passenger.new(
+      id: 9,
+      name: "Merl Glover III",
+      phone_number: "1-602-620-2330 x3723",
+      trips: []
+      )
+    trip = RideShare::Trip.new(
+      id: 8,
+      passenger: passenger,
+      start_time: Time.new(2016, 8, 8),
+      end_time: Time.new(2016, 8, 9),
+      cost: 5,
+      rating: 5
+      )
+    passenger.add_trip(trip)
+    trip = RideShare::Trip.new(
+      id: 8,
+      passenger: passenger,
+      start_time: Time.new(2016, 8, 8),
+      end_time: Time.new(2016, 8, 9),
+      cost: 7,
+      rating: 5
+      )
+      passenger.add_trip(trip)
+
+      #Act 
+      total_cost_of_all_trips = passenger.net_expenditures
+
+      #Assert
+      expect(total_cost_of_all_trips).must_equal 12
+
+    end
+  end
+
+    describe "total_time_spent" do
+      it "adds up all the ride durations for a passenger" do
+         #Arrange
+        passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+          )
+        trip = RideShare::Trip.new(
+          id: 8,
+          passenger: passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 5,
+          rating: 5
+          )
+        passenger.add_trip(trip)
+        trip = RideShare::Trip.new(
+          id: 8,
+          passenger: passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 7,
+          rating: 5
+          )
+          passenger.add_trip(trip)
+
+          #Act 
+          total_time = passenger.total_time_spent
+
+          #Assert
+          expect(total_time).must_equal 172800
+      end
+
+      it "handles passengers with no trips" do
+        # Arrange 
+        passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: [] #passenger has no trips
+          )
+
+        # Act 
+        total_time = passenger.total_time_spent
+        total_costs = passenger.net_expenditures
+
+        #Assert
+        expect(total_time).must_equal 0
+        expect(total_costs).must_equal 0
+
+
+
+    end
+
+
+
   end
 end
