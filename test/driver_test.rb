@@ -78,7 +78,7 @@ describe "Driver class" do
     end
   end
 
-  xdescribe "average_rating method" do
+  describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
@@ -133,5 +133,35 @@ describe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+      )
+      expect(driver.total_revenue).must_equal 0
+    end 
+
+    it "trip cost of trip is less than $1.65" do 
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 1.00,
+        rating: 1,
+      )
+      @driver.add_trip(trip)
+
+      expect(@driver.total_revenue).must_equal 0.80
+
+    end 
+
   end
 end

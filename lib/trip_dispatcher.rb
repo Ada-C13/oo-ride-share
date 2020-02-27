@@ -28,6 +28,11 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
+    
+    def request_trip(passenger_id)
+    end 
+
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
@@ -42,14 +47,12 @@ module RideShare
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
         driver = find_driver(trip.driver_id)
-        trip.connect(passenger, driver)
-       
-        
-
-        #thank you 
+        trip.connect(passenger, driver) 
       end
-
       return trips
     end
+
+
+
   end
 end
