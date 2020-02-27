@@ -36,18 +36,18 @@ module RideShare
     end
 
     def find_available_driver 
-      all_available_drivers = []
+      available_drivers = []
       drivers.each do |driver|
         if driver.status = :AVAILABLE && driver.ongoing_trip.length == 0
-          all_available_drivers << driver
+          available_drivers << driver
         end
       end
 
-      if all_available_drivers.empty?
+      if available_drivers.empty?
         raise ArgumentError.new "There are no available drivers at this time"
       end
 
-      return all_available_drivers.shuffle[0]
+      return available_drivers.shuffle[0]
     end
 
     def start_trip(driver:, passenger:)
