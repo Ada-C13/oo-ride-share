@@ -8,9 +8,6 @@ module RideShare
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
 
-      # TODO 
-      # test for the correct statuses
-
 			raise ArgumentError.new("Driver status is not valid") unless %i[AVAILABLE UNAVAILABLE].include?(status)
       raise ArgumentError.new("VIN must be at least 17 characters") unless vin.length == 17
       raise ArgumentError.new("Invalid driver ID") unless id > 0

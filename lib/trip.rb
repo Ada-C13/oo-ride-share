@@ -15,7 +15,7 @@ module RideShare
           passenger_id: nil,
           start_time:,
           end_time:,
-          cost: nil,
+          cost:,
           rating:
         )
       super(id)

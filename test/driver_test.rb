@@ -92,12 +92,34 @@ describe "Driver class" do
   end
 
   describe "assign_driver method" do
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE,
+        trips: []
+      )
+      @trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.now,
+        end_time: nil,
+        rating: nil
+      )
+
+    end
+
     it "changes the driver status to UNAVAILABLE" do
-    
+      @driver.assign_driver(@trip)
+      expect(@driver.status).must_equal :UNAVAILABLE
     end
 
     it "adds the trip to driver trips" do
-    
+      before_count = @driver.trips.length
+      @driver.assign_driver(@trip)
+      expect(@driver.trips.length).must_equal before_count + 1
     end
   end
 
