@@ -124,7 +124,7 @@ describe "Passenger class" do
     end
 
     it "returns the total time spent for all of a passenger's rides" do
-      expect(@passenger.total_time_spent).must_be_close_to |3300 - 3299| 0.1
+      expect(@passenger.total_time_spent).must_equal 3300
       end
   end
 end

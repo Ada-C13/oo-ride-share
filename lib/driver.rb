@@ -83,8 +83,8 @@ module RideShare
     # RideShare::Driver.load_all was not working before because it expected a keyword argument first, then the full path value
     # Status was expecting a symbol but is read from the CSV.read method as a string. So, we had to change the from_csv method for status to be a symbol
 
-    def add_requested_trip(trip1)
-      trips.push trip1
+    def add_requested_trip(trip)
+      @trips << trip
     end
 
 

@@ -8,9 +8,8 @@ require_relative 'driver'
 # can't call from_csv because privately declared in CsvRecord (Passenger and Trip can call this though)
 
 module RideShare
-  class TripDispatcher
-    attr_reader :drivers, :passengers
-    attr_accessor :trips
+  class TripDispatcher 
+    attr_accessor :trips, :drivers, :passengers
 
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
@@ -38,7 +37,8 @@ module RideShare
     end
 
     def get_first_available
-      drivers.each do |driver|
+      @drivers.each do |driver|
+        p driver
         if driver.status == :AVAILABLE
           driver.status = :UNAVAILABLE
           return driver
@@ -47,22 +47,22 @@ module RideShare
     end 
 
     def request_trip(passenger_id)
-    driver = get_first_available
-    appropriate_id = ((trips.last.id)+1)
+    passenger_from_id = find_passenger(passenger_id)
+    driver_available = get_first_available
     trip1 = Trip.new(
-    id: appropriate_id,
-    driver_id: driver.id,
-    driver: driver,
-    passenger: find_passenger(passenger_id),
+    id: (@trips.last.id)+1,
+    driver_id: (driver_available.id),
+    driver: driver_available,
+    passenger: passenger_from_id,
     passenger_id: passenger_id,
     start_time: Time.now,
     end_time: nil,
     cost: nil,
     rating: nil
     )
-    passenger.trips.push trip1
+    passenger_from_id.trips.push trip1
     trips.push trip1
-    driver.add_requested_trip(trip1)
+    driver_available.add_requested_trip(trip1)
 
     return trip1
     end

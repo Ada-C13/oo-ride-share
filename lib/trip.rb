@@ -21,6 +21,12 @@ module RideShare
         )
       super(id)
 
+      unless passenger_id == nil
+        if passenger_id < 1
+        raise ArgumentError
+        end
+      end
+
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
@@ -46,15 +52,19 @@ module RideShare
       @start_time = start_time
       @end_time = end_time
 
-      if @start_time > @end_time
+      unless @end_time == nil 
+        if @start_time > @end_time
         raise ArgumentError, 'Trip start time cannot be after end time'
+        end
       end
 
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      unless @rating == nil
+        if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
     end
 
@@ -75,8 +85,8 @@ module RideShare
     end
 
     def trip_duration
-      duration = end_time - start_time
-    return duration.to_i
+      duration = end_time.to_i - start_time.to_i
+    return duration
 
     end
 

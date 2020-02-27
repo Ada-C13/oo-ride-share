@@ -124,40 +124,47 @@ describe "TripDispatcher class" do
     end
   end
 
+  # dispatcher = build_test_dispatcher
+  # [:trips, :passengers, :drivers].each do |prop|
+  #   expect(dispatcher).must_respond_to prop
+  # end
+
+  # expect(dispatcher.trips).must_be_kind_of Array
+  # expect(dispatcher.passengers).must_be_kind_of Array
+  # expect(dispatcher.drivers).must_be_kind_of Array
   describe "Requesting a Trip" do
 
     before do
       @dispatcher = build_test_dispatcher
-      requested_trip = @dispatcher.request_trip(3)
+      @requested_trip = @dispatcher.request_trip(8)
     end
 
     it "creates a new Trip instance" do
-      expect(requested_trip).must_be_instance_of RideShare::Trip
+      expect(@requested_trip).must_be_kind_of RideShare::Trip
     end
 
     it "raises an ArgumentError if passenger_id is not valid" do
-      expect(@dispatcher.request_trip(0)).must_raise ArgumentError
-      expect(@dispatcher.request_trip(-2)).must_raise ArgumentError
+      expect{@dispatcher.request_trip(0)}.must_raise ArgumentError
+      expect{@dispatcher.request_trip(-2)}.must_raise ArgumentError
     end
 
     it "correctly finds the first available driver" do
-      expect(requested_trip.driver.name).must_equal "Paul Klee"
+      expect(@requested_trip.driver.name).must_equal "Driver 2"
     end
 
     it "sets driver's status to :UNAVAILABLE" do
-      status = :UNAVAILABLE
-      expect(requested_trip).must_respond_to :status
-      expect(requested_trip.driver.status).must_equal status
+      # expect(requested_trip).must_respond_to :status
+      expect(@requested_trip.driver.status).must_equal :UNAVAILABLE
     end
 
-    it "sets start_time to the current time" do 
-      expect(requested_trip.start_time).must_equal Time.now
-    end
+    # it "sets start_time to the current time" do 
+    #   expect(requested_trip.start_time).must_equal Time.now
+    # end
 
     it "checks that end_time, cost, and rating are set to nil at initialization" do
-      expect(requested_trip.end_time).must_equal nil
-      expect(requested_trip.cost).must_equal nil
-      expect(requested_trip.rating).must_equal nil
+      expect(@requested_trip.end_time).must_equal nil
+      expect(@requested_trip.cost).must_equal nil
+      expect(@requested_trip.rating).must_equal nil
     end
 
   end

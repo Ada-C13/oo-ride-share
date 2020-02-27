@@ -12,7 +12,10 @@ module RideShare
       @name = name
       @phone_number = phone_number
       @trips = trips || []
+
+      
     end
+
 
     def add_trip(trip)
       @trips << trip
