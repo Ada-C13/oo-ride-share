@@ -121,6 +121,21 @@ describe "Passenger class" do
 
       expect(@passenger_two.net_expenditures).must_equal 0
     end
+
+    it "returns $30 even though there is a trip in-progress" do
+      progress_trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver_id: 2
+        )
+
+      @passenger.add_trip(progress_trip)
+      expect(@passenger.net_expenditures).must_equal 30.0
+    end
   end
 
   describe "total_time_spent" do
@@ -211,6 +226,24 @@ describe "Passenger class" do
         trips: []
         )
       expect(@passenger_two.total_time_spent).must_equal 0
+    end
+
+    it "totals time spent 10800.0 even with a trip in-progress" do
+      expect(@passenger.total_time_spent).must_equal 10800.0
+
+      progress_trip = RideShare::Trip.new(
+        id: 11,
+        passenger: @passenger,
+        start_time: Time.parse("2020-02-25 15:00:00 -0800"),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver_id: 2
+        )
+
+      @passenger.add_trip(progress_trip)
+
+      expect(@passenger.total_time_spent).must_equal 10800.0
     end
   end
 end

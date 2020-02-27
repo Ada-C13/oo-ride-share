@@ -125,6 +125,8 @@ describe "TripDispatcher class" do
   describe "request_trip method" do
     before do
       @td = RideShare::TripDispatcher.new
+
+      # @td2 = RideShare::TripDispatcher.new(directory: './test/test_data/')
     end
 
     it "passenger_id must be kind of integer" do
@@ -141,6 +143,14 @@ describe "TripDispatcher class" do
       expect(before_new_trip_status).must_equal :AVAILABLE
       expect(new_trip.driver.status).must_equal :UNAVAILABLE
     end
+
+    # it "raises an error if no drivers are available" do
+    #   all_test_drivers = Driver.load_all(directory: './test/test_data/')
+    #   all_test_drivers.request_trip(1)
+    #   all_test_drivers.request_trip(2)
+
+    #   expect
+    # end
 
     it "should use the current time for start time" do
       new_trip = @td.request_trip(2)
@@ -180,6 +190,15 @@ describe "TripDispatcher class" do
       new_trip = @td.request_trip(1)
       expect(@td.trips.length).must_equal before_new_trip + 1
     end
+
+    # it "raises an error if there are no available drivers when you request one" do
+    #   unavailable_drivers = [Driver.new()]
+    #   @td.drivers = unavailable_drivers
+
+    #   expect{
+    #     @td.request_trip(1)
+    #   }.must_raise ArgumentError
+    # end
   end
 
 end
