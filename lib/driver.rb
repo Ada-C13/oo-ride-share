@@ -13,9 +13,9 @@ module RideShare
       @status = status
       status_options = [:AVAILABLE, :UNAVAILABLE]
 
-      raise ArgumentError if @vin.length != 17 || @vin.class != Integer
+      raise ArgumentError if @vin.length != 17 || @vin.class != String
       raise ArgumentError if !status_options.include?(status)
-      raise ArgumentError if @id >= 0 || @id.class != Integer
+      raise ArgumentError if @id <= 0 || @id.class != Integer
     end 
 
 
