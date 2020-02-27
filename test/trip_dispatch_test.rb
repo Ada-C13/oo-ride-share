@@ -78,7 +78,6 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -120,6 +119,46 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "request_trip method" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    # Was the trip created properly?
+    it "creates a new trip" do
+      new_trip = @dispatcher.request_trip(1)
+      expect(new_trip).must_be_instance_of RideShare::Trip
+    end
+
+    # Was the trip list for the driver updated?
+    it "adds new trip to the driver's list of trips" do
+      new_trip = @dispatcher.request_trip(1)
+      driver_trips = new_trip.driver.trips
+
+      expect(driver_trips).must_include new_trip
+    end
+
+    # Was the trip list for the passenger updated?
+    it "adds new trip to the passengers list of trips" do
+      new_trip = @dispatcher.request_trip(1)
+      dispatcher_trips = @dispatcher.trips
+
+      expect(dispatcher_trips).must_include new_trip
+    end
+
+    # Was the driver who was selected AVAILABLE?
+    it "x" do
+    end
+
+    # What happens if you try to request a trip when there are no AVAILABLE drivers?
+    it "raises an ArgumentError if no drivers available" do
+      @dispatcher.drivers[1].status = :UNAVAILABLE
+      @dispatcher.drivers[2].status = :UNAVAILABLE
+
+      expect { @dispatcher.request_trip(1) }.must_raise ArgumentError
     end
   end
 end
