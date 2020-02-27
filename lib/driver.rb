@@ -11,7 +11,7 @@ module RideShare
       id:,
       name:,
       vin:,
-      status:,
+      status:AVAILABLE,
       trips: nil
       )
       super(id)
@@ -57,7 +57,18 @@ module RideShare
       @trips.map {|trip| trip.cost < fee ? 0 : trip.cost - fee}.sum * 0.8
     end
 
-    #Wave 2: Loading All Drivers
+
+    # def self.find_driver_status(status)
+    #   Driver.validate_id(status)
+    #   drivers.each do |driver|
+    #     if driver.status == :AVAILABLE
+    #       return driver
+    #     end
+    #   end
+    #   return nil
+    # end
+    
+  #Wave 2: Loading All Drivers
 
     private 
 
@@ -71,5 +82,9 @@ module RideShare
     end
   end
 end
+
 # drivers =RideShare::Driver.load_all(full_path: '../support/drivers.csv')
 # ap drivers
+
+# puts Driver.find_driver_status("AVAILABLE")
+

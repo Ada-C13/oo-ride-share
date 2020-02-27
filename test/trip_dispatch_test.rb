@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -122,4 +122,21 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "Does request_trip actually work" do
+    before do
+      @dispatcher = build_test_dispatcher
+
+      @driver =  driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE
+      )
+      expect(@dispatcher.request_trip(9).new_driver.status).must_equal :AVAILABLE
+    end
+  end
+
+
+
 end
