@@ -36,24 +36,21 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      #pass passenger_id to find_passenger method
       new_passenger = find_passenger(passenger_id)
-
-      #find available driver
       new_driver = @drivers.find { |driver| driver.status == :AVAILABLE  }
-      #Create trip object:
-        #set start time to current time, end time, cost, rating to nil
+      if new_driver == nil 
+        raise ArgumentError, "There is no available driver"
+      end 
+
       trip_id = @trips.last.id + 1
      
       new_trip = Trip.new(id: trip_id, driver_id: new_driver.id, passenger_id: new_passenger.id, start_time: Time.now, end_time: nil, rating: nil)
 
-      #using new helper method in Driver, set that driver to unavailable now
       new_driver.change_status
-      #add Trip to the passnger's lsit of Trips
       new_passenger.add_trip(new_trip)
-      #add trip to trip dispatcher array
+      new_driver.add_trip(new_trip)
       @trips << new_trip
-      #return newly created trip
+
       return new_trip
     end
 

@@ -159,5 +159,22 @@ describe "TripDispatcher class" do
       expect(dispatcher.trips.last.cost).must_be_nil
       expect(dispatcher.trips.last.rating).must_be_nil
     end
+    it "update driver's trips" do 
+      dispatcher = build_test_dispatcher
+      dispatcher.request_trip(1)
+      expect(dispatcher.find_driver(2).trips.length).must_equal 3
+    end 
+
+    it "update passenger's trips" do 
+      dispatcher = build_test_dispatcher
+      dispatcher.request_trip(1)
+      expect(dispatcher.find_passenger(1).trips.length).must_equal 2
+    end 
+    it "raise error when there is no available driver" do 
+      dispatcher = build_test_dispatcher
+      dispatcher.drivers.map {|driver|driver.change_status}
+      expect{dispatcher.request_trip(1)}.must_raise ArgumentError
+    end 
+
   end
 end
