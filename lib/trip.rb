@@ -12,7 +12,7 @@ module RideShare
           passenger: nil,
           passenger_id: nil,
           start_time:,
-          end_time:,
+          end_time: nil,
           cost: nil,
           rating:,
           driver: nil,
@@ -66,8 +66,12 @@ module RideShare
     end
 
     def duration
-      trip_duration = @end_time - @start_time
-      return trip_duration
+      if end_time != nil
+        trip_duration = @end_time - @start_time
+        return trip_duration
+      else
+        return "This trip is still in progress."
+      end
     end
 
     private

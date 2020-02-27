@@ -80,5 +80,27 @@ describe "Trip class" do
     it "calculates the duration of the trip in seconds" do
       expect(@trip.duration).must_equal 1500
     end
+
+    it "Returns a message when the trip is still in progress" do
+      @test_data = {
+        id: 5,
+        passenger: RideShare::Passenger.new(
+          id: 2,
+          name: "Passenger 2",
+          phone_number: "111-111-1111"
+        ),
+        start_time: Time.now,
+        end_time: nil,
+        rating: nil,
+        driver: RideShare::Driver.new(
+          id:1, 
+          name: "Driver 1", 
+          vin:"1B6CF40K1J3Y74UY0"
+        )
+      }
+      @test_trip = RideShare::Trip.new(@test_data)
+
+      expect(@test_trip.duration).must_equal "This trip is still in progress."
+    end
   end
 end

@@ -37,10 +37,13 @@ module RideShare
 
     def request_trip(passenger_id)
       driver = @drivers.find {|driver|driver.status == :AVAILABLE}
+      
+      raise ArgumentError.new("Sorry! There are no available drivers. Please request a new trip.") if driver == nil
+
       start_time = Time.now
       end_time = nil
       rating = nil
-      id = 601
+      id = (601..100000).to_a.shift
 
       new_trip = Trip.new(id: id, passenger_id: passenger_id, start_time: start_time, end_time: end_time, rating: rating, driver: driver)
       @trips << new_trip

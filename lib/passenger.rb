@@ -17,13 +17,15 @@ module RideShare
     end
 
     def net_expenditures
-      cost_array = @trips.map {|trip|trip.cost}
+      valid_array = @trips.reject {|trip|trip.cost == nil}
+      cost_array = valid_array.map {|trip|trip.cost}
       total_cost = cost_array.sum
       return total_cost
     end
 
     def total_time_spent
-      time_array = @trips.map{|trip|trip.duration}
+      valid_array = @trips.reject {|trip|trip.end_time == nil}
+      time_array = valid_array.map{|trip|trip.duration}
       total_time = time_array.sum.to_i
       puts "The total time spent on trips is #{(total_time / 60).to_i} minutes" 
       return total_time

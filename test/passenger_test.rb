@@ -139,6 +139,22 @@ describe "Passenger class" do
 
       expect(passenger2.net_expenditures).must_equal 0
     end
+
+    it "Ignores the trips that are still in progress" do
+      trip4 = RideShare::Trip.new(
+        id: 11,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver: @driver
+        )
+
+      @passenger.add_trip(trip4)
+      
+      expect(@passenger.net_expenditures).must_equal 45
+    end
   end
 
   describe "total_time_spent" do
@@ -215,6 +231,22 @@ describe "Passenger class" do
         )
 
       expect(passenger2.total_time_spent).must_equal 0
+    end
+
+    it "Ignores the trips that are still in progress" do
+      trip4 = RideShare::Trip.new(
+        id: 11,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver: @driver
+        )
+
+      @passenger.add_trip(trip4)
+      
+      expect(@passenger.total_time_spent).must_equal 4500
     end
 
   end
