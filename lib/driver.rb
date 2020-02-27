@@ -57,17 +57,16 @@ module RideShare
 
     def total_revenue
       earnings = 0.0
-      total_earnings = 0
+
       trips.each do |trip|
         if trip.cost <= 1.65
           earnings += 0
         else
-          earnings += trip.cost
-          total_earnings += (earnings * 0.80)
+          earnings += (trip.cost * 0.80)
         end
       end
       
-      return total_earnings.to_f.round(2)
+      return earnings.to_f.round(2)
     end
 
     def status_to_unavailable
