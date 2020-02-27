@@ -31,6 +31,19 @@ module RideShare
       return available_driver
     end
 
+
+    def request_trip(passenger_id)
+      new_trip = RideShare::Trip.new(
+        id: @trips.last.id + 1,
+        driver: find_available_driver,
+        passenger_id: passenger_id,
+        start_time: Time.now,
+        end_time: 0,
+        rating: nil 
+      )
+    
+    end
+
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
