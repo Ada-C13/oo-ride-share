@@ -4,13 +4,13 @@ require_relative "csv_record"
 # Use the provided tests to ensure that a Driver instance can be created successfully and that an ArgumentError is raised for an invalid status.
 module RideShare
     class Driver < CsvRecord
-        def initialize(id:, name:, vin:, status:, trips:, total_revenue:)
+        attr_reader :name, :vin, :status, :trips
+        def initialize(id:, name:, vin:, status: nil, trips: nil)
             super(id)
             @name = name
             @vin = vin
             @status = status
             @trips = trips || []
-            @total_revenue = total_revenue
         end
         
         def add_trip(trip)
@@ -30,7 +30,7 @@ module RideShare
         end
         
         def total_revenue
-            otal_revenue = 0
+            total_revenue = 0
             if @trips.empty?
                 return 0
             else
@@ -50,9 +50,9 @@ module RideShare
               id: record[:id],
               name: record[:name],
               vin: record[:vin],
-              status: record[:status].to_sym,
-              trips: record[:trips], 
-              total_revenue: record[:total_revenue]
+              status: record[:status].to_sym
+            #   trips: record[:trips], 
+            #   total_revenue: record[:total_revenue]
             )
         end
     end
