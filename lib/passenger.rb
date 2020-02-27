@@ -6,7 +6,6 @@ module RideShare
 
     def initialize(id:, name:, phone_number:, trips: nil)
       super(id)
-
       @name = name
       @phone_number = phone_number
       @trips = trips || []

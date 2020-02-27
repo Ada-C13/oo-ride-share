@@ -38,7 +38,7 @@ module RideShare
     def request_trip(passenger_id)
       driver_available = find_available_driver
       current_trip = Trip.new(id: @trip_id, 
-        passenger_id: passenger_id, 
+        passenger: find_passenger(passenger_id), 
         start_time: Time.now(), 
         end_time: nil, 
         cost: nil, 
