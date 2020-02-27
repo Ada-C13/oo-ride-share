@@ -29,28 +29,19 @@ module RideShare
       end
       return total_money
     end
-####working on this
-  # def total_time_spent
-  #   total_time = 0
-  #   @trips.each do |trip|
-  #     if trip == nil
-  #       next
-  #   total_time += trip.time_difference
-  #     end
-  #   end
-  #   return total_time
-  # end
-  def total_time_spent
-    if @trips.empty? == true
-      return 0
-    else
-      time_duration = (@trips).map do |trip|
-        trip.time_difference
-        # Time.parse(trip.end_time) - Time.parse(trip.start_time)
+
+
+    def total_time_spent
+      if @trips.empty? == true
+        return 0
+      else
+        time_duration = (@trips).map do |trip|
+          trip.time_difference
+        end
+
+        return time_duration.sum
       end
-      return time_duration.sum
     end
-  end
 
     private
 

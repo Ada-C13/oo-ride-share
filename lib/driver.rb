@@ -7,6 +7,10 @@ module RideShare
 
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
+      @name = name
+      @vin = vin
+      @status = status
+      @trips = trips || []
 
       if vin.length != 17
         raise ArgumentError.new("VIN length has to be 17")
@@ -17,10 +21,6 @@ module RideShare
         raise ArgumentError.new("Driver status invalid.")
       end 
 
-      @name = name
-      @vin = vin
-      @status = status
-      @trips = trips || []
     end
 
     def add_trip(trip)

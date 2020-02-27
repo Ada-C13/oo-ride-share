@@ -19,14 +19,16 @@ module RideShare
           driver: nil
         )
       super(id)
+      @start_time = start_time
+      @end_time = end_time
+      @cost = cost
+      @rating = rating
 
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
@@ -34,10 +36,8 @@ module RideShare
       if driver
         @driver = driver
         @driver_id = driver.id
-
       elsif driver_id
         @driver_id = driver_id
-
       else
         raise ArgumentError, 'Driver or driver_id is required'
       end
@@ -45,11 +45,6 @@ module RideShare
       if start_time.class != Time || end_time.class != Time
         raise ArgumentError.new("Value is not a Time object.")
       end
-
-      @start_time = start_time
-      @end_time = end_time
-      @cost = cost
-      @rating = rating
 
       if @rating == nil
         @rating = rating
@@ -72,8 +67,6 @@ module RideShare
   
 
     def inspect
-      # Prevent infinite loop when puts-ing a Trip
-      # trip contains a passenger contains a trip contains a passenger...
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "ID=#{id.inspect} " +
         "PassengerID=#{passenger&.id.inspect}>"

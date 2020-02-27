@@ -81,7 +81,6 @@ describe "Trip class" do
           status: :AVAILABLE,
           trips: [1]
         )
-        #trip_time: 3543.0
       }
 
       expect {RideShare::Trip.new(test_trip)}.must_raise ArgumentError
