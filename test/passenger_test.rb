@@ -117,10 +117,36 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 17.47
     end
 
+    it " does not include any in-progress trip for net expenditures" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      @passenger.add_trip(trip3)
+      expect(@passenger.net_expenditures).must_equal 17.47
+    end
+
     it "returns the total time spent in trips in seconds" do
       expect(@passenger.total_time_spent).must_equal 172800
     end
 
-   
+    it " does not include any in-progress trip for total time spent" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      @passenger.add_trip(trip3)
+      expect(@passenger.total_time_spent).must_equal 172800
+    end
   end
 end

@@ -17,12 +17,20 @@ module RideShare
     end
 
     def net_expenditures
-      return @trips.sum {|trip| trip.cost}
+      costs = []
+      @trips.each do |trip|
+        costs << trip.cost unless trip.cost == nil
+      end
+      return costs.sum
     end
 
     def total_time_spent
+      durations = []
+      @trips.each do |trip|
+        durations << trip.duration unless trip.end_time == nil
+      end
+      return durations.sum
       # calculating total amount of time in seconds.
-      return @trips.sum {|trip| trip.duration}
     end
 
     private
