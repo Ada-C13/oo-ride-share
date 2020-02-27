@@ -18,7 +18,7 @@ module RideShare
 
     def net_expenditures 
       return 0 if @trips == []
-      @trips.map {|trip| trip.cost}.inject(:+)
+      @trips.map {|trip| trip.cost.to_f }.inject(:+)
     end
 
     def total_time_spent 
