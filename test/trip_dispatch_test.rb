@@ -121,5 +121,33 @@ describe "TripDispatcher class" do
         end
       end
     end
+
+    describe "Does request_trip work" do
+      before do
+        @dispatcher = build_test_dispatcher
+  
+        @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+        )
+      end
+
+      it "Driver is available?" do
+      
+        expect(@dispatcher.request_trip(9).driver.status).must_equal :AVAILABLE
+      end
+
+      # it "New trip is added to the collection of trips for a driver" do
+        
+      #   trip_array = @trips.map {|trip| trip.drivers}
+
+      #   expect(@dispatcher.trips.driver).must_equal :AVAILABLE
+
+        
+      #end
+
+    end
   end
 end

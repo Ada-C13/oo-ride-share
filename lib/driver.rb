@@ -26,16 +26,15 @@ module RideShare
         raise ArgumentError.new ('You must provide one of the following statuses :available, :unavailable')
       end
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 1ffad39065bc817741819cc9c010885264339fa3
     end
 
     def add_trip(trip)
       @trips << trip
     end
+
+    # def add_driver(driver)
+    #   @drivers << driver
+    # end
 
     def average_rating
       return @trips.map {|trip| trip.rating}.sum.to_f / (@trips.size == 0 ? 1 : @trips.size)

@@ -59,5 +59,25 @@ describe "Trip class" do
       expect(@trip.duration).must_be_kind_of Float
       expect(@trip.duration).must_equal 1500.0
     end
+
+
+    it "Allows a rating of nil" do
+      @trip_data1 = {
+        id: 8,
+        driver_id: 5,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: nil,
+        end_time: nil,
+        cost: 23.45,
+        rating: nil
+      }
+      @trip1 = RideShare::Trip.new(@trip_data1)
+      expect(@trip1.rating).must_be_nil
+      expect(@trip1.end_time).must_be_nil
+    end
   end
 end

@@ -10,10 +10,10 @@ module RideShare
           id:,
           passenger: nil,
           passenger_id: nil,
-          start_time:,
-          end_time:,
+          start_time: Time.now,
+          end_time: nil,
           cost: nil,
-          rating:,
+          rating: nil,
           driver_id: nil,
           driver: nil
         )
@@ -47,14 +47,14 @@ module RideShare
       end
       @end_time = end_time
 
-      if @end_time < @start_time
+      if @end_time && (@end_time < @start_time)
         raise ArgumentError, "End time cannot be before start time."
       end
       
       @cost = cost
       @rating = rating
-
-      if @rating > 5 || @rating < 1
+     
+      if @rating && (@rating > 5 || @rating < 1)
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
     end
