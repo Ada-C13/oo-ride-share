@@ -55,14 +55,14 @@ module RideShare
       return rating.to_f/trips.length
     end
 
-    def total_earnings
+    def total_revenue
       earnings = 0.0
 
       trips.each do |trip|
         if trip.cost == nil
           earnings += 0
         else
-          earnings += cost
+          earnings += trip.cost
         end
       end
       
