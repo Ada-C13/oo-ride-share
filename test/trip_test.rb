@@ -30,16 +30,9 @@ describe "Trip class" do
     it "accurately finds time length of ride" do
       start_time = "2018-12-27 02:39:05 -0800"
       end_time = "2018-12-27 03:38:08 -0800"
-      # time_a = "2018-12-27 02:39:05 -0800"
-      # time_b = "2018-12-27 03:38:08 -0800"
   
       difference = Time.parse(end_time) - Time.parse(start_time)
 
-      # if difference > 0
-      #   return difference
-      # else
-      #  return  24 * 3600 + difference
-      # end
 
       expect(difference).must_equal(3543.0)
     end

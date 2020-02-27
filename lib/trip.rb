@@ -51,7 +51,9 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      if @rating == nil
+        @rating = rating
+      elsif @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
   
@@ -60,18 +62,13 @@ module RideShare
       end
     end
 
+    def time_difference
+      if @end_time == nil || @start_time == nil
+        raise ArgumentError.new("Start time or end time cannot be nil.")
+      end 
 
-    def time_difference #(time_a, time_b)
       return @end_time - @start_time
-
-      # if difference > 0
-      #   return difference
-      # else
-      #  return  24 * 3600 + difference
-      # end
     end
-  #   return difference = @end_time - @start_time
-  # end
   
 
     def inspect
@@ -82,9 +79,14 @@ module RideShare
         "PassengerID=#{passenger&.id.inspect}>"
     end
 
-    def connect(passenger)
+    def connect_passenger(passenger)
       @passenger = passenger
       passenger.add_trip(self)
+    end
+
+    def connect_driver(driver)
+      @driver = driver
+      driver.add_trip(self)
     end
 
     private

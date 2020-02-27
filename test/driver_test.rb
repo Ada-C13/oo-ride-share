@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -76,6 +76,12 @@ xdescribe "Driver class" do
       expect(@driver.trips).must_include @trip
       expect(@driver.trips.length).must_equal previous + 1
     end
+
+    it "gives accurate trip information" do
+      @driver.add_trip(@trip)
+
+      expect (@driver.trips[@driver.trips.length - 1]).must_be_instance_of RideShare::Trip
+    end
   end
 
   describe "average_rating method" do
@@ -129,7 +135,6 @@ xdescribe "Driver class" do
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
   end
-
   describe "total_revenue" do
     # You add tests for the total_revenue method
   end

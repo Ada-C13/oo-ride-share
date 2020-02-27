@@ -41,8 +41,6 @@ module RideShare
         raise ArgumentError, "Either full_path or directory is required"
       end
 
-
-      ###WHERE IT GETS CSV NAME FOR BABY CLASSES
       unless file_name
         class_name = self.to_s.split('::').last
         file_name = "#{class_name.downcase}s.csv"
