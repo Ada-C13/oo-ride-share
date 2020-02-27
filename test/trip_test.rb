@@ -15,7 +15,14 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ",
+          status: :AVAILABLE,
+          trips: nil
+        )
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -49,6 +56,13 @@ describe "Trip class" do
         end_time: "2018-12-27 02:39:05 -0800",
         cost: 23.45,
         rating: 3,
+        driver: RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ",
+          status: :AVAILABLE,
+          trips: [1, 2, 3]
+        )
         #trip_time: 3543.0
       }
 
@@ -67,6 +81,13 @@ describe "Trip class" do
         end_time: Time.parse("2018-12-27 02:39:05 -0800"),
         cost: 23.45,
         rating: 3,
+        driver: RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ",
+          status: :AVAILABLE,
+          trips: [1]
+        )
         #trip_time: 3543.0
       }
 
