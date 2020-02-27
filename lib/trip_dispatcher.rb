@@ -36,23 +36,43 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
-    def get_first_available
+    def get_longest_ago(available_drivers)
+      longest_ago = Time.now
+      best_driver = nil
+      available_drivers.each do |driver|
+        if driver.trips == nil || driver.trips == []
+          best_driver = driver
+          driver.status = :UNAVAILABLE
+        else 
+          driver.trips.each do |trip|
+          trip.end_time.to_i < longest_ago.to_i
+          longest_ago = trip.end_time
+          best_driver = driver
+          driver.status = :UNAVAILABLE
+        end
+      end 
+    end
+    return best_driver
+    end
+
+    def available_drivers
+      available_drivers = []
       @drivers.each do |driver|
         p driver
-        if driver.status == :AVAILABLE
-          driver.status = :UNAVAILABLE
-          return driver
+        if driver.status == :AVAILABLE && driver.trips.each {|trip| trip.end_time != nil }
+          available_drivers<< driver
         end
       end 
     end 
 
     def request_trip(passenger_id)
     passenger_from_id = find_passenger(passenger_id)
-    driver_available = get_first_available
+    available_drivers_list = available_drivers
+    best_driver = get_longest_ago(available_drivers_list)
     trip1 = Trip.new(
     id: (@trips.last.id)+1,
-    driver_id: (driver_available.id),
-    driver: driver_available,
+    driver_id: (best_driver.id),
+    driver: best_driver,
     passenger: passenger_from_id,
     passenger_id: passenger_id,
     start_time: Time.now,
@@ -62,7 +82,7 @@ module RideShare
     )
     passenger_from_id.trips.push trip1
     trips.push trip1
-    driver_available.add_requested_trip(trip1)
+    best_driver.add_requested_trip(trip1)
 
     return trip1
     end

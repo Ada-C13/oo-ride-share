@@ -38,8 +38,10 @@ module RideShare
     def total_time_spent
       passenger_time = 0
       self.trips.each do |trip|
+        if trip.end_time != nil
         passenger_time += trip.trip_duration
       end
+    end
       return passenger_time
     end
 

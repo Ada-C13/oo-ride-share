@@ -149,17 +149,13 @@ describe "TripDispatcher class" do
     end
 
     it "correctly finds the first available driver" do
-      expect(@requested_trip.driver.name).must_equal "Driver 2"
+      expect(@requested_trip.driver.name).must_equal "Driver 3 (no trips)"
     end
 
     it "sets driver's status to :UNAVAILABLE" do
       # expect(requested_trip).must_respond_to :status
       expect(@requested_trip.driver.status).must_equal :UNAVAILABLE
     end
-
-    # it "sets start_time to the current time" do 
-    #   expect(requested_trip.start_time).must_equal Time.now
-    # end
 
     it "checks that end_time, cost, and rating are set to nil at initialization" do
       expect(@requested_trip.end_time).must_equal nil
