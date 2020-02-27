@@ -17,9 +17,8 @@ module RideShare
     end
 
     def find_passenger(id)
-      Passenger.validate_id(id) #hi hello :) you are right .. how can i puts when nil? if statement? want me to write it? sure thank you, I am so tired sorry haha 
+      Passenger.validate_id(id) 
       passenger = @passengers.find { |passenger| passenger.id == id }
-      puts 'Found a nil passenger' if passenger.nil?
       return passenger
     end
 
@@ -28,8 +27,20 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
-    
-    def request_trip(passenger_id)
+
+    # @driver.find { |driver| driver.status == :AVAILABLE }
+
+    def request_trip(passenger_id) 
+      #id_trip = @trips.  
+      new_trip = RideShare::Trip.new(
+        id: nil, 
+        passenger: find_passenger(passenger_id),
+        passenger_id: passenger_id,
+        start_time: Time.now,
+        end_time: nil, 
+        cost: nil, 
+        rating: nil  
+      )
     end 
 
 

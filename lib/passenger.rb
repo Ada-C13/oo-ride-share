@@ -29,20 +29,6 @@ module RideShare
       return total_cost
     end
 
-    # total_trips = @trips.map do |trip|
-    #   trip.cost
-    # end
-
-    # return total_trips.sum
-    # if @trips.length > 0 && @trips.length != nil
-    #   total_trips = @trips.map do |trip|
-    #     trip.cost
-    #   end
-    #   total_trips.sum
-    # else
-    #   raise ArgumentError.new("This passenger doesn't have any trips.")
-    # end
-
     def total_time_spent
       total_time = 0
       @trips.each do |trip|

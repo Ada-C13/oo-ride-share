@@ -122,4 +122,7 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  
+
 end
