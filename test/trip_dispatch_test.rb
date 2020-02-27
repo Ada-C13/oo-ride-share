@@ -3,6 +3,8 @@ require_relative 'test_helper'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
 
+
+
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
