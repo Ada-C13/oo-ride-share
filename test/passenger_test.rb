@@ -174,4 +174,43 @@ describe "Passenger class" do
       expect(passenger.total_time_spent).must_equal 0
     end
   end
+
+  describe "add_trip_in_progress" do
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 1,
+        name: "Ada",
+        phone_number: "412-432-7640",
+      )
+      
+      @finished_trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11) + 2*60*60,
+        cost: 123,
+        rating: 3,
+        driver_id: 1
+      )
+
+      @in_progress = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.now,
+        driver_id: 1
+      )
+
+      @passenger.add_trip(@finished_trip)
+    end
+
+    it "adds the in progress trip" do
+      expect(@passenger.trips).wont_include @in_progress
+      previous = @passenger.trips.length
+
+      @passenger.add_trip_in_progress(@in_progress)
+
+      expect(@passenger.trips).must_include @in_progress
+      expect(@passenger.trips.length).must_equal previous + 1
+    end
+  end
 end

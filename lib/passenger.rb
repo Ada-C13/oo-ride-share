@@ -19,7 +19,9 @@ module RideShare
     def net_expenditures
       total = 0
       trips.each do |trip|
-        total += trip.cost
+        unless trip.cost == nil
+          total += trip.cost
+        end
       end
       return total
     end 
@@ -28,9 +30,15 @@ module RideShare
       total_seconds = 0
       
       trips.each do |trip|
-        total_seconds += trip.calculate_trip_duration
+        unless trip.end_time == nil
+          total_seconds += trip.calculate_trip_duration
+        end
       end
       return total_seconds
+    end
+
+    def add_trip_in_progress(new_trip)
+      @trips << new_trip
     end
 
     private

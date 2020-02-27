@@ -11,9 +11,9 @@ module RideShare
           passenger: nil,
           passenger_id: nil,
           start_time:,
-          end_time:,
+          end_time: nil,
           cost: nil,
-          rating:,
+          rating: nil,
           driver_id: nil,
           driver: nil
         )
@@ -46,12 +46,13 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
-      end
-
-      if @start_time > @end_time
-        raise ArgumentError.new("Invalid times given: #{start_time} comes after #{end_time}. Chronological error.")
+      unless @end_time == nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
+        if @start_time > @end_time
+          raise ArgumentError.new("Invalid times given: #{start_time} comes after #{end_time}. Chronological error.")
+        end
       end
     end
 
@@ -72,6 +73,7 @@ module RideShare
     end
 
     def calculate_trip_duration
+      return nil if @end_time == nil
       time_elapsed = (end_time - start_time)
       return time_elapsed
     end 

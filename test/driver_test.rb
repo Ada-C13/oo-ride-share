@@ -203,4 +203,51 @@ describe "Driver class" do
       expect(sad_driver.total_revenue).must_equal 4.68
     end
   end
+
+  describe "add_trip_in_progress" do
+    before do
+      @pass = RideShare::Passenger.new(
+        id: 1,
+        name: "Test Passenger",
+        phone_number: "412-432-7640"
+      )
+      @driver = RideShare::Driver.new(
+        id: 3,
+        name: "Test Driver",
+        vin: "12345678912345678",
+      )
+      @finished_trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger: @pass,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2018, 8, 9),
+        rating: 5
+      )
+      @in_progress = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger: @pass,
+        start_time: Time.now,
+      )
+
+      @driver.add_trip(@finished_trip)
+      
+    end
+
+    it "adds the in progress trip to trips list" do
+      expect(@driver.trips).wont_include @in_progress
+      previous = @driver.trips.length
+
+      @driver.add_trip_in_progress(@in_progress)
+
+      expect(@driver.trips).must_include @in_progress
+      expect(@driver.trips.length).must_equal previous + 1
+    end
+
+    it "going on in progress trip makes driver UNAVAILABLE" do
+      @driver.add_trip_in_progress(@in_progress)
+      expect(@driver.status).must_equal :UNAVAILABLE
+    end
+  end
 end
