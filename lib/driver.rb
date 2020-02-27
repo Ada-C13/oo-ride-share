@@ -34,7 +34,6 @@ module RideShare
       end   
     end 
     
-    #This method calculates that driver's total revenue across all their trips. Each driver gets 80% of the trip cost after a fee of $1.65 per trip is subtracted.
     def total_revenue 
       fee = 1.65
       percentage = 0.80 
