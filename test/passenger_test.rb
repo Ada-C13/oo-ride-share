@@ -75,7 +75,7 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures and total time spent" do
+  describe "net_expenditures and total_time_spent" do
     before do
       @passenger = RideShare::Passenger.new(
         id: 9,
@@ -112,12 +112,23 @@ describe "Passenger class" do
         )
       @passenger.add_trip(trip_2)
     end
+    
+    it "returns 0 if the passenger has no trips" do
+    new_passenger = RideShare::Passenger.new(
+      id: 10,
+      name: "Mx. No Trips",
+      phone_number: "1-602-620-2330 x3723",
+      trips: []
+      )
+      expect(new_passenger.net_expenditures).must_equal 0
+      expect(new_passenger.total_time_spent).must_equal 0
+    end
 
     it "returns a sum of all the trip costs" do
       expect(@passenger.net_expenditures).must_equal 17.47
     end
 
-    it " does not include any in-progress trip for net expenditures" do
+    it "does not include any in-progress trip for net expenditures" do
       trip3 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -135,7 +146,7 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_equal 172800
     end
 
-    it " does not include any in-progress trip for total time spent" do
+    it "does not include any in-progress trip for total time spent" do
       trip3 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
