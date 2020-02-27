@@ -6,8 +6,8 @@ require 'pry'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :id, :name, :vin, :status, :trips
-    
+    attr_reader :id, :name, :vin, :trips
+    attr_accessor :status
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
 
@@ -32,19 +32,16 @@ module RideShare
       @trips << trip
     end
 
-    # def add_driver(driver)
-    #   @drivers << driver
-    # end
-
     def average_rating
-      return @trips.map {|trip| trip.rating}.sum.to_f / (@trips.size == 0 ? 1 : @trips.size)
+      completed = @trips.select { |trip| trip.rating != nil }
+      return completed.map {|trip| trip.rating}.sum.to_f / (completed.size == 0 ? 1 : completed.size)
     end
 
     def total_revenue
       fee = 1.65
-      return @trips.map {|trip| trip.cost < fee ? 0 : trip.cost - fee}.sum * 0.8
+      completed = @trips.select { |trip| trip.cost != nil }
+      return completed.map {|trip| trip.cost < fee ? 0 : trip.cost - fee}.sum * 0.8
     end
-
 
     private   
 

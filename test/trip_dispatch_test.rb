@@ -4,9 +4,7 @@ TEST_DATA_DIRECTORY = 'test/test_data'
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
-    return RideShare::TripDispatcher.new(
-      directory: TEST_DATA_DIRECTORY
-    )
+    return RideShare::TripDispatcher.new(directory: TEST_DATA_DIRECTORY)
   end
 
   describe "Initializer" do
@@ -124,29 +122,64 @@ describe "TripDispatcher class" do
 
     describe "Does request_trip work" do
       before do
-        @dispatcher = build_test_dispatcher
-  
-        @driver = RideShare::Driver.new(
-          id: 54,
-          name: "Test Driver",
-          vin: "12345678901234567",
-          status: :AVAILABLE
-        )
+        @dispatcher = build_test_dispatcher # create a despatcher
       end
 
-      it "Driver is available?" do
-      
-        expect(@dispatcher.request_trip(9).driver.status).must_equal :AVAILABLE
+      it "returns a trip" do
+        trip = @dispatcher.request_trip(2) # request a trip for passenger 2
+        expect(trip).must_be_kind_of RideShare::Trip
       end
 
-      # it "New trip is added to the collection of trips for a driver" do
-        
-      #   trip_array = @trips.map {|trip| trip.drivers}
+      it "updated the trip list for the dispatcher" do
+        count_before = @dispatcher.trips.length # check number of trips before
+        # puts "Customers = #{@dispatcher.passengers.length}"
+        trip = @dispatcher.request_trip(2) # request a trip for passenger 2
+        expect(@dispatcher.trips.length).must_equal count_before + 1
+      end
 
-      #   expect(@dispatcher.trips.driver).must_equal :AVAILABLE
+      it "assigned a driver" do
+        trip = @dispatcher.request_trip(2) # request a trip for passenger 2
+        expect(trip.driver).must_be_kind_of RideShare::Driver # check driver
+      end
 
-        
-      #end
+      it "assigned an available driver" do # check that driver was available before being assigned to requested trip
+        drivers_before = {}
+        @dispatcher.drivers.each { |driver| drivers_before[driver.id] = driver.status}
+        trip = @dispatcher.request_trip(2) # request a trip for passenger 2
+        # check if driver was available before the trip
+        before_status = drivers_before[trip.driver_id]
+        after_status  = trip.driver.status
+        expect(before_status).must_equal :AVAILABLE
+        expect(after_status).must_equal :UNAVAILABLE
+      end
+
+      it "updated the trip list for the driver" do
+        drivers_before = {}
+        @dispatcher.drivers.each { |driver| drivers_before[driver.id] = driver.trips.length}
+        trip = @dispatcher.request_trip(2) # request a trip for passenger 2
+        # find number of trips for the driver that was selected before it was selected
+        before_trips = drivers_before[trip.driver_id]
+        # find number of trips for the driver that was selected before it was selected
+        after_trips = trip.driver.trips.length 
+        expect(after_trips).must_equal before_trips + 1
+        expect(trip).must_equal trip.driver.trips.last
+      end
+
+      it "updated the trip list for the passengers" do
+        # find number of trips for the passenger before
+        before_trips = @dispatcher.find_passenger(2).trips.length
+        trip = @dispatcher.request_trip(2) # request a trip for passenger 2
+        # find number of trips for the passenger after
+        after_trips = trip.passenger.trips.length 
+        expect(after_trips).must_equal before_trips + 1
+        expect(trip).must_equal trip.passenger.trips.last
+      end
+
+      it "fails if no driver is available" do
+        trip1 = @dispatcher.request_trip(1) # request a trip for passenger 1
+        trip2 = @dispatcher.request_trip(2) # request a trip for passenger 2
+        expect { @dispatcher.request_trip(3) }.must_raise ArgumentError
+      end
 
     end
   end

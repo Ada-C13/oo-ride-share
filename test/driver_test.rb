@@ -133,6 +133,12 @@ describe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "average rating works with in-progress trips" do # in construction...
+
+    end
+
+
   end
 
   describe "total_revenue" do
@@ -184,6 +190,10 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_equal 24 # 8 + 16
       @driver.add_trip(@trip3)
       expect(@driver.total_revenue).must_equal 24 # 0 + 8 + 16
+    end
+
+    it "total revenue works with in-progress trips" do # in construction...
+
     end
   end
 end

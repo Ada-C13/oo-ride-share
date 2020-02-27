@@ -18,11 +18,13 @@ module RideShare
     end
 
     def net_expenditures
-      return @trips.map {|trip| trip.cost}.sum
+      completed = @trips.select { |trip| trip.cost != nil }
+      return completed.map {|trip| trip.cost}.sum
     end
 
     def total_time_spent
-      return @trips.map {|trip| trip.duration}.sum
+      completed = @trips.select { |trip| trip.end_time != nil }
+      return completed.map {|trip| trip.duration}.sum
     end
 
     private

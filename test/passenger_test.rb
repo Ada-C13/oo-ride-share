@@ -114,6 +114,13 @@ describe "Passenger class" do
         cost: 40,
         rating: 5
         )
+
+      @trip3 = RideShare::Trip.new(
+        id: 11,
+        driver: driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 11) # removed end time, cost and rating
+        )
       end
 
     it "Returns the total amount the passenger has spent on trips." do
@@ -122,6 +129,14 @@ describe "Passenger class" do
       @passenger.add_trip(@trip1)
       @passenger.add_trip(@trip2)
       expect(@passenger.net_expenditures).must_equal 50
+    end
+
+    it "net expenditure works with in-progress trips" do
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
+      @passenger.add_trip(@trip3)
+      expect(@passenger.net_expenditures).must_equal 50 # no additional cost for trip 3
+
     end
 
   end
@@ -190,6 +205,10 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_equal 24 * 60 * 60 # one day in seconds
       @passenger.add_trip(@trip2)
       expect(@passenger.total_time_spent).must_equal 2 * 24 * 60 * 60 # two days in seconds
+    end
+
+    it "total time spent works with in-progress trips" do # in construction...
+
     end
 
   end

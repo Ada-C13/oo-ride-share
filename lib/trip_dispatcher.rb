@@ -9,13 +9,13 @@ module RideShare
     attr_reader :drivers, :passengers, :trips
 
     def initialize(directory: './support')
-      @passengers = Passenger.load_all(directory: directory)
-      @trips      = Trip.load_all(directory: directory)
-      @drivers    = Driver.load_all(directory: directory)
+      @passengers = Passenger.load_all(directory: directory) # an Array of Passenger
+      @trips      = Trip.load_all(directory: directory) # an Array of Trip
+      @drivers    = Driver.load_all(directory: directory) # an Array of Driver
       connect_trips
     end
 
-    def find_passenger(id)
+    def find_passenger(id) 
       Passenger.validate_id(id)
       return @passengers.find { |passenger| passenger.id == id }
     end
@@ -34,19 +34,22 @@ module RideShare
     end
 
     def request_trip(passenger_id)
+      passenger = find_passenger(passenger_id)
+      raise ArgumentError, "Passenger id not found" if passenger == nil
+
       driver = @drivers.select {|driver| driver.status == :AVAILABLE}.first
-     
-      trip = Trip.new(id: @trips.id[-1]+1, passenger_id: passenger_id, driver: driver)
+      raise ArgumentError, "There are no drivers available" if driver == nil
+      new_id = @trips.map { |trip| trip.id }.max + 1 # in case trips are not sorted by id
 
-      driver.add_trip(trip)
-
+      trip = Trip.new(id: new_id, passenger: passenger, driver: driver)
       driver.status = :UNAVAILABLE
-      passenger.find_passenger(passenger_id).add_trip(trip)
-      connect_trips
+      trip.connect(passenger, driver) # add trip to passenger trips and driver trips
+      @trips << trip # add trip to dispatcher trips
+      # driver.add_trip(trip) # trip.connect already does this
+      # passenger.add_trip(trip) # trip.connect already does this
+      # do not use connect_trips, this is only when loading the CSV
       return trip
     end
-
-
     
     private
 
@@ -56,7 +59,6 @@ module RideShare
         driver    = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
       end
-
       return trips
     end
   end

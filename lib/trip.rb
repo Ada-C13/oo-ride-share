@@ -76,7 +76,6 @@ module RideShare
       @driver = driver
       passenger.add_trip(self)
       driver.add_trip(self)
-
     end
 
     private # only the class can call these, not from an instance of the class
