@@ -50,13 +50,14 @@ module RideShare
       @trips.each do |trip|
         total_ratings += trip.rating
       end
-
       if total_ratings == 0
         return 0
       else
         return average_rating = total_ratings.to_f / @trips.length
       end
     end
+
+    
 
     def total_revenue
       total_revenue = 0
