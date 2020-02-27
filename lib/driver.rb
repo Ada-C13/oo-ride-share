@@ -22,7 +22,7 @@ module RideShare
     end
 
     def add_trip(trip)
-      @trips << trip
+        @trips << trip
     end 
 
     def average_rating
