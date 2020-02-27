@@ -21,7 +21,7 @@ module RideShare
     end
 
     def total_time_spent
-      # calculating total amount of time in seconds.
+      # calculating total amount of time in seconds
       return @trips.sum { |trip| trip.duration.nil? ? 0 : trip.duration }
     end
 
