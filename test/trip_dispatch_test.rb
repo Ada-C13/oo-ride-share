@@ -150,7 +150,9 @@ describe "TripDispatcher class" do
     end
 
     # Was the driver who was selected AVAILABLE?
-    it "x" do
+    it "the driver selected was available" do
+      new_trip = @dispatcher.request_trip(1)
+      expect(new_trip.driver.status).must_equal :AVAILABLE
     end
 
     # What happens if you try to request a trip when there are no AVAILABLE drivers?
