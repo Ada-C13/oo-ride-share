@@ -27,17 +27,35 @@ module RideShare
       @trips << trip
     end
     
-    def avg_rating 
+    def average_rating 
+      if @trips.empty?
+        return 0
+      end
+
       all_trips = @trips.map { |trip| trip.rating }.sum
       trip_count = @trips.length
       
-      average_rating = all_trips / trip_count
+      average_rating = all_trips.to_f / trip_count
       
       return average_rating
     end
 
     def total_revenue
+      # TODO: update tests to reflect expected result
+      # returns an array of each trip's cost
+      gross_revenue = @trips.map { |trip| trip.cost }
 
+      net_revenue = []
+      gross_revenue.each do |cost|
+        if cost > 1.65
+          cost = (cost - 1.65) * 0.8
+          net_revenue << cost
+        else cost *= 0.8
+          net_revenue << cost
+        end
+      end
+
+      return net_revenue.sum
     end
     
     private
