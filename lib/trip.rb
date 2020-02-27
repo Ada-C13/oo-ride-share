@@ -9,14 +9,14 @@ module RideShare
 
     def initialize(
           id:,
+          driver_id: nil,
+          driver: nil,
           passenger: nil,
           passenger_id: nil,
           start_time:,
           end_time:,
           cost: nil,
-          rating:,
-          driver_id: nil,
-          driver: nil
+          rating:
         )
       super(id)
       if end_time != nil
@@ -32,20 +32,19 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      @start_time = start_time
-      @end_time = end_time
-      @cost = cost
-      @rating = rating
-
       if driver
         @driver = driver
         @driver_id = driver.id
       elsif driver_id
         @driver_id = driver_id
-        # @driver = RideShare::TripDispatcher.find_driver(driver_id)
       else
         raise ArgumentError, 'driver or driver_id is required'
       end
+
+      @start_time = start_time
+      @end_time = end_time
+      @cost = cost
+      @rating = rating
 
       if @rating != nil
         if @rating > 5 || @rating < 1
