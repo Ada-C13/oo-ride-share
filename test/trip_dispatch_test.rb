@@ -31,7 +31,6 @@ describe "TripDispatcher class" do
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
 
       dispatcher = RideShare::TripDispatcher.new
-
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -79,8 +78,9 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
+      
       before do
         @dispatcher = build_test_dispatcher
       end
@@ -90,6 +90,7 @@ describe "TripDispatcher class" do
       end
 
       it "finds a driver instance" do
+        
         driver = @dispatcher.find_driver(2)
         expect(driver).must_be_kind_of RideShare::Driver
       end
@@ -122,4 +123,76 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe 'requests and creates new trip' do
+    it 'adds trip to passengers' do
+      @dispatcher = build_test_dispatcher
+      passenger_num_trips = @dispatcher.find_passenger(5).trips.length
+
+      request_trip_result = @dispatcher.request_trip(5)
+    
+      expect(@dispatcher.find_passenger(5).trips.length).must_equal (passenger_num_trips + 1)
+    end
+    
+    it 'adds trip to driver' do
+      @dispatcher = build_test_dispatcher
+      chosen_driver = @dispatcher.first_available_driver
+      driver_num_trips = @dispatcher.drivers[chosen_driver].trips.length
+  
+      request_trip_result = @dispatcher.request_trip(5)
+    
+      expect(@dispatcher.drivers[chosen_driver].id).must_equal 3
+      expect(@dispatcher.drivers[chosen_driver].status).must_equal :UNAVAILABLE
+      expect(@dispatcher.drivers[chosen_driver].trips.length).must_equal (driver_num_trips + 1)
+    end
+
+    it 'confirms trip was added to trips' do
+      @dispatcher = build_test_dispatcher
+      old_num_trips = @dispatcher.trips.length
+
+      request_trip_result = @dispatcher.request_trip(5)
+    
+      expect(request_trip_result).must_be_kind_of RideShare::Trip
+      expect(@dispatcher.trips.length).must_equal (old_num_trips + 1)
+    end
+  end
+
+  describe 'check first available driver' do
+    it 'will return the first available driver' do
+      @dispatcher = build_test_dispatcher
+
+      request_trip_result = @dispatcher.request_trip(5)
+      request_trip_result = @dispatcher.request_trip(6)
+
+      expect { @dispatcher.request_trip(7) }.must_raise ArgumentError
+    end
+  end
+
+  describe 'find driver and passenger total for in-progress' do
+    before do
+      @dispatcher = build_test_dispatcher
+      request_trip_result = @dispatcher.request_trip(5)
+      @chosen_driver = @dispatcher.first_available_driver
+      request_trip_result = @dispatcher.request_trip(1)
+    end
+
+    it 'will return passenger expend, excluding trip in-progress' do  
+      @dispatcher.find_passenger(5).net_expenditures.must_equal 0
+      @dispatcher.find_passenger(1).net_expenditures.must_equal 10
+    end
+
+    it 'will return passenger time spent, excluding trip in-progress' do
+      @dispatcher.find_passenger(5).total_time_spent.must_equal 0
+      @dispatcher.find_passenger(1).total_time_spent.must_equal 1940
+    end
+
+    it 'will return driver revenue, excluding trip in-progress' do
+      @dispatcher.drivers[@chosen_driver].total_revenue.must_equal 40.04
+    end
+
+    it 'will return driver average, excluding trip in-progress' do
+      @dispatcher.drivers[@chosen_driver].average_rating.must_equal 2
+    end
+  end
+
 end
