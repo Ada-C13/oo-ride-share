@@ -39,7 +39,10 @@ module RideShare
       if @trips.length == 0
         return 0
       else
-        revenue = @trips.map {|trip| ((trip.cost - 1.65)* 0.8)}
+        revenue = []
+        @trips.each do |trip| 
+          revenue << ((trip.cost - 1.65)* 0.8) unless trip.cost == nil
+        end
         return revenue.sum.round(2)
       end
     end

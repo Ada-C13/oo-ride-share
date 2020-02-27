@@ -227,7 +227,7 @@ describe "Driver class" do
           cost: 11.79,
           rating: 1
         )
-        @driver.add_trip(trip2)
+      @driver.add_trip(trip2)
     end
 
     it "returns 0 if driver has no trips." do
@@ -242,5 +242,20 @@ describe "Driver class" do
     it "correctly calculates total revenue of driver" do
       expect(@driver.total_revenue).must_be_close_to 11.34, 0.01
     end 
+
+    it " does not include any in-progress trip" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.total_revenue).must_be_close_to 11.34, 0.01
+    end
   end
 end
