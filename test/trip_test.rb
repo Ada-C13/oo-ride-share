@@ -16,9 +16,16 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 2
       }
       @trip = RideShare::Trip.new(@trip_data)
+        @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+        )
     end
 
     it "is an instance of Trip" do
@@ -43,7 +50,8 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: @driver
       }
 
       expect{fake_trip = RideShare::Trip.new(new_trip)}.must_raise ArgumentError

@@ -37,7 +37,14 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Test Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+        )
+
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -49,12 +56,14 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver: @driver
         )
       
 
       @passenger.add_trip(trip)
-    end
+
+  end
 
     it "each item in array is a Trip instance" do
       @passenger.trips.each do |trip|
@@ -73,6 +82,11 @@ describe "Passenger class" do
 
     it "adds up all costs of all trips" do
     #Arrange
+    driver = RideShare::Driver.new(
+      id: 54,
+      name: "Rogers Bartell IV",
+      vin: "1C9EVBRM0YBC564DZ"
+    )
     passenger = RideShare::Passenger.new(
       id: 9,
       name: "Merl Glover III",
@@ -85,7 +99,8 @@ describe "Passenger class" do
       start_time: Time.new(2016, 8, 8),
       end_time: Time.new(2016, 8, 9),
       cost: 5,
-      rating: 5
+      rating: 5,
+      driver: driver
       )
     passenger.add_trip(trip)
     trip = RideShare::Trip.new(
@@ -94,7 +109,8 @@ describe "Passenger class" do
       start_time: Time.new(2016, 8, 8),
       end_time: Time.new(2016, 8, 9),
       cost: 7,
-      rating: 5
+      rating: 5,
+      driver: driver
       )
       passenger.add_trip(trip)
 
@@ -110,6 +126,11 @@ describe "Passenger class" do
     describe "total_time_spent" do
       it "adds up all the ride durations for a passenger" do
          #Arrange
+         driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+        )
         passenger = RideShare::Passenger.new(
           id: 9,
           name: "Merl Glover III",
@@ -122,7 +143,8 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           cost: 5,
-          rating: 5
+          rating: 5,
+          driver: driver
           )
         passenger.add_trip(trip)
         trip = RideShare::Trip.new(
@@ -131,7 +153,8 @@ describe "Passenger class" do
           start_time: Time.new(2016, 8, 8),
           end_time: Time.new(2016, 8, 9),
           cost: 7,
-          rating: 5
+          rating: 5,
+          driver: driver
           )
           passenger.add_trip(trip)
 
