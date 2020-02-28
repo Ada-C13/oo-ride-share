@@ -17,7 +17,7 @@ module RideShare
     end
 
     def find_passenger(id)
-      Passenger.validate_id(id) 
+      Passenger.validate_id(id)
       passenger = @passengers.find { |passenger| passenger.id == id }
       return passenger
     end
@@ -27,22 +27,19 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
-
-    
-
-    def request_trip(passenger_id) 
+    def request_trip(passenger_id)
       available_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
       puts "#{available_driver}"
       new_trip = RideShare::Trip.new(
-        id: @trips.last.id + 1, 
+        id: @trips.last.id + 1,
         passenger: find_passenger(passenger_id),
         passenger_id: passenger_id,
         start_time: Time.now,
-        end_time: nil, 
-        cost: nil, 
+        end_time: nil,
+        cost: nil,
         rating: nil,
         driver_id: available_driver.id,
-        driver: available_driver
+        driver: available_driver,
       )
 
       raise ArgumentError.new("There are no drivers available") if driver == nil
@@ -50,8 +47,7 @@ module RideShare
       @trips << new_trip
       new_trip.connect(passenger, driver)
       return new_trip
-    end 
-
+    end
 
     def inspect
       # Make puts output more useful
