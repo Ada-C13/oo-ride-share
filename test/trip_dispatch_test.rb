@@ -139,7 +139,7 @@ describe "TripDispatcher class" do
       
       dispatcher.request_trip(1)
       #find the passenger id 1 and then see if the driver id is 2
-      expect(dispatcher.trips.last.driver_id).must_equal 2
+      expect(dispatcher.trips.last.driver_id).must_equal 3
     end
 
     it "will change driver's status to unavailable" do
@@ -147,7 +147,7 @@ describe "TripDispatcher class" do
 
       dispatcher.request_trip(1)
 
-      expect(dispatcher.find_driver(2).status).must_equal :UNAVAILABLE
+      expect(dispatcher.find_driver(3).status).must_equal :UNAVAILABLE
     end
 
     it "will have a cost, rating, and end time of nil for new trip" do
@@ -161,10 +161,10 @@ describe "TripDispatcher class" do
     end
     it "update driver's trips" do 
       dispatcher = build_test_dispatcher
-      new_length = dispatcher.find_driver(2).trips.length + 1
+      new_length = dispatcher.find_driver(3).trips.length + 1
 
       dispatcher.request_trip(1)
-      expect(dispatcher.find_driver(2).trips.length).must_equal new_length
+      expect(dispatcher.find_driver(3).trips.length).must_equal new_length
     end 
 
     it "update passenger's trips" do 
@@ -178,5 +178,16 @@ describe "TripDispatcher class" do
       expect{dispatcher.request_trip(1)}.must_raise ArgumentError
     end 
 
+    it "selects an available driver" do
+      dispatcher = build_test_dispatcher
+      dispatcher.request_trip(1)
+      expect(dispatcher.trips.last.driver_id).wont_equal 1
+    end
+
+    it "selects driver with no trips first" do
+      dispatcher = build_test_dispatcher
+      dispatcher.request_trip(1)
+      expect(dispatcher.trips.last.driver_id).must_equal 3
+    end
   end
 end
