@@ -92,15 +92,25 @@ describe "Passenger class" do
     it "calculates total costs" do
       @passenger.trips.each do |trip| 
         expect(@passenger.net_expenditures).must_equal 15
-      end
-
-      
-  end
+      end 
+    end
 
     it "calculates time spent" do
       @passenger.trips.each do |trip|
         expect(@passenger.total_time_spent).must_equal 1260
       end
     end
+
+    it "handles no trips for expenditures and time spent" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      expect(@passenger.net_expenditures).must_equal 0
+      expect(@passenger.total_time_spent).must_equal 0
+    end
+
   end
 end

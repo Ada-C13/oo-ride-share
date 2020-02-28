@@ -22,7 +22,7 @@ module RideShare
       total_money = 0
       @trips.each do |trip|
         if trip == nil
-          next
+          return 0
         else
           total_money += trip.cost
         end
