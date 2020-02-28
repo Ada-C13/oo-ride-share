@@ -151,7 +151,10 @@ describe "TripDispatcher class" do
     end
     
     it "throws an argument error when there are no available drivers" do
-
+      @dispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect{@dispatcher.find_available_driver}.must_raise ArgumentError
     end
   end
 end
