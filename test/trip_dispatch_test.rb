@@ -161,8 +161,10 @@ describe "TripDispatcher class" do
     end
     it "update driver's trips" do 
       dispatcher = build_test_dispatcher
+      new_length = dispatcher.find_driver(2).trips.length + 1
+
       dispatcher.request_trip(1)
-      expect(dispatcher.find_driver(2).trips.length).must_equal 3
+      expect(dispatcher.find_driver(2).trips.length).must_equal new_length
     end 
 
     it "update passenger's trips" do 
