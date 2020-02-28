@@ -30,7 +30,7 @@ module RideShare
 
     private
     
-    def self.from_csv(record)
+    def self.from_csv(record) 
       raise NotImplementedError, 'Implement me in a child class!'
     end
 
