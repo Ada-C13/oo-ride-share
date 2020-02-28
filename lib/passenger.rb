@@ -16,6 +16,37 @@ module RideShare
       @trips << trip
     end
 
+    # 1.2 #1 net_expenditures method
+    def net_expenditures
+      if @trips.empty? == true
+        return 0
+      else
+        cost_array = (@trips).map do |trip|
+          if trip.cost == nil
+            0
+          else
+            trip.cost
+          end
+        end
+
+        puts cost_array.inspect
+          return (cost_array).inject(:+)
+      end
+    end
+
+    # 1.2 #2 total_time_spent method
+    def total_time_spent
+      if @trips.empty? == true
+        return 0
+      else
+        time_duration = (@trips).map do |trip|
+          Time.parse(trip.end_time) - Time.parse(trip.start_time)
+        end
+        
+        return (time_duration).inject(:+)
+      end
+    end
+
     private
 
     def self.from_csv(record)
@@ -27,3 +58,4 @@ module RideShare
     end
   end
 end
+

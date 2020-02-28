@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -77,7 +77,8 @@ xdescribe "Driver class" do
       expect(@driver.trips.length).must_equal previous + 1
     end
   end
-
+  
+  # Wave 2 Tests
   describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
@@ -131,6 +132,75 @@ xdescribe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 11.65,
+        rating: 5
+      )
+      @driver.add_trip(trip)
+    end
+
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "returns a float" do
+      expect(@driver.total_revenue).must_be_kind_of Float
+    end
+
+    it "correctly calculates the total revenue" do
+      expect(@driver.total_revenue).must_equal 8.00
+    end
+
+    it "returns 0 if trip costs <= $1.65" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 1.60,
+        rating: 5
+      )
+      @driver.add_trip(trip)
+      expect(driver.total_revenue).must_equal 0
+    end
+  end
+
+  # Wave 3 method to test change of status
+  describe "change_status" do
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE
+      )
+    end
+
+    it "changes driver status to unavailable" do
+      @driver.change_status
+      expect(@driver.status).must_equal :UNAVAILABLE
+    end
   end
 end

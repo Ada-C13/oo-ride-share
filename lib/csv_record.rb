@@ -29,7 +29,7 @@ module RideShare
     end
 
     private
-    
+
     def self.from_csv(record)
       raise NotImplementedError, 'Implement me in a child class!'
     end
@@ -48,3 +48,4 @@ module RideShare
     end
   end
 end
+

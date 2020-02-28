@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -78,8 +78,8 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +120,62 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  # Wave 3 Tests
+  describe "request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "handles a trip request when there are no available drivers" do
+      @dispatcher.request_trip(2)
+      @dispatcher.request_trip(3)
+      expect{(@dispatcher.request_trip(1))}.must_raise ArgumentError
+    end
+
+    it "creates a trip properly when using request_trip method" do
+      expect(@dispatcher.request_trip(1)).must_be_kind_of RideShare::Trip
+    end
+
+    it "changes driver status to unavailable" do
+      new_trip = @dispatcher.request_trip(1)
+      expect(new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "adds new trip to the Passenger's & Driver's list of trips" do    
+      passenger = @dispatcher.find_passenger(1)
+      @dispatcher.request_trip(1)
+      expect(passenger.trips.length).must_equal 2
+    end
+
+    it "adds new trip to the collection of all Trips in TripDispatcher" do
+      @dispatcher.request_trip(1)
+      expect(@dispatcher.trips.length).must_equal 6
+    end
+
+    it "calculates the correct total spent for a Passenger with an in-progress trip" do
+      passenger = @dispatcher.find_passenger(1)
+      @dispatcher.request_trip(1)
+      expect(passenger.net_expenditures).must_equal 10
+    end
+
+    it "calculates the correct average rating of a Driver with an in-progress trip" do
+      driver = @dispatcher.find_driver(2)
+      @dispatcher.request_trip(1)
+      expect(driver.average_rating).must_equal 2.0
+    end
+  end 
+
+  describe "select_available_driver" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "selected driver that was first available" do
+      chosen_driver = @dispatcher.drivers[1]
+      expect(@dispatcher.select_available_driver).must_equal chosen_driver
     end
   end
 end
