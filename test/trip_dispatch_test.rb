@@ -23,11 +23,9 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
-      # Count lines in the file, subtract 1 for headers
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
 
       dispatcher = RideShare::TripDispatcher.new
@@ -67,6 +65,36 @@ describe "TripDispatcher class" do
         expect(last_passenger.id).must_equal 8
       end
 
+      it "adds the trip to the passenger's list of trips" do
+        @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+          )
+          @driver = RideShare::Driver.new(
+            id: 54,
+            name: "Rogers Bartell IV",
+            vin: "1C9EVBRM0YBC564DZ",
+            status: :AVAILABLE,
+            trips: [1]
+          )
+        trip1 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8, 13, 39 , 0),
+          end_time: Time.new(2016, 8, 8, 13, 50, 0),
+          rating: 5,
+          cost: 5,
+          driver_id: @driver.id,
+          driver: nil
+          )
+  
+        @passenger.add_trip(trip1)
+
+        expect(@passenger.trips).must_include(trip1)
+      end
+
       it "connects trips and passengers" do
         dispatcher = build_test_dispatcher
         dispatcher.trips.each do |trip|
@@ -78,8 +106,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -93,6 +120,19 @@ describe "TripDispatcher class" do
         driver = @dispatcher.find_driver(2)
         expect(driver).must_be_kind_of RideShare::Driver
       end
+
+      it "finds available driver" do
+        driver = @dispatcher.find_driver(3)
+        expect(driver.status).must_equal :AVAILABLE
+      end
+
+      it "changes driver status to UNAVAILABLE when new trip added" do
+        dispatcher = build_test_dispatcher
+
+        trip1 = dispatcher.request_trip(1)
+        expect(trip1.driver.status).must_equal :UNAVAILABLE
+      end
+
     end
 
     describe "Driver & Trip loader methods" do
@@ -119,6 +159,20 @@ describe "TripDispatcher class" do
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
         end
+      end
+
+      it "adds new trip to collection of all Trips" do
+        dispatcher = build_test_dispatcher
+        trip1 = dispatcher.request_trip(1)
+        
+        expect(dispatcher.trips).must_include(trip1)
+      end
+
+      it "returns new_trip" do
+        dispatcher = build_test_dispatcher
+        trip1 = dispatcher.request_trip(1)
+
+        expect(trip1).must_be_kind_of RideShare::Trip
       end
     end
   end

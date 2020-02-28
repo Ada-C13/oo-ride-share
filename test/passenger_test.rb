@@ -37,22 +37,44 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
-      trip = RideShare::Trip.new(
+        @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ",
+          status: :AVAILABLE,
+          trips: [1]
+        )
+      trip1 = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 5
+        start_time: Time.new(2016, 8, 8, 13, 39 , 0),
+        end_time: Time.new(2016, 8, 8, 13, 50, 0),
+        rating: 5,
+        cost: 5,
+        driver_id: @driver.id,
+        driver: nil
         )
 
-      @passenger.add_trip(trip)
+      @passenger.add_trip(trip1)
+
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8, 16, 30, 0),
+        end_time: Time.new(2016, 8, 8, 16, 40, 0),
+        rating: 5,
+        cost: 10,
+        driver_id: @driver.id,
+        driver: nil
+        )
+
+      @passenger.add_trip(trip2)
     end
 
     it "each item in array is a Trip instance" do
@@ -66,9 +88,29 @@ describe "Passenger class" do
         expect(trip.passenger.id).must_equal 9
       end
     end
-  end
 
-  describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    it "calculates total costs" do
+      @passenger.trips.each do |trip| 
+        expect(@passenger.net_expenditures).must_equal 15
+      end 
+    end
+
+    it "calculates time spent" do
+      @passenger.trips.each do |trip|
+        expect(@passenger.total_time_spent).must_equal 1260
+      end
+    end
+
+    it "handles no trips for expenditures and time spent" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      expect(@passenger.net_expenditures).must_equal 0
+      expect(@passenger.total_time_spent).must_equal 0
+    end
+
   end
 end

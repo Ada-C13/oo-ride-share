@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -76,6 +76,12 @@ xdescribe "Driver class" do
       expect(@driver.trips).must_include @trip
       expect(@driver.trips.length).must_equal previous + 1
     end
+
+    it "gives accurate trip information" do
+      @driver.add_trip(@trip)
+
+      expect (@driver.trips[@driver.trips.length - 1]).must_be_instance_of RideShare::Trip
+    end
   end
 
   describe "average_rating method" do
@@ -129,8 +135,48 @@ xdescribe "Driver class" do
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
   end
+  
+  describe "total_revenue method" do
+    it "calculates total revenue" do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+        )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 1,
+        cost: 0
+      )
+      @driver.add_trip(trip1)
 
-  describe "total_revenue" do
-    # You add tests for the total_revenue method
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 1,
+        cost: 12
+      )
+      @driver.add_trip(trip2)
+
+      expect(@driver.total_revenue).must_equal 9.6
+    end
+
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+    
+      expect(driver.total_revenue).must_equal 0
+    end
   end
 end
+
