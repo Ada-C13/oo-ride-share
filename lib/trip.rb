@@ -21,16 +21,15 @@ module RideShare
       super(id)
 
       if passenger
-        @passenger = passenger
-        @passenger_id = passenger.id
+        set_passenger(passenger)
       elsif passenger_id
         @passenger_id = passenger_id
       else
-        raise ArgumentError, 'Passenger or passenger_id is required'
+        raise ArgumentError, "Passenger or passenger_id is required." 
       end
 
-      if start_time > end_time # added ArgumentError if start time is greater
-        raise ArgumentError, "Start time cannot be greater than end time"
+      if start_time > end_time 
+        raise ArgumentError, "Start time #{start_time} is after #{end_time}."
       end
 
       @start_time = start_time
@@ -38,12 +37,10 @@ module RideShare
       @cost = cost
       @rating = rating
 
-
       if driver
-        @driver = driver
-        @driver_id = driver.id
-      elsif driver_id 
-        @driver_id = driver_id 
+        set_driver(driver)
+      elsif driver_id
+        @driver_id = driver_id
       else
         raise ArgumentError, "Driver or driver_id is required."
       end
@@ -62,15 +59,24 @@ module RideShare
     end
 
     def connect(passenger, driver)
-      @passenger = passenger
+      set_passenger(passenger)
+      set_driver(driver)
       passenger.add_trip(self)
-
-      @driver = driver
       driver.add_trip(self)
     end
 
     def duration 
       end_time - start_time 
+    end
+
+    def set_passenger(passenger)
+      @passenger = passenger
+      @passenger_id = passenger.id
+    end
+
+    def set_driver(driver)
+      @driver = driver
+      @driverr_id = driver.id
     end
 
     private

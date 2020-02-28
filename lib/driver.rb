@@ -15,7 +15,8 @@ module RideShare
       elsif vin.length > 17 
         raise ArgumentError.new("Vin number too long.")
       end
-      @status = status #use guard clause in calling method 
+      @status = status 
+        #use guard clause in calling method 
       if !trips 
         @trips = []
       else 
