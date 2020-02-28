@@ -1,10 +1,12 @@
 require 'csv'
 require_relative 'csv_record'
 require 'time'
+require_relative 'trip_dispatcher'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :id, :name, :vin, :status, :trips
+    attr_reader :id, :name, :vin, :trips
+    attr_accessor :status
 
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
 
@@ -76,6 +78,10 @@ module RideShare
       end
       return total_revenue
     end
+
+    def update_status 
+      @status = :UNAVAILABLE
+    end 
 
     private
 

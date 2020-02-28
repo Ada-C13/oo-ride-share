@@ -35,8 +35,34 @@ module RideShare
     end
 
     def request_trip(passenger_id)
+      passenger = find_passenger(passenger_id)
+      raise ArgumentError, "Pasanger id not founded" if passenger == nil
+      driver = @drivers.select {|driver| driver.status == :AVAILABLE}.first
+      raise ArgumentError, "There are not available" if driver == nil
+      
+      # driver = ""
+      # @drivers.each do |driver|
+      #   if driver.status == :AVAILABLE
+          # trip.connect(passenger,driver)
+      #   break
+      #   end  
+      # end
+      new_trip = Trip.new(
+        id: @trips.length + 1,
+        driver: driver,
+        passenger: passenger,
+        start_time: Time.now, 
+        end_time: nil,
+        cost: nil,
+        rating: nil
+    )
+
+      new_trip.connect(passenger,driver)
+
+      driver.update_status
 
 
+      return new_trip
 
     end  
 
@@ -44,12 +70,10 @@ module RideShare
 
     def connect_trips
       @trips.each do |trip|
-       
         passenger = find_passenger(trip.passenger_id)
         driver = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
       end
-
       return trips
     end
   end

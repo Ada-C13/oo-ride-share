@@ -14,9 +14,9 @@ module RideShare
           passenger: nil,
           passenger_id: nil,
           start_time:,
-          end_time:,
+          end_time: nil,
           cost: nil,
-          rating:
+          rating: nil
         )
       super(id)
 
@@ -59,11 +59,11 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      if @rating && (@rating > 5 || @rating < 1)
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
 
-      if end_time < start_time
+      if @end_time && (end_time < start_time)
         raise ArgumentError.new("End time #{end_time} is before  start time #{start_time}")
       end
     end #end of initialize
@@ -107,7 +107,3 @@ module RideShare
   end
 end
 
-# all_trips = RideShare::Trip.load_all(full_path: "./support/trips.csv"
-
-# td = RideShare::TripDispatcher.new
-# td.trips[1].start_timex

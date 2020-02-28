@@ -23,7 +23,6 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -122,4 +121,48 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @passenger_id = 3
+      @trip = @dispatcher.request_trip(@passenger_id)
+    end
+
+    it "creates a new trip" do
+      expect(@trip).must_be_kind_of RideShare::Trip
+      expect(@trip.id).must_be_instance_of Integer
+      expect(@trip.driver_id).must_equal 2
+      expect(@trip.end_time).must_be_nil
+      expect(@trip.cost).must_be_nil
+      expect(@trip.rating).must_be_nil
+    end
+
+    it "updates the driver status" do
+      expect(@trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "adds trip to the driver trips" do
+      expect(@trip.driver.trips).must_include @trip
+
+    end
+  
+
+  end
 end
+
+
+
+
+# updates driver - include? requested trip must be true
+# status changed unavailable
+
+# added to pax trips 
+
+# added to trip dispatcher list of trips 
+
+# if drivers are all unavailable 
+#   loop test data to make all drivers unavailable
+#   must raise error 
+#   (add accessor as status to driver )
+
