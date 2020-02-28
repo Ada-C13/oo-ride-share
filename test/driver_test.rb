@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -63,7 +63,8 @@ xdescribe "Driver class" do
         passenger: pass,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 1
       )
     end
 
@@ -132,5 +133,58 @@ xdescribe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5,
+        cost: 6
+      )
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 4,
+        cost: 8.9
+      )
+      @driver.add_trip(trip)
+      @driver.add_trip(trip2)
+   
+    end
+
+    it "Returns total revenue across all their trips" do
+      #Assert
+      expect(@driver.total_revenue).must_be_close_to 9.28, 0.01
+    end
+
+    it "Returns the correct total revenue when the cost of a trip was less that $1.65" do
+      # Arrange 
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 4,
+        cost: 1.0
+      )
+
+      @driver.add_trip(trip3)
+
+      #Assert
+      expect(@driver.total_revenue).must_be_close_to 9.28 + (1.0 * 0.8), 0.01
+    end
+
+
   end
 end

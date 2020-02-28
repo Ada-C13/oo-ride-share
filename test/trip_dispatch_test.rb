@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -122,4 +122,40 @@ describe "TripDispatcher class" do
       end
     end
   end
+  describe "Trip" do
+    describe "Request_trip" do
+      before do
+        # Return a TripDispatcher instance
+        @dispatcher = build_test_dispatcher
+        @assigned_trip = @dispatcher.request_trip(1)
+        @size = @dispatcher.trips.length
+      end
+  
+      it "Returns the newly created trip" do
+        expect(@assigned_trip).must_be_instance_of RideShare::Trip
+      end
+  
+      it "Updates the trip lists for the driver and passenger" do 
+        expect(@assigned_trip.passenger_id).must_equal 1
+        expect(@assigned_trip.id).must_equal 6 
+      end  
+      
+      it "Selects an available driver and switch to an unavilable status" do 
+        expect(@assigned_trip.driver.status).must_equal :UNAVAILABLE
+      end 
+
+      it "Returns an ArgumentError if there are no AVAILABLE drivers" do
+        # There are only 2 available drivers in our test file
+        @dispatcher.request_trip(2)
+
+        expect{
+          @dispatcher.request_trip(3)
+        }.must_raise ArgumentError
+      end 
+
+      it "Selects the one who has never driven or whose most recent trip ended the longest time ago" do 
+        expect(@dispatcher.find_frist_driver.id).must_equal 2
+      end 
+    end 
+  end 
 end

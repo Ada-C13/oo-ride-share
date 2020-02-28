@@ -5,11 +5,14 @@ Congratulations! You're submitting your assignment. Please reflect on the assign
 ## Reflection
 Question | Answer
 :------------- | :-------------
-How did getting up to speed on the existing codebase go? If it went well, what worked? If it didn't go well, what will you do differently next time? | 
-What _inheritance_ relations exist between classes? | 
-What _composition_ relations exist between classes? | 
-Describe a decision you had to make when working on this project. What options were you considering? What helped you make your final decision? | 
+How did getting up to speed on the existing codebase go? If it went well, what worked? If it didn't go well, what will you do differently next time? | We think it went well. What we did was to read first and make diagrams. From there, we tried to go through step by step depending the wave. We are so glad that we did this project as a pair.
+What _inheritance_ relations exist between classes? | We have a super class, `CsvRecord` and we have subclasses, `Passenger`, `Driver` and `Trip`.
+What _composition_ relations exist between classes? | Passenger and Trip have one to many relationship. Driver and Trip also have one to many relationship. `TripDispatcher and Driver` & `TripDispatcher and Passenger` & `TripDispatcher and Trip` have also one to many relationships.
+Describe a decision you had to make when working on this project. What options were you considering? What helped you make your final decision? | During the Wave 4 part, we needed to figure out how to sort `available_drivers` array with `sorted trips` inside of the available drivers. We made a decision based on the test results by using "puts" and rubber ducking each other.   
 Give an example of a _template method_ that you implemented for this assignment | 
+We have a template method, `self.from_csv` in `CsvRecord` class. We implemented this method in `Driver` & `Passenger` & `Trip` class
 Give an example of a _nominal test_ that you wrote for this assignment | 
-Give an example of an _edge case test_ that you wrote for this assignment | 
-What is a concept that you gained more clarity on as you worked on this assignment | 
+For the `trip_dispatch_test`, we wrote a _nominal test_ called "Selects an available driver and switch to an unavilable status" to make sure we have the correct status for each driver.
+Give an example of an _edge case test_ that you wrote for this assignment |
+For the `driver_test`, we wrote a _edge case_ called "Returns the correct total revenue when the cost of a trip was less that $1.65" to handle the total revenue   caculating the 80% of trip cost without subtracting the fee ($1.65)
+What is a concept that you gained more clarity on as you worked on this assignment | By doing this project, we understood the concepts of `Inheritance (super class and subclasses)` and `object compositions`. It was very helpful for us to have diagrams to understand the (is a / has a) realtionships. We were very glad to see the useful `template methods`, and learn when to use `helper methods`. Furthermore, we gained more clarity on how to use `before` blocks, nominal and edge cases in test files.

@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 1
         )
 
       @passenger.add_trip(trip)
@@ -68,7 +69,92 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
+  describe "net_expenditures & total_time_spent" do
     # You add tests for the net_expenditures method
+
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse('2020-02-24 00:00:13 +0000'),
+        end_time: Time.parse('2020-02-24 00:20:13 +0000'),
+        rating: 5,
+        cost: 10.28,
+        driver_id: 1
+        )
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse('2020-02-24 00:00:13 +0000'),
+        end_time: Time.parse('2020-02-24 00:20:13 +0000'),
+        rating: 5,
+        cost: 10.00,
+        driver_id: 1
+        ) 
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip2)
+    end
+    
+   it "returns the total amount of money that passenger has spent on their trips" do 
+     # Assert
+     expect(@passenger.net_expenditures).must_equal 20.28
+
+     expect(@passenger.net_expenditures).must_be_instance_of Float
+   end 
+
+   it "returns the total amount of time that passenger has spent on their trips" do 
+    # Assert
+    expect(@passenger.total_time_spent).must_equal 2400
+
+    expect(@passenger.total_time_spent).must_be_kind_of Integer
+   end 
+
+   it "returns the correct net expenditures and total time spent if the passenger has no trips" do 
+    # Arrange
+    passenger = RideShare::Passenger.new(
+      id: 9,
+      name: "Merl Glover III",
+      phone_number: "1-602-620-2330 x3723",
+      trips: []
+      )
+    
+    # Act & Assert
+    expect(passenger.total_time_spent).must_equal 0
+    expect(passenger.total_time_spent).must_be_kind_of Integer
+
+    expect(passenger.net_expenditures).must_equal 0.0
+    expect(passenger.net_expenditures).must_be_instance_of Float
+   end 
+
+   it "returns the correct net expenditures and total time spent if the passenger's trip is still in-progress" do 
+    # Arrange 
+    trip3 = RideShare::Trip.new(
+      id: 8,
+      passenger: @passenger,
+      start_time: Time.parse('2020-02-24 00:00:13 +0000'),
+      end_time: nil,
+      rating: nil,
+      cost: nil,
+      driver_id: 1
+      ) 
+    @passenger.add_trip(trip3)
+
+    # Act & Assert
+    expect(@passenger.net_expenditures).must_equal 20.28
+    expect(@passenger.net_expenditures).must_be_instance_of Float
+
+    expect(@passenger.total_time_spent).must_equal 2400
+    expect(@passenger.total_time_spent).must_be_kind_of Integer
+
+   end 
   end
 end
+
+
