@@ -21,7 +21,13 @@ module RideShare
       if trips == nil || trips.length == 0
         return 0
       end
-      total_cost = trips.sum {|trip| trip.cost}
+      total_cost = trips.sum {|trip| 
+        if trip.cost == nil
+          0
+        else
+          trip.cost
+        end
+      }
       return total_cost
     end
 

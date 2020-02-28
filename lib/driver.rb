@@ -22,13 +22,21 @@ module RideShare
       @trips << new_trip  
     end 
 
+    def request_trip(trip)
+      add_trip(trip)
+      self.status = :UNAVAILABLE
+    end
+
     # Calculate driver's average rating from trips
     def average_rating 
       if trips.length == 0
         return 0
       end
-      ratings = trips.map do |trip|
-        trip.rating
+      ratings = []
+      trips.each do |trip|
+        if trip.rating != nil
+          ratings << trip.rating
+        end
       end
       return ratings.sum.to_f / ratings.length
     end
@@ -39,10 +47,10 @@ module RideShare
         return 0
       end
       revenue = trips.map do |trip|
-        if trip.cost >= 1.65
-          (trip.cost - 1.65) * 0.8 
-        else
+        if trip.cost == nil || trip.cost < 1.65
           0
+        else
+          (trip.cost - 1.65) * 0.8 
         end
       end 
       return revenue.sum

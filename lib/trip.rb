@@ -11,10 +11,10 @@ module RideShare
           id:,
           passenger: nil,
           passenger_id: nil,
-          start_time:,
-          end_time:,
+          start_time: nil,
+          end_time: nil,
           cost: nil,
-          rating:,
+          rating: nil,
           driver_id: nil,
           driver: nil
         )
@@ -38,7 +38,8 @@ module RideShare
         raise ArgumentError, 'Driver or driver_id is required'
       end
 
-      if end_time < start_time || end_time == nil 
+      # if the trip is NOT in progress, we test for compatible start and end times
+      if !(start_time.class == Time && end_time == nil) && end_time < start_time
         raise ArgumentError.new("Incompatible start and end times")
       end
 
@@ -47,7 +48,8 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      # if the trip is NOT in progress, we test for a valid rating
+      if @rating != nil && (@rating > 5 || @rating < 1)
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
     end
@@ -70,6 +72,10 @@ module RideShare
     
     # Calculate trip's duration in seconds
     def duration
+      # TODO: make sure this case handling for trip in prgress fits specs
+      if end_time == nil
+        return 0
+      end
       start_in_sec = (@start_time.hour * 3600) + (@start_time.min * 60) + @start_time.sec
       end_in_sec = (@end_time.hour * 3600) + (@end_time.min * 60) + @end_time.sec
       return end_in_sec - start_in_sec
