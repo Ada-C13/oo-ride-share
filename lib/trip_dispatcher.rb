@@ -57,14 +57,12 @@ module RideShare
 
 
     def find_available_driver
-      
       @drivers.each do |driver|
         if driver.status == :AVAILABLE
           return driver 
         end 
       end 
     end 
-    
 
     private
 
@@ -77,7 +75,5 @@ module RideShare
 
       return trips
     end
-
-
   end
 end

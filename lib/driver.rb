@@ -5,11 +5,11 @@ module RideShare
     attr_reader :name, :vin, :trips
     attr_accessor :status
 
-    def initialize(id:, name:, vin:, status:, trips: nil)
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
       @name = name
       if vin.length != 17
-        raise ArgumentError, "Vin length is invalid"
+        raise ArgumentError, "VIN length is invalid"
       end
       @vin = vin
 
@@ -37,9 +37,8 @@ module RideShare
           count += 1
         end 
       end 
-        return (sum/count)
+        return (sum.to_f/count)
     end 
-
 
     def total_revenue 
       if @trips.length == 0
@@ -48,19 +47,14 @@ module RideShare
         total = 0.0
         @trips.each do |trip|
           if trip.cost < 1.65
-            total += (trip.cost * 1.8)
+            total += (trip.cost * 0.8)
           else
-            total += (trip.cost - 1.65) * 1.8
+            total += (trip.cost - 1.65) * 0.8
           end 
         end 
       end 
-      return total 
+      return total
     end 
-
-
-
-
-
 
     def self.from_csv(record)
       return new(
@@ -70,6 +64,5 @@ module RideShare
         status: record[:status]
       )
     end 
-
   end
 end

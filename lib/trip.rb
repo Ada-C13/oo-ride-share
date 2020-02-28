@@ -38,10 +38,9 @@ module RideShare
           raise ArgumentError.new("You can't end a trip before one starts")
         end 
       end 
-
-      unless cost == nil
-        @cost = cost
-      end 
+       
+      @cost = cost
+      
 
       unless rating == nil
         if rating < 1 || rating > 5
@@ -50,7 +49,6 @@ module RideShare
           @rating = rating
         end
       end
-
 
       if driver
         @driver = driver

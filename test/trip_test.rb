@@ -25,7 +25,24 @@ describe "Trip class" do
       expect(@trip).must_be_kind_of RideShare::Trip
     end
 
-    it "stores an instance of passenger" do
+    it "must ignore cost" do
+      start_time = Time.now - 60 * 60 # 60 minutes
+      end_time = start_time + 25 * 60 # 25 minutes
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"),
+        start_time: start_time,
+        end_time: end_time,
+        rating: 3,
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "UNAVAILABLE")
+      )
+
+      
+      expect(trip.cost).must_be_nil
+
+    end
+
+  it "stores an instance of passenger" do
       expect(@trip.passenger).must_be_kind_of RideShare::Passenger
     end
 
@@ -62,7 +79,6 @@ describe "Trip class" do
         rating: 3,
         driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
       }
-     
       
       expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
     end 
@@ -91,5 +107,4 @@ describe "Trip class" do
       expect(seconds).must_equal 600.0
     end 
   end 
-
 end 

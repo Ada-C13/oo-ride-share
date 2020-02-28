@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -147,7 +147,12 @@ describe "TripDispatcher class" do
           expect(driver.trips).must_include(trip)
 
         end  
+
+        it "will create an Instance of a Passenger class" do 
+          trip = @dispatcher.request_trip(2) 
+          passenger = trip.passenger
+          expect(passenger).must_be_instance_of RideShare::Passenger
+        end
       end
   end 
-   
 end
