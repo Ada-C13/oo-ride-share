@@ -30,7 +30,7 @@ module RideShare
     def average_rating
 			ratings = []
 			@trips.each do |trip|
-				ratings << trip.rating unless trip.rating == nil
+				ratings << trip.rating unless trip.rating.nil?
 			end
 			return @trips.length == 0 ? 0 : (ratings.sum / ratings.length).to_f.round(1)
 	  end
