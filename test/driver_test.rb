@@ -47,7 +47,7 @@ describe "Driver class" do
 
   describe "add_trip method" do
     before do
-      pass = RideShare::Passenger.new(
+      @pass = RideShare::Passenger.new(
         id: 1,
         name: "Test Passenger",
         phone_number: "412-432-7640"
@@ -60,14 +60,14 @@ describe "Driver class" do
       @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
-        passenger: pass,
+        passenger: @pass,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
         rating: 5
       )
     end
 
-    it "adds the trip" do
+    it "successfully adds the trip to the trip collection" do
       expect(@driver.trips).wont_include @trip
       previous = @driver.trips.length
 
@@ -90,7 +90,7 @@ describe "Driver class" do
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
         rating: 5
       )
       @driver.add_trip(trip)
@@ -143,7 +143,7 @@ describe "Driver class" do
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
         rating: 5,
         cost: 5
       )
@@ -152,7 +152,7 @@ describe "Driver class" do
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
         rating: 5,
         cost: 10
       )
@@ -174,6 +174,9 @@ describe "Driver class" do
     end
 
     it "returns the driver's total profit accurately when some trips are less than $3" do
+    # NOTE: The following addresses the question of "What if the cost of a trip was less than $1.65?"
+    # The executive decision was made that if a trip cost less than $3 the company was generous and gave
+    # them the entire profit, otherwise the company charges the fees as per usual.
       sad_driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
@@ -184,7 +187,7 @@ describe "Driver class" do
         driver: sad_driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
         rating: 5,
         cost: 5
       )
@@ -193,7 +196,7 @@ describe "Driver class" do
         driver: sad_driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
         rating: 5,
         cost: 2
       )

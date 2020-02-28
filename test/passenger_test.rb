@@ -2,6 +2,14 @@ require_relative 'test_helper'
 
 describe "Passenger class" do
 
+  let (:passenger) {
+    RideShare::Passenger.new(
+      id: 1,
+      name: "Ada",
+      phone_number: "412-432-7640",
+    )
+  }
+
   describe "Passenger instantiation" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
@@ -78,17 +86,10 @@ describe "Passenger class" do
     end
 
     it "returns the total amount a passenger has spent on their rides [given new information]" do
-      
-      passenger = RideShare::Passenger.new(
-        id: 1,
-        name: "Ada",
-        phone_number: "412-432-7640",
-      )
-      
       trip_1 = RideShare::Trip.new(id: 8,
         passenger: passenger,
         start_time: Time.new(2016, 8, 11),
-        end_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11) + 6*60*60,
         cost: 23,
         rating: 3,
         driver_id: 1
@@ -97,7 +98,7 @@ describe "Passenger class" do
       trip_2 = RideShare::Trip.new(id: 9,
         passenger: passenger,
         start_time: Time.new(2016, 8, 11),
-        end_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11) + 6*60*60,
         cost: 60,
         rating: 4,
         driver_id: 1
@@ -111,13 +112,6 @@ describe "Passenger class" do
     end
 
     it "returns 0 if a passenger has not yet taken a trip" do
-      
-      passenger = RideShare::Passenger.new(
-        id: 1,
-        name: "Ada",
-        phone_number: "412-432-7640",
-      )
-
       expect(passenger.net_expenditures).must_equal 0
 
     end
@@ -132,13 +126,6 @@ describe "Passenger class" do
     end
 
     it "returns the total time (in seconds) that a passenger rode [given new information]" do
-      
-      passenger = RideShare::Passenger.new(
-        id: 1,
-        name: "Ada",
-        phone_number: "412-432-7640",
-      )
-      
       trip_1 = RideShare::Trip.new(id: 8,
         passenger: passenger,
         start_time: Time.new(2016, 8, 11),
@@ -164,13 +151,6 @@ describe "Passenger class" do
     end
 
     it "returns 0 if a passenger has not yet taken a trip" do
-      
-      passenger = RideShare::Passenger.new(
-        id: 1,
-        name: "Ada",
-        phone_number: "412-432-7640",
-      )
-
       expect(passenger.total_time_spent).must_equal 0
     end
   end

@@ -107,7 +107,7 @@ describe "Trip class" do
       end
     end 
 
-    it "returns 0 if start and end time are the same" do
+    it "raises an error if start and end time are the same" do
       expect do
         RideShare::Trip.new(id: 8,
         passenger: RideShare::Passenger.new(
@@ -120,8 +120,7 @@ describe "Trip class" do
         cost: 23.45,
         rating: 3,
         driver_id: 1
-      ).must_equal 0
-      end
+      )end.must_raise ArgumentError
     end
   end
 end

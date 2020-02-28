@@ -53,6 +53,9 @@ module RideShare
         if @start_time > @end_time
           raise ArgumentError.new("Invalid times given: #{start_time} comes after #{end_time}. Chronological error.")
         end
+        if @start_time == @end_time
+          raise ArgumentError.new("Invalid times given: #{start_time} cannot be the same as #{end_time}.")
+        end
       end
     end
 

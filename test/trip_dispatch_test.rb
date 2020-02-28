@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -138,9 +138,9 @@ describe "TripDispatcher class" do
 
         expect(@new_trip.id).must_equal 6
         expect(@new_trip.driver_id).must_equal 2 # Driver 2 was the first driver available 
-        expect(@new_trip.end_time).must_equal nil
-        expect(@new_trip.cost).must_equal nil
-        expect(@new_trip.rating).must_equal nil
+        assert_nil @new_trip.end_time
+        assert_nil @new_trip.cost
+        assert_nil @new_trip.rating
       end
 
       it "adds the in progress trip to the trip collection" do
@@ -150,8 +150,8 @@ describe "TripDispatcher class" do
 
       it "raises an Exception if no drivers are available" do
         expect do
-          new_trip_2 = @dispatcher.request_trip(2)
-          new_trip_3 = @dispatcher.request_trip(3)
+          @dispatcher.request_trip(2)
+          @dispatcher.request_trip(3)
         end.must_raise StandardError
       end
   end
