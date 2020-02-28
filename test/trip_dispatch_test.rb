@@ -84,6 +84,22 @@ describe "TripDispatcher class" do
       td = RideShare::TripDispatcher.new
       expect(td.request_trip(1)).must_be_kind_of RideShare::Trip
     end
+    # Were the trip lists for the driver and passenger updated?
+    it "Adds trip to passenger's trips" do
+      dispatcher = build_test_dispatcher
+
+      passenger = dispatcher.find_passenger(1)
+
+      dispatcher.request_trip(1)
+
+      expect(passenger.trips.length).must_equal 3
+
+      # trip = added_trip
+      # passenger.trips.last.id == trip.id
+    end
+
+    it "Adds trip to driver's trips" do
+    end
   end
 
   # TODO: un-skip for Wave 2
