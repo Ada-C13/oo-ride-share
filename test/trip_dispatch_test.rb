@@ -138,25 +138,44 @@ describe "TripDispatcher class" do
   describe "request_trip method" do
     before do
       @dispatcher = build_test_dispatcher
-
-      # first_available_driver = @dispatcher.drivers[2]
-
+      start_time = Time.now 
+      end_time = nil
+      @trip_data = {
+        id: 8,
+        driver: @dispatcher.drivers[2],
+        passenger: @dispatcher.passengers.first,
+        start_time: start_time,
+        end_time: end_time,
+        cost: nil,
+        rating: nil
+      }
+      @trip = RideShare::Trip.new(@trip_data)
+   
+      @test_trip = @dispatcher.request_trip(@trip.passenger.id)
     end
 
     it "gets an instance of passenger when given an id" do
-      first_passenger = @dispatcher.passengers.first
-      test_trip = @dispatcher.request_trip(first_passenger.id)
-      expect(test_trip.passenger_id).must_equal 1
-      expect(test_trip.passenger).must_be_kind_of RideShare::Passenger
+      
+      expect(@test_trip.passenger_id).must_equal 1
+      expect(@test_trip.passenger).must_be_kind_of RideShare::Passenger
     end
     it "gets an instance of first available driver" do
-      first_passenger = @dispatcher.passengers.first
-      test_trip = @dispatcher.request_trip(first_passenger.id)
-      expect(test_trip.driver_id).must_equal 2
-      expect(test_trip.driver).must_be_kind_of RideShare::Driver
+      expect(@test_trip.driver_id).must_equal 2
+      expect(@test_trip.driver).must_be_kind_of RideShare::Driver
     end
-    it "raises an ArgumentError when there are no drivers available" do 
-      
+    # it "raises an ArgumentError when there are no drivers available" do 
+    #   expect().must_raise ArgumentError
+    # end
+    it "check to see if there is an intance of Trip" do 
+      expect(@trip).must_be_kind_of RideShare::Trip
     end
+    # it "updates the passenger's trips to add the current trip" do 
+    #   @dispatcher.passenger.first.trips << @trip
+    #   expect(@dispatcher.passenger.first.trips.length).must_equal 1
+    # end
+    # it "updates the driver's trips to add the current trip" do 
+    #   expect(@trips.length).must_equal 1
+    # end
+
   end
 end
