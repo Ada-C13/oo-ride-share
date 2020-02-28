@@ -58,6 +58,14 @@ module RideShare
             end
         end
 
+        def switch_status
+             if @status == :AVAILABLE
+                @status = :UNAVAILABLE
+            elsif @status == :UNAVAILABLE
+                @status = :AVAILABLE
+            end            
+        end 
+        
         def self.from_csv(record)
             return new(
                 id: record[:id],

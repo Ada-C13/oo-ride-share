@@ -1,45 +1,47 @@
-require 'csv'
+require "csv"
 
-require_relative 'csv_record'
-require 'time'
-
+require_relative "csv_record"
+require "time"
 
 module RideShare
   class Trip < CsvRecord
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver, :driver_id
 
     def initialize(
-          id:,
-          passenger: nil,
-          passenger_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:,
-          driver:nil, 
-          driver_id: nil
-        )
+      id:,
+      passenger: nil,
+      passenger_id: nil,
+      start_time:,
+      end_time: nil,
+      cost: nil,
+      rating: nil,
+      driver: nil,
+      driver_id: nil
+    )
       super(id)
 
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
-        raise ArgumentError, 'Passenger or passenger_id is required'
+        raise ArgumentError, "Passenger or passenger_id is required"
       end
-      #if end time is after start time, raise an argument error 
-      raise(ArgumentError, "End time is before start time") unless end_time > start_time 
+      #if end time is after start time, raise an argument error
+      if end_time != nil && start_time != nil
+        raise(ArgumentError, "End time is before start time") unless end_time > start_time
+      end
+
       @start_time = start_time
       @end_time = end_time
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      if rating != nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
 
       if driver
@@ -48,9 +50,8 @@ module RideShare
       elsif driver_id
         @driver_id = driver_id
       else
-        raise ArgumentError, 'driver or driver_id is required'
+        raise ArgumentError, "driver or driver_id is required"
       end
-
     end
 
     def inspect
@@ -71,8 +72,13 @@ module RideShare
       driver.add_trip(self)
     end
 
-    def duration(start_time, end_time)
-      return (end_time - start_time).to_i #this will return time in seconds 
+    def duration
+      if @end_time != nil
+        return (@end_time - @start_time).to_i #this will return time in second
+      else
+        # TODO: handle the nil case (i.e. handle in progress trips)
+      end
+      
     end
 
     private
@@ -85,7 +91,7 @@ module RideShare
                start_time: Time.parse(record[:start_time]),
                end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
-               rating: record[:rating]
+               rating: record[:rating],
              )
     end
   end

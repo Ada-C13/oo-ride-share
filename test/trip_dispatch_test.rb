@@ -1,12 +1,12 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
-TEST_DATA_DIRECTORY = 'test/test_data'
+TEST_DATA_DIRECTORY = "test/test_data"
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
-      directory: TEST_DATA_DIRECTORY
-    )
+             directory: TEST_DATA_DIRECTORY,
+           )
   end
 
   describe "Initializer" do
@@ -28,7 +28,7 @@ describe "TripDispatcher class" do
 
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
-      trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
+      trip_count = %x{wc -l 'support/trips.csv'}.split(" ").first.to_i - 1
 
       dispatcher = RideShare::TripDispatcher.new
 
@@ -43,7 +43,7 @@ describe "TripDispatcher class" do
       end
 
       it "throws an argument error for a bad ID" do
-        expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
+        expect { @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
 
       it "finds a passenger instance" do
@@ -120,6 +120,43 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  # it "get an instance of passenger when given an id" do
+  #   expect(@dispatcher.request_trip(9)).must_equal @passenger
+  # end
+  #do we get an instance of passenger with the correct id (found_passenger)
+  #what if the passenger id doesn't exist
+  #do we get an instance of driver who's available
+  #what happens if there are no availble drivers
+  #check to see if there was an instance of new trip with Driver and Passenger
+  #check to see if the trips for driver and passenger has been updated
+
+  # end
+
+  describe "request_trip method" do
+    before do
+      @dispatcher = build_test_dispatcher
+
+      # first_available_driver = @dispatcher.drivers[2]
+
+    end
+
+    it "gets an instance of passenger when given an id" do
+      first_passenger = @dispatcher.passengers.first
+      test_trip = @dispatcher.request_trip(first_passenger.id)
+      expect(test_trip.passenger_id).must_equal 1
+      expect(test_trip.passenger).must_be_kind_of RideShare::Passenger
+    end
+    it "gets an instance of first available driver" do
+      first_passenger = @dispatcher.passengers.first
+      test_trip = @dispatcher.request_trip(first_passenger.id)
+      expect(test_trip.driver_id).must_equal 2
+      expect(test_trip.driver).must_be_kind_of RideShare::Driver
+    end
+    it "raises an ArgumentError when there are no drivers available" do 
+      
     end
   end
 end
