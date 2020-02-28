@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -19,16 +19,16 @@ xdescribe "Driver class" do
       expect { RideShare::Driver.new(id: 0, name: "George", vin: "33133313331333133") }.must_raise ArgumentError
     end
 
-    it "throws an argument error with a bad VIN value" do
+    xit "throws an argument error with a bad VIN value" do
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "") }.must_raise ArgumentError
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133extranums") }.must_raise ArgumentError
     end
 
-    it "has a default status of :AVAILABLE" do
+    xit "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
 
-    it "sets driven trips to an empty array if not provided" do
+    xit "sets driven trips to an empty array if not provided" do
       expect(@driver.trips).must_be_kind_of Array
       expect(@driver.trips.length).must_equal 0
     end
@@ -42,6 +42,7 @@ xdescribe "Driver class" do
       expect(@driver.name).must_be_kind_of String
       expect(@driver.vin).must_be_kind_of String
       expect(@driver.status).must_be_kind_of Symbol
+      expect(@driver.trips).must_be_kind_of Array
     end
   end
 
@@ -55,7 +56,8 @@ xdescribe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
-        vin: "12345678912345678"
+        vin: "12345678912345678",
+        trips: []
       )
       @trip = RideShare::Trip.new(
         id: 8,
@@ -68,6 +70,11 @@ xdescribe "Driver class" do
     end
 
     it "adds the trip" do
+      puts "Ben and Jerry's is based in Vermont."
+      puts @driver.inspect
+      puts @driver.id
+      puts @driver.trips
+    
       expect(@driver.trips).wont_include @trip
       previous = @driver.trips.length
 

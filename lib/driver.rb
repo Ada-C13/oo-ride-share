@@ -3,15 +3,19 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :id, :name, :vin, :status
+    attr_reader :id, :name, :vin, :status, :trips 
 
-    def initalize(id:, name:, vin:, status:, trips:)
+    def initialize(id:, name:, vin:, status: :UNAVAILABLE, trips: nil)
      super(id)
 
       @name = name
-      @vin = "".length(17) # Test this
-      @status = :AVAILABLE || :UNAVAILABLE
-      @trips = trips || []
+      @vin = "" 
+      @status = status #use guard clause in calling method 
+      if !trips 
+        @trips = []
+      else 
+        @trips = trips 
+      end 
     end 
 
     def self.from_csv(record)
@@ -23,9 +27,19 @@ module RideShare
       )
     end
 
-    #This needs class-specific parameters added
-    def self.load_all(full_path: nil, directory: nil, file_name: nil)
-     full_path ||= build_path(lib, driver.rb)
+    def add_trip(trip)
+      @trips << trip
+    end  
+
+    def average_rating
+      ave_rat = []
+      @trips.each do |trip|
+        ave_rat << trip.rating
+      end
+      average = ave_rat.sum / ave_rat.length
+      return average
     end
+
   end 
 end
+RideShare::Driver.new(id: 123, name: "Donatello", vin: 123345398793, status: :AVAILABLE, trips: [])

@@ -1,3 +1,4 @@
+require 'time'
 require_relative 'test_helper'
 
 describe "Trip class" do
@@ -7,6 +8,12 @@ describe "Trip class" do
       end_time = start_time + 25 * 60 # 25 minutes
       @trip_data = {
         id: 8,
+        driver: RideShare::Driver.new(
+          id: 123, 
+          name: "Donatello", 
+          vin: 123345398793, 
+          status: :AVAILABLE, 
+          ),
         passenger: RideShare::Passenger.new(
           id: 1,
           name: "Ada",
@@ -31,7 +38,7 @@ describe "Trip class" do
     it "has a valid start and end time" do  # check if start time is less than end time which makes it valid
       expect(@trip.start_time < @trip.end_time).must_equal true
     end
-    
+
     it "stores an instance of driver" do
       skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
@@ -45,5 +52,10 @@ describe "Trip class" do
         end.must_raise ArgumentError
       end
     end
+
+    it "converts trip time into seconds" do 
+      expect(@trip.duration).must_be_kind_of Float
+      expect(@trip.duration).must_equal 1500.0 #Change this to must_be_close_to
+    end 
   end
 end
