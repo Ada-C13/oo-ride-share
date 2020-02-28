@@ -32,6 +32,21 @@ module RideShare
       if @trips.empty?
         return 0
       end
+      # if rating is nill ignore the rating
+      # return sum of other ratings
+      nil_check = @trips.clone
+
+      nil_check.each_with_index do |trip, index|
+        if trip.rating == nil
+          nil_check.delete_at(index)
+        end
+        no_nils = nil_check.map { |trip| trip.rating }
+        trips = no_nils.length
+        avg_rating = no_nils.sum.to_f / trips 
+        return avg_rating
+      end
+
+
       
       all_trips = @trips.map { |trip| trip.rating }.sum
       trip_count = @trips.length
