@@ -42,6 +42,7 @@ module RideShare
       new_id = @trips.map { |trip| trip.id }.max + 1 # in case trips are not sorted by id
 
       trip = Trip.new(id: new_id, passenger: passenger, driver: driver)
+      
       driver.status = :UNAVAILABLE
       trip.connect(passenger, driver) # add trip to passenger trips and driver trips
       @trips << trip # add trip to dispatcher trips

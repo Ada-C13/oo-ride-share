@@ -134,7 +134,33 @@ describe "Driver class" do
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
 
-    it "average rating works with in-progress trips" do # in construction...
+    it "average rating works with in-progress trips" do # in construction... done
+
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+        # status: :AVAILABLE      
+      )
+
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 5
+      )
+      
+      trip3 = RideShare::Trip.new(
+        id: 12,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+      )
+      @driver.add_trip(trip)
+      @driver.add_trip(trip3)
+      expect(@driver.average_rating).must_equal 5
 
     end
 
@@ -179,6 +205,12 @@ describe "Driver class" do
         rating: 4,
         cost: 1.6
       )
+      @trip4 = RideShare::Trip.new(
+        id: 7,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8)   #got rid of cost/rating/end_time
+      )
     end
 
     it "returns the total driver revenue" do
@@ -192,8 +224,12 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_equal 24 # 0 + 8 + 16
     end
 
-    it "total revenue works with in-progress trips" do # in construction...
-
+    it "total revenue works with in-progress trips" do # in construction... done
+      @driver.add_trip(@trip1)
+      @driver.add_trip(@trip2)
+      @driver.add_trip(@trip4)
+      expect(@driver.total_revenue).must_equal 24
+     
     end
   end
 end

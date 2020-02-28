@@ -34,7 +34,7 @@ module RideShare
 
     def average_rating
       completed = @trips.select { |trip| trip.rating != nil }
-      return completed.map {|trip| trip.rating}.sum.to_f / (completed.size == 0 ? 1 : completed.size)
+      completed.map {|trip| trip.rating}.sum.to_f / (completed.size == 0 ? 1 : completed.size)
     end
 
     def total_revenue

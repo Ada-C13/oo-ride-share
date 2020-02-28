@@ -131,13 +131,14 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 50
     end
 
-    it "net expenditure works with in-progress trips" do
+    it "net expenditure works with in-progress trips" do   #done
       @passenger.add_trip(@trip1)
       @passenger.add_trip(@trip2)
       @passenger.add_trip(@trip3)
       expect(@passenger.net_expenditures).must_equal 50 # no additional cost for trip 3
 
     end
+
 
   end
 
@@ -178,6 +179,13 @@ describe "Passenger class" do
         cost: 40,
         rating: 5
         )
+
+        @trip3 = RideShare::Trip.new(
+        id: 11,
+        driver: driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 11) # removed end time, cost and rating
+        )
       end
 
     it "Returns the total time the passenger has had on trips." do
@@ -188,10 +196,17 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_equal 172800
     end
 
+    it "total time spent works with in-progress trips" do # in construction... done
+      @passenger.add_trip(@trip1)
+      @passenger.add_trip(@trip2)
+      @passenger.add_trip(@trip3)
+      expect(@passenger.total_time_spent).must_equal 2 * 24 * 60 * 60 
+    end
+
   end
 
   # Test total_time_spent Method
-  describe "total_time_spent" do
+  describe "total_time_spent" do   # to think about, can this describe block be combined with the above one?
     before do
       @passenger = RideShare::Passenger.new(id: 9, name: "Merl Glover III", phone_number: "1-602-620-2330 x3723", trips: [])
       @trip1     = RideShare::Trip.new(id: 4, driver_id: 5, passenger: @passenger, start_time: Time.new(2016,8,1), end_time: Time.new(2016,8,2),rating: 5)
@@ -206,10 +221,7 @@ describe "Passenger class" do
       @passenger.add_trip(@trip2)
       expect(@passenger.total_time_spent).must_equal 2 * 24 * 60 * 60 # two days in seconds
     end
-
-    it "total time spent works with in-progress trips" do # in construction...
-
-    end
+    
 
   end
 
