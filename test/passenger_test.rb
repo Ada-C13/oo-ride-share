@@ -61,7 +61,6 @@ describe "Passenger class" do
         end_time: Time.new(2016, 8, 9),
         rating: 5
         )
-
       @passenger.add_trip(trip)
     end
 
@@ -101,8 +100,8 @@ describe "Passenger class" do
         id: 2,
         driver: @driver,
         passenger: @passenger,
-        start_time: Time.new(2020, 8, 8),
-        end_time: Time.new(2020, 8, 9),
+        start_time: Time.parse("2018-12-27 03:38:08 -0800"),
+        end_time: Time.parse("2018-12-27 03:39:08 -0800"),
         cost: 200,
         rating: 5
         ) 
@@ -115,25 +114,43 @@ describe "Passenger class" do
       expect(total).must_equal 300 
     end
   end
-  
-  describe "add_trip" do
-    # TODO
+
+  describe "total_time_spent" do
+    it "calculates the amount of time rider spent on trips" do
+
+      driver = RideShare::Driver.new(id: 7, 
+        name: "Test Driver", 
+        vin: "12345678901234567")
+      passenger = RideShare::Passenger.new(id: 1, 
+        name: "Kate Lak", 
+        phone_number: "1-602-620-2330 x0723", 
+        trips: [])
+      trip1 = RideShare::Trip.new(id: 1, 
+        driver: driver, 
+        passenger: passenger, 
+        start_time: Time.parse("2018-12-27 03:38:08 -0800"),
+        end_time: Time.parse("2018-12-27 03:39:08 -0800"), 
+        cost: 100, 
+        rating: 4) 
+      passenger.add_trip(trip1)
+      trip2 = RideShare::Trip.new(id: 2, 
+        driver: driver, 
+        passenger: passenger, 
+        start_time: Time.parse("2018-12-27 02:38:08 -0800"),
+        end_time: Time.parse("2018-12-27 02:40:08 -0800"), 
+        cost: 200, 
+        rating: 5) 
+      passenger.add_trip(trip2)
+      trip3 = RideShare::Trip.new(id: 2, 
+        driver: driver, 
+        passenger: passenger, 
+        start_time: Time.parse("2018-12-27 04:38:08 -0800"),
+        end_time: nil, 
+        cost: 200, 
+        rating: 5) 
+      passenger.add_trip(trip3)
+
+      expect(passenger.total_time_spent).must_equal 180
+    end
   end
-
-  # describe "total_time_spent" do
-  #   it "calculates the amount of time rider spent on  trips" do
-  #     start_time =
-  #     end_time =
-
-  #     driver = RideShare:: Driver.new(id:)
-  #     passenger = RideShare: Passenger.new
-  #     trip = RideShare:: Trip.new
-
-
-  # end
-
-  
 end
-
-
-
