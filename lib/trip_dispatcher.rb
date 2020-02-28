@@ -5,6 +5,8 @@ require_relative 'passenger'
 require_relative 'trip'
 
 module RideShare
+  class NoDriverError < StandardError
+  end
   class TripDispatcher
     attr_reader :drivers, :passengers, :trips
 
@@ -33,6 +35,24 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def request_trip(passenger_id)
+      driver = drivers.find {|driver| driver.status == :AVAILABLE }
+      if driver == nil 
+        raise NoDriverError.new("No available drivers for this trip.")
+      end 
+      new_trip = Trip.new(
+        id: trips.length + 1,
+        passenger_id: passenger_id,
+        passenger: find_passenger(passenger_id),
+        start_time: Time.now,
+        driver: driver,
+        driver_id: driver.id
+      )
+      trips << new_trip
+      driver.request_trip(new_trip)
+      new_trip.passenger.add_trip(new_trip)
+      return new_trip
+    end
     private
 
     def connect_trips
