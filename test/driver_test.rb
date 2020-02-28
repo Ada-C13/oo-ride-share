@@ -1,13 +1,13 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
-        id: 54,
-        name: "Test Driver",
-        vin: "12345678901234567",
-        status: :AVAILABLE
+                                      id: 54,
+                                      name: "Test Driver",
+                                      vin: "12345678901234567",
+                                      status: :AVAILABLE
       )
     end
 
@@ -45,7 +45,7 @@ xdescribe "Driver class" do
     end
   end
 
-  describe "add_trip method" do
+  describe "driver add_trip method" do
     before do
       pass = RideShare::Passenger.new(
         id: 1,
@@ -117,12 +117,12 @@ xdescribe "Driver class" do
 
     it "correctly calculates the average rating" do
       trip2 = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
-        rating: 1
+                                id: 8,
+                                driver: @driver,
+                                passenger_id: 3,
+                                start_time: Time.new(2016, 8, 8),
+                                end_time: Time.new(2016, 8, 9),
+                                rating: 1
       )
       @driver.add_trip(trip2)
 
@@ -130,7 +130,84 @@ xdescribe "Driver class" do
     end
   end
 
-  describe "total_revenue" do
-    # You add tests for the total_revenue method
+  describe "total_revenue method" do
+    it "returns 0 revenue if no trips are driven" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE,
+        trips: []
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "correctly calculates the total revenue" do
+      driver2 = RideShare::Driver.new(
+        id: 33,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE,
+        trips: []
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: driver2,
+        passenger_id: 4,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 43,
+        rating: 5
+      )
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: driver2,
+        passenger_id: 5,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 56,
+        rating: 1
+      )
+      driver2.add_trip(trip)
+      driver2.add_trip(trip2)
+
+      expect(driver2.total_revenue).must_equal ((43 + 56) - (1.65 * 2)) * 0.8
+
+    end
+
+      it "returns 0 if revenue is less than $1.65 per trip" do
+        driver3 = RideShare::Driver.new(
+          id: 33,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ",
+          status: :AVAILABLE,
+          trips: []
+        )
+
+        trip = RideShare::Trip.new(
+          id: 8,
+          driver: driver3,
+          passenger_id: 4,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 8),
+          cost: 1,
+          rating: 5
+        )
+
+        trip2 = RideShare::Trip.new(
+          id: 8,
+          driver: driver3,
+          passenger_id: 5,
+          start_time: Time.new(2016, 8, 8),
+          end_time: Time.new(2016, 8, 9),
+          cost: 1.2,
+          rating: 1
+        )
+
+        driver3.add_trip(trip)
+        driver3.add_trip(trip2)
+  
+        expect(driver3.total_revenue).must_equal 0
+    end
   end
 end
