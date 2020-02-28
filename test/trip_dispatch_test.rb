@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -67,6 +67,8 @@ describe "TripDispatcher class" do
         expect(last_passenger.id).must_equal 8
       end
 
+
+
       it "connects trips and passengers" do
         dispatcher = build_test_dispatcher
         dispatcher.trips.each do |trip|
@@ -79,7 +81,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +122,37 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
-    end
-  end
+    end 
+
+  
+  
+     describe "request trip" do
+      before do
+          @dispatcher = build_test_dispatcher
+        end
+
+        it "will return instance of Trip" do      
+            trip = @dispatcher.request_trip(2)
+            expect(trip).must_be_instance_of RideShare::Trip
+        end 
+
+        it "will update the driver's status to unavailable" do
+          trip = @dispatcher.request_trip(2)
+          expect(trip.driver.status).must_equal :UNAVAILABLE
+        end
+
+        it "will add the trip to drivers trip array" do 
+          trip = @dispatcher.request_trip(2) 
+          driver = trip.driver
+          expect(driver.trips).must_include(trip)
+
+        end  
+
+        it "will create an Instance of a Passenger class" do 
+          trip = @dispatcher.request_trip(2) 
+          passenger = trip.passenger
+          expect(passenger).must_be_instance_of RideShare::Passenger
+        end
+      end
+  end 
 end

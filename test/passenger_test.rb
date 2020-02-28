@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5, 
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
         )
 
       @passenger.add_trip(trip)
@@ -69,6 +70,65 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    it "will calculate the sum of all costs" do 
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+        ride = RideShare::Trip.new(
+        id: 99,
+        passenger: @passenger ,
+        passenger_id: 9,
+        start_time: Time.parse("2018-12-18 03:56:08 -0800"),
+        end_time: Time.parse("2018-12-18 04:08:08 -0800"),
+        cost: 10,
+        rating: 3,
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
+        )
+        @passenger.add_trip(ride)
+
+
+      
+    
+      total = @passenger.net_expenditures
+      expect(total).must_be_instance_of Integer
+
+
+    end 
+  end
+
+  describe "total time spent" do
+    it "will calculate total time spent" do 
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+        ride = RideShare::Trip.new(
+        id: 99,
+        passenger: @passenger ,
+        passenger_id: 9,
+        start_time: Time.parse("2018-12-18 03:56:08 -0800"),
+        end_time: Time.parse("2018-12-18 04:08:08 -0800"),
+        cost: 10,
+        rating: 3,
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
+      )
+
+        @passenger.add_trip(ride)
+
+
+      
+
+      total = @passenger.total_time_spent
+      expect(total).must_be_instance_of Float
+
+
+    end 
   end
 end

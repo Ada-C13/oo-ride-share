@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -55,7 +55,8 @@ xdescribe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
-        vin: "12345678912345678"
+        vin: "12345678912345678",
+        status: "AVAILABLE"
       )
       @trip = RideShare::Trip.new(
         id: 8,
@@ -89,9 +90,9 @@ xdescribe "Driver class" do
         id: 8,
         driver: @driver,
         passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
-        rating: 5
+        start_time: Time.parse("2018-12-27 02:39:05 -0800"),
+        end_time: Time.parse("2018-12-27 02:49:05 -0800"),
+          rating: 5
       )
       @driver.add_trip(trip)
     end
@@ -112,7 +113,7 @@ xdescribe "Driver class" do
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-      expect(driver.average_rating).must_equal 0
+      expect(driver.average_rating).must_equal "No trips taken"
     end
 
     it "correctly calculates the average rating" do
@@ -120,8 +121,8 @@ xdescribe "Driver class" do
         id: 8,
         driver: @driver,
         passenger_id: 3,
-        start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 9),
+        start_time: Time.parse("2018-12-27 02:39:05 -0800"),
+        end_time: Time.parse("2018-12-27 02:49:05 -0800"),
         rating: 1
       )
       @driver.add_trip(trip2)
@@ -131,6 +132,55 @@ xdescribe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    it "will equal zero" do 
+      driver = RideShare::Driver.new(id: 54,
+      name: "Rogers Bartell IV",
+      vin: "1C9EVBRM0YBC564DZ",
+      status: "AVAILABLE")
+
+      expect(driver.total_revenue).must_equal "No revenue"
+    end 
+
+    it "will calculate the correct revenue" do
+      start_time = Time.parse("2018-12-27 02:39:05 -0800")
+      end_time = Time.parse("2018-12-27 02:49:05 -0800")
+      trips = [ 
+        RideShare::Trip.new(
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 34.45,
+        rating: 5,
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
+        ),
+        RideShare::Trip.new(
+          id: 8,
+          passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3,
+        driver: RideShare::Driver.new(id: 5,name: "Paul Klee",vin: "WBS76FYD47DJF7206", status: "AVAILABLE")
+        )
+    ]
+
+      driver = RideShare::Driver.new(id: 5,
+      name: "Paul Klee",
+      vin: "WBS76FYD47DJF7206",
+      status: "AVAILABLE",
+      trips: trips)
+      
+
+      expect(driver.total_revenue).must_be_close_to 43.68, 0.02
+    end 
   end
 end
