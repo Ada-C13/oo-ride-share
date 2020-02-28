@@ -99,6 +99,26 @@ describe "TripDispatcher class" do
     end
 
     it "Adds trip to driver's trips" do
+      dispatcher = build_test_dispatcher
+      passenger = dispatcher.find_passenger(1)
+      dispatcher.request_trip(1)
+
+      # get the passenger's last trip
+      passengers_last_trip = passenger.trips[-1]
+      last_trips_driver = passengers_last_trip.driver_id
+      driver = dispatcher.find_driver(last_trips_driver)
+
+      expect(driver.trips.length).must_equal 5
+    end
+
+    it "Was the driver available" do
+      # count how many available driver
+      # request trip
+      # expect one less available driver
+    end
+
+    it "Raises ArgumentError for unavailable driver" do
+      # Give dispatcher only unavailable drivers to raise ArgumentError - Set all driver to unavailable? Give one unavailable driver in drivers?
     end
   end
 

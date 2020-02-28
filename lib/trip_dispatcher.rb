@@ -37,9 +37,7 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
-    # Wave 3
-    # creates a trip and assigns an available driver
-    def request_trip(passenger_id)
+    def find_available_drivers
       available_drivers = []
 
       @drivers.each do |driver|
@@ -47,14 +45,24 @@ module RideShare
           available_drivers << driver
         end
       end
+      return available_drivers
+    end
 
-      if available_drivers.length == 0
-        raise ArgumentError, "No available drivers"
-      end
+    # Wave 3
+    # creates a trip and assigns an available driver
+    def request_trip(passenger_id)
+      # available_drivers = []
 
-      dispatch_driver = available_drivers[0]
+      # @drivers.each do |driver|
+      #   if driver.status == :AVAILABLE
+      #     available_drivers << driver
+      #   end
+      # end
 
-      dispatch_driver.status = :UNAVAILABLE
+      # if available_drivers.length == 0
+      #   raise ArgumentError, "No available drivers"
+      # end
+      dispatch_driver = find_available_drivers[0]
 
       trip = Trip.new(
         id: @trips.last.id + 1,
@@ -69,6 +77,7 @@ module RideShare
       )
 
       dispatch_driver.add_trip(trip)
+      dispatch_driver.status = :UNAVAILABLE
       trip.passenger.add_trip(trip)
 
       @trips << trip
