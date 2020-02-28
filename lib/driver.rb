@@ -31,13 +31,24 @@ module RideShare
 
   # Wave 2 get average rating for a driver
   def average_rating
+    nil_cases = 0
     if @trips.empty? == true
       return 0
     else
-      average_rating = (@trips).map do |trip|
-        (trip.rating).to_f
+      @trips.each do |trip|
+        if trip.rating == nil
+          nil_cases += 1
+        end
       end
-        return ((average_rating).inject(:+))/(average_rating.length)
+      average_rating = (@trips).map do |trip|
+        if trip.rating == nil
+          0
+        else
+        (trip.rating).to_f
+        end
+      end
+      true_length_of_array = (average_rating.length) - nil_cases
+        return ((average_rating).inject(:+))/(true_length_of_array)
     end
   end
 

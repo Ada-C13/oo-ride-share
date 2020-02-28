@@ -44,24 +44,18 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      @passenger = find_passenger(passenger_id)
+      @passenger = self.find_passenger(passenger_id)
+     
+      if @drivers.find {|driver| driver.status == :AVAILABLE}.nil?
+        raise ArgumentError.new("No available drivers.")
+      end
+
       # grabs first available driver
       @driver = select_available_driver
       @driver.change_status
 
       @trip_data = {
-        id: 120983, # trip id = (trips.id.last) + 1
-        # passenger: RideShare::Passenger.new(
-        #   id: 1,
-        #   name: "Ada",
-        #   phone_number: "412-432-7640"
-        # ),
-        # driver: RideShare::Driver.new(
-        #   id: 54,
-        #   name: "Test Driver",
-        #   vin: "12345678901234567",
-        #   status: :AVAILABLE
-        # ),
+        id: @trips.last.id + 1,
         passenger: @passenger,
         passenger_id: passenger_id,
         driver: @driver,
@@ -69,10 +63,14 @@ module RideShare
         start_time: Time.now,
         end_time: nil,
         cost: nil,
-        rating: nil,
+        rating: nil
       }
       
-      @trip = RideShare::Trip.new(@trip_data)
+      @new_trip = RideShare::Trip.new(@trip_data)
+      @driver.add_trip(@new_trip)
+      @passenger.add_trip(@new_trip)
+      @trips << @new_trip
+      return @new_trip
 
     end
 
@@ -85,7 +83,6 @@ module RideShare
         driver = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
       end
-
       return trips
     end
 

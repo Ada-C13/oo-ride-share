@@ -21,7 +21,7 @@ module RideShare
 
       if passenger
         @passenger = passenger
-        @passenger_id = passenger.id
+        @passenger_id = passenger_id
       elsif passenger_id
         @passenger_id = passenger_id
       else

@@ -129,12 +129,48 @@ describe "TripDispatcher class" do
       @dispatcher = build_test_dispatcher
     end
 
-    # make sure correct passenger info is in trip instance
-    
-    it "creates a trip properly when using request_trip method" do
-      passenger_id = 1
-      expect(@dispatcher.request_trip(passenger_id)).must_be_kind_of RideShare::Trip
+    it "handles a trip request when there are no available drivers" do
+      @dispatcher.request_trip(2)
+      @dispatcher.request_trip(3)
+      expect{(@dispatcher.request_trip(1))}.must_raise ArgumentError
     end
+
+    it "creates a trip properly when using request_trip method" do
+      expect(@dispatcher.request_trip(1)).must_be_kind_of RideShare::Trip
+    end
+
+    it "changes driver status to unavailable" do
+      passenger = @dispatcher.find_passenger(1)
+      new_trip = @dispatcher.request_trip(1)
+      expect(new_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "adds new trip to the Passenger's & Driver's list of trips" do    
+      passenger = @dispatcher.find_passenger(1)
+      @dispatcher.request_trip(1)
+      expect(passenger.trips.length).must_equal 2
+    end
+
+    it "adds new trip to the collection of all Trips in TripDispatcher" do
+      passenger = @dispatcher.find_passenger(1)
+      @dispatcher.request_trip(1)
+      expect(@dispatcher.trips.length).must_equal 6
+    end
+
+    it "calculates the correct total spent for a Passenger with an in-progress trip" do
+      passenger = @dispatcher.find_passenger(1)
+      @dispatcher.request_trip(1)
+      expect(passenger.net_expenditures).must_equal 10
+    end
+
+    it "calculates the correct average rating of a Driver with an in-progress trip" do
+      passenger = @dispatcher.find_passenger(1)
+      driver = @dispatcher.find_driver(2)
+      @dispatcher.request_trip(1)
+      expect(driver.average_rating).must_equal 2.0
+    end
+
+
 
   end 
 
@@ -149,6 +185,6 @@ describe "TripDispatcher class" do
     end
   end
 
-
+  
 
 end

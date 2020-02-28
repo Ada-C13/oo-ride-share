@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Passenger class" do
+describe "Passenger class" do
 
   describe "Passenger instantiation" do
     before do
@@ -44,9 +44,15 @@ xdescribe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+        id: 3,
+        name: "Test Driver",
+        vin: "12345678912345678"
+      )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5
@@ -79,6 +85,11 @@ xdescribe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+        id: 3,
+        name: "Test Driver",
+        vin: "12345678912345678"
+      )
     end
 
     it "returns the correct total amount of money that a passenger has spent" do
@@ -86,6 +97,7 @@ xdescribe "Passenger class" do
         trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
+          driver: @driver,
           start_time: "#{Time.now - 60 * 60}",
           end_time: "#{Time.now + 60 * 60}",
           rating: 5,
@@ -114,6 +126,11 @@ xdescribe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+      @driver = RideShare::Driver.new(
+        id: 3,
+        name: "Test Driver",
+        vin: "12345678912345678"
+      )
     end
 
     it "returns the total time that passenger has spent on their trips" do
@@ -121,6 +138,7 @@ xdescribe "Passenger class" do
         trip = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
+          driver: @driver,
           start_time: "#{Time.now - 60 * 60}",
           end_time: "#{Time.now + 60 * 60}",
           rating: 5,

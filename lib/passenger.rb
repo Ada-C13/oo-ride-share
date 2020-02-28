@@ -23,8 +23,13 @@ module RideShare
         return 0
       else
         cost_array = (@trips).map do |trip|
-          trip.cost
+          if trip.cost == nil
+            0
+          else
+            trip.cost
+          end
         end
+        puts cost_array.inspect
           return (cost_array).inject(:+)
       end 
       
