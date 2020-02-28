@@ -1,6 +1,5 @@
 require 'csv'
 require 'time'
-
 require_relative 'passenger'
 require_relative 'driver'
 require_relative 'trip'
@@ -57,11 +56,24 @@ module RideShare
 
 
     def find_available_driver
+      longest_time = 0
+      longest_time_driver = 0
       @drivers.each do |driver|
-        if driver.status == :AVAILABLE
-          return driver 
-        end 
-      end 
+        if driver.status == :AVAILABLE 
+          if driver.trips.length == 0 
+            return driver
+          end 
+          driver.trips.each do |trip|
+            if trip.end_time != nil 
+              if (Time.now - Time.parse(trip.end_time.to_s)) > longest_time 
+                longest_time = (Time.now - Time.parse(trip.end_time.to_s))
+                longest_time_driver = driver.id
+              end
+            end 
+          end 
+        end
+      end
+      return find_driver(longest_time_driver)
     end 
 
     private
@@ -77,3 +89,5 @@ module RideShare
     end
   end
 end
+
+
