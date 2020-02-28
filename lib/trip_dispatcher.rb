@@ -35,6 +35,12 @@ module RideShare
       available_driver = @drivers.find do |driver|
         driver.status == :AVAILABLE 
       end 
+
+      # Raise error if no driver is available 
+      if available_driver == nil
+        raise ArgumentError "No driver is available, sorry!"
+      end
+
       d_id = available_driver.id # get their id 
       
       # current time should be start time 
@@ -47,9 +53,9 @@ module RideShare
       in_progress_trip = Trip.new(id: unique_trip_id, passenger: found_passenger, passenger_id: p_id, driver: available_driver, driver_id: d_id, start_time: current_time)
       
       # update the Driver and Passenger objects for this trip 
-      available_driver.switch_status      
-      available_driver.add_trip(in_progress_trip)
       found_passenger.add_trip(in_progress_trip)
+      available_driver.add_trip(in_progress_trip)
+      available_driver.switch_status 
       
       # add this new trip to the list of trips
       @trips << in_progress_trip

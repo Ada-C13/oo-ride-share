@@ -31,11 +31,6 @@ module RideShare
       else 
         return 0
       end
-      # trip_ratings = trips.map do |trip|
-      #   trip.rating
-      # end
-      
-      # return (trip_ratings.sum / trip_ratings.length).to_f.round(2)
     end
     
     def total_revenue 

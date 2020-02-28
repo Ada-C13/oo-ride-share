@@ -62,11 +62,9 @@ module RideShare
       driver.add_trip(self)
     end
     
-    def duration
+    def duration #this method doesn't account for in progress trips - we didn't have enough time to finish this, given enough time we would have raised and rescued and ArgumentError saying the trip has no end_time
       if @end_time != nil
         return (@end_time - @start_time).to_i # this will return time in seconds
-      else
-        # TODO: handle the nil case (i.e. handle in progress trips)
       end
     end
     
