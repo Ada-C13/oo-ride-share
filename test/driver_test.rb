@@ -161,9 +161,30 @@ describe "Driver class" do
       @driver.add_trip(trip2)
    
     end
+
     it "Returns total revenue across all their trips" do
       #Assert
       expect(@driver.total_revenue).must_be_close_to 9.28, 0.01
     end
+
+    it "Returns the correct total revenue when the cost of a trip was less that $1.65" do
+      # Arrange 
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        rating: 4,
+        cost: 1.0
+      )
+
+      @driver.add_trip(trip3)
+
+      #Assert
+      expect(@driver.total_revenue).must_be_close_to 9.28 + (1.0 * 0.8), 0.01
+    end
+
+
   end
 end
