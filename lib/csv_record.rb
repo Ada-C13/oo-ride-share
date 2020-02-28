@@ -5,7 +5,7 @@ module RideShare
     attr_reader :id
 
     def initialize(id)
-      self.class.validate_id(id)
+      self.class.validate_id(id) #whatever child class that's using this, get that file
       @id = id
     end
     
@@ -30,7 +30,7 @@ module RideShare
 
     private
     
-    def self.from_csv(record)
+    def self.from_csv(record) #abstract method/template
       raise NotImplementedError, 'Implement me in a child class!'
     end
 
@@ -39,8 +39,8 @@ module RideShare
         raise ArgumentError, "Either full_path or directory is required"
       end
 
-      unless file_name
-        class_name = self.to_s.split('::').last
+      unless file_name #if the file name isn't provided, using class name to get csv
+        class_name = self.to_s.split('::').last #RideShare::Driver
         file_name = "#{class_name.downcase}s.csv"
       end
 

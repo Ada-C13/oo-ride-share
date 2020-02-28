@@ -1,6 +1,15 @@
 require_relative 'test_helper'
 
 describe "Passenger class" do
+  before do #Created this driver to use across all passenger_test
+    @driver = RideShare::Driver.new(
+      id: 7,
+      name: "Lak Kate",
+      vin: "1C9YKKLR1BV5564A7",
+      status: :AVAILABLE,
+      trips: nil
+    )
+  end
 
   describe "Passenger instantiation" do
     before do
@@ -47,11 +56,11 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5
         )
-
       @passenger.add_trip(trip)
     end
 
@@ -69,6 +78,79 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 1,
+        name: "Kate Lak",
+        phone_number: "1-602-620-2330 x0723",
+        trips: []
+        )
+      trip1 = RideShare::Trip.new(
+        id: 1,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.new(2020, 8, 8),
+        end_time: Time.new(2020, 8, 9),
+        cost: 100,
+        rating: 5
+        )  
+      @passenger.add_trip(trip1)
+
+      trip2 = RideShare::Trip.new(
+        id: 2,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.parse("2018-12-27 03:38:08 -0800"),
+        end_time: Time.parse("2018-12-27 03:39:08 -0800"),
+        cost: 200,
+        rating: 5
+        ) 
+      @passenger.add_trip(trip2)
+    end
+
+    it 'add total expediture of the passenger object' do
+      # passenger.trips.cost
+      total = @passenger.net_expenditure
+      expect(total).must_equal 300 
+    end
+  end
+
+  describe "total_time_spent" do
+    it "calculates the amount of time rider spent on trips" do
+
+      driver = RideShare::Driver.new(id: 7, 
+        name: "Test Driver", 
+        vin: "12345678901234567")
+      passenger = RideShare::Passenger.new(id: 1, 
+        name: "Kate Lak", 
+        phone_number: "1-602-620-2330 x0723", 
+        trips: [])
+      trip1 = RideShare::Trip.new(id: 1, 
+        driver: driver, 
+        passenger: passenger, 
+        start_time: Time.parse("2018-12-27 03:38:08 -0800"),
+        end_time: Time.parse("2018-12-27 03:39:08 -0800"), 
+        cost: 100, 
+        rating: 4) 
+      passenger.add_trip(trip1)
+      trip2 = RideShare::Trip.new(id: 2, 
+        driver: driver, 
+        passenger: passenger, 
+        start_time: Time.parse("2018-12-27 02:38:08 -0800"),
+        end_time: Time.parse("2018-12-27 02:40:08 -0800"), 
+        cost: 200, 
+        rating: 5) 
+      passenger.add_trip(trip2)
+      trip3 = RideShare::Trip.new(id: 2, 
+        driver: driver, 
+        passenger: passenger, 
+        start_time: Time.parse("2018-12-27 04:38:08 -0800"),
+        end_time: nil, 
+        cost: 200, 
+        rating: 5) 
+      passenger.add_trip(trip3)
+
+      expect(passenger.total_time_spent).must_equal 180
+    end
   end
 end
