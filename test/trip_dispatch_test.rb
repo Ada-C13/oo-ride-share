@@ -140,7 +140,7 @@ describe "TripDispatcher class" do
         expect(@assigned_trip.id).must_equal 6 
       end  
       
-      it "Selects an available driver" do 
+      it "Selects an available driver and switch to an unavilable status" do 
         expect(@assigned_trip.driver.status).must_equal :UNAVAILABLE
       end 
 
