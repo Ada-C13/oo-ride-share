@@ -61,7 +61,7 @@ module RideShare
 
       new_trip = self.start_trip(driver: available_driver, passenger: passenger)
 
-      available_driver.assign_new_trip(new_trip)
+      available_driver.get_new_trip(new_trip)
       passenger.add_trip(new_trip)
       trips <<  new_trip
 

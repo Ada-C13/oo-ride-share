@@ -23,11 +23,9 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
-      # Count lines in the file, subtract 1 for headers
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
 
       dispatcher = RideShare::TripDispatcher.new
@@ -92,6 +90,8 @@ describe "TripDispatcher class" do
         driver = @dispatcher.find_driver(2)
         expect(driver).must_be_kind_of RideShare::Driver
       end
+  
+
     end
 
     describe "Driver & Trip loader methods" do
@@ -119,6 +119,9 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+
+
     end
   end
+
 end

@@ -136,45 +136,47 @@ describe "Driver class" do
     end
   end
   
-  it "calculates total revenue" do
-    @driver = RideShare::Driver.new(
+  describe "total_revenue method" do
+    it "calculates total revenue" do
+      @driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+        )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 1,
+        cost: 0
+      )
+      @driver.add_trip(trip1)
+
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        rating: 1,
+        cost: 12
+      )
+      @driver.add_trip(trip2)
+
+      expect(@driver.total_revenue).must_equal 9.6
+    end
+
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-    trip1 = RideShare::Trip.new(
-      id: 8,
-      driver: @driver,
-      passenger_id: 3,
-      start_time: Time.new(2016, 8, 8),
-      end_time: Time.new(2016, 8, 9),
-      rating: 1,
-      cost: 0
-    )
-    @driver.add_trip(trip1)
-
-    trip2 = RideShare::Trip.new(
-      id: 8,
-      driver: @driver,
-      passenger_id: 3,
-      start_time: Time.new(2016, 8, 8),
-      end_time: Time.new(2016, 8, 9),
-      rating: 1,
-      cost: 12
-    )
-    @driver.add_trip(trip2)
-
-    expect(@driver.total_revenue).must_equal 9.6
-  end
-
-  it "returns zero if no driven trips" do
-    driver = RideShare::Driver.new(
-      id: 54,
-      name: "Rogers Bartell IV",
-      vin: "1C9EVBRM0YBC564DZ"
-    )
-  
-    expect(driver.total_revenue).must_equal 0
+    
+      expect(driver.total_revenue).must_equal 0
+    end
   end
 end
 
