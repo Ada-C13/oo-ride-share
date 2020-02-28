@@ -1,6 +1,7 @@
 require 'csv'
 require 'time'
 
+require_relative 'driver'
 require_relative 'passenger'
 require_relative 'trip'
 
@@ -27,28 +28,35 @@ module RideShare
     
     def find_available_driver
       available_driver = @drivers.select { |driver| driver.status == :AVAILABLE }[0]
-
+      
       return available_driver
     end
-
+    
     def request_trip(passenger_id)
       @driver = find_available_driver
-
+      @passenger = find_passenger(passenger_id)
+      
+      
       new_trip = RideShare::Trip.new(
         #TODO: Sort @trips by id first
         id: @trips.last.id + 1,
         driver: @driver,
-        passenger_id: passenger_id,
+        passenger: @passenger,
         start_time: Time.now,
         rating: nil 
       )
-      @driver.add_trip(new_trip)
+      
+      #adds to collection of trips for driver and passenger
+      connect_trip(new_trip)
+      
+      # adds to collection of TripDispatcher trips
+      @trips << new_trip
+      
       @driver.modify_status
-      # add to passenger's collection of trips (use current trip passenger id)
-
+      
       return new_trip
     end
-
+    
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
@@ -58,6 +66,10 @@ module RideShare
     end
     
     private
+    
+    def connect_trip(trip)
+      trip.connect(trip.passenger, trip.driver)
+    end
     
     def connect_trips
       @trips.each do |trip| 

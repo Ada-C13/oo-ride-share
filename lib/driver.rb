@@ -13,26 +13,26 @@ module RideShare
       if @vin.length != 17
         raise ArgumentError, "vin length must be 17 characters"
       end
+      
       @status = status
       valid_status = [:AVAILABLE, :UNAVAILABLE]
-      
       if !(valid_status.include? status)
         raise ArgumentError, "invalid status"
       end
       
       @trips = trips || []
-      
     end
     
     def add_trip(trip)
       @trips << trip
     end
     
+    #TODO: Add test case for nil, refactor code
     def average_rating 
       if @trips.empty?
         return 0
       end
-
+      
       all_trips = @trips.map { |trip| trip.rating }.sum
       trip_count = @trips.length
       
@@ -40,12 +40,11 @@ module RideShare
       
       return average_rating
     end
-
+    
+    #TODO: Add test case for nil, refactor code
     def total_revenue
-      # TODO: update tests to reflect expected result
-      # returns an array of each trip's cost
       gross_revenue = @trips.map { |trip| trip.cost }
-
+      
       net_revenue = []
       gross_revenue.each do |cost|
         if cost > 1.65
@@ -55,15 +54,15 @@ module RideShare
           net_revenue << cost
         end
       end
-
+      
       return net_revenue.sum
     end
     
+    #TODO:  Add test in driver class
     def modify_status
-      # modify the assigned driver's status to :UNAVAILABLE
       return self.status = :UNAVAILABLE
     end
-
+    
     private
     
     def self.from_csv(record)
@@ -74,23 +73,6 @@ module RideShare
         status: record[:status].to_sym
       )
     end
-    
-  end # end Driver Class
-  
-end # end Rideshare
+  end 
+end 
 
-# drivers = RideShare::Driver.load_all(full_path: '../support/drivers.csv')
-# ap drivers
-
-
-# if status does not equal :AVALIABLE || :UNAVAILABLE
-# raise ArgumentError, "status must be :available or un...
-# end"
-# if !([:AVAILABLE, :UNAVAILABLE].include? @status) 
-#   raise ArgumentError, "status must be :AVAILABLE or :UNAVAILABLE"
-# end
-
-
-# if status != :AVAILABLE || status != :UNAVAILABLE
-#   raise ArgumentError, "status must be :AVAILABLE or :UNAVAILABLE"
-# end

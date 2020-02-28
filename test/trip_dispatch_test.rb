@@ -142,32 +142,28 @@ describe "TripDispatcher class" do
       @dispatcher = build_test_dispatcher
     end
     
-    it "creates a new trip" do
+    # split into multiple tests
+    it "creates a new trip instance" do
       @trip = @dispatcher.request_trip(1)
       
+      expect(@trip.id).must_equal 6
+
       expect(@trip).must_be_kind_of RideShare::Trip
+      expect(@trip.driver).must_be_kind_of RideShare::Driver
+      expect(@trip.passenger).must_be_kind_of RideShare::Passenger
+
       expect(@trip.passenger_id).must_equal 1
       expect(@trip.start_time).must_be_close_to Time.now
       expect(@trip.end_time).must_be_nil 
       expect(@trip.rating).must_be_nil
-      expect(@trip.driver).must_be_kind_of RideShare::Driver
-      expect(@trip.id).must_equal 6
+      
+      # move to test in driver class
       expect(@trip.driver.status).must_equal :UNAVAILABLE
       
       # expect that this driver gets a new trip added to their collection of trips
       # expect that this trip gets added to the passenger's collection of trips
+      # expect that this trip is added to Trip Dispatcher
       
     end  
   end  
-  
-  # describe "modify assigned driver status" do
-  #   before do
-  #     @dispatcher = build_test_dispatcher
-  #   end
-    
-  #   it "modifies the assigned driver's status to :UNAVAILABLE" do
-  #     @driver = @dispatcher.modify_status
-  #     expect(@driver.status).must_equal :UNAVAILABLE
-  #   end
-  # end
 end
