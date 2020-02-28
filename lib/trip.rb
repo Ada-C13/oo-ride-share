@@ -1,6 +1,6 @@
 require 'csv'
 require 'time'
-
+require 'pry'
 require_relative "csv_record"
 
 module RideShare
@@ -33,7 +33,12 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
+      
+      if @rating == nil 
+        binding.pry
+      end
+
+      if @rating > 5 || @rating < 1 
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
 
