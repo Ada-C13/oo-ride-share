@@ -36,7 +36,7 @@ module RideShare
       @driver = find_available_driver
       @passenger = find_passenger(passenger_id)
       
-      
+
       new_trip = RideShare::Trip.new(
         #TODO: Sort @trips by id first
         id: @trips.last.id + 1,
@@ -82,6 +82,3 @@ module RideShare
     end
   end
 end
-
-# for each trip in the collection of trips, look at the individual trip
-# passenger = that trip's passenger id passed to find_passenger, which returns a passenger object with the matching id

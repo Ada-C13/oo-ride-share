@@ -27,7 +27,7 @@ describe "Driver class" do
     it "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
-    # TODO ADD TEST FOR STATUS
+    
     
     it "sets driven trips to an empty array if not provided" do
       expect(@driver.trips).must_be_kind_of Array
@@ -209,9 +209,26 @@ describe "Driver class" do
 
       it "correctly calculates total_revenue for costs less than $1.65" do 
       expect(@driver.total_revenue).must_be_close_to 7.479
-      # actual calculation: 7.4799999999999995
-
       end
+    
   end
+
+  describe "modify status" do
+    let (:driver) { RideShare::Driver.new(
+      id: 54,
+      name: "Rogers Bartell IV",
+      vin: "1C9EVBRM0YBC564DZ"
+    )
+    }
+
+    it "correctly modifies a driver's status" do
+      expect(driver.modify_status).must_equal :UNAVAILABLE
+    end
+
+  end
+
 end
-# end # is this an extra end??
+
+# TODO - Add modify_test test right here
+      # move to test in driver class
+      

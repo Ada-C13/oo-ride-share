@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
       
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
@@ -78,7 +78,7 @@ describe "TripDispatcher class" do
     end
   end
   
-  # TODO: un-skip for Wave 2
+ 
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -130,7 +130,7 @@ describe "TripDispatcher class" do
     
     it "finds the first availale driver" do
       @driver = @dispatcher.find_available_driver
-      # TODO: Update driver.id/other info to reflect future reqs
+    
       expect(@driver).must_be_kind_of RideShare::Driver
       expect(@driver.status).must_equal :AVAILABLE
       expect(@driver.id).must_equal 2
@@ -142,28 +142,32 @@ describe "TripDispatcher class" do
       @dispatcher = build_test_dispatcher
     end
     
-    # split into multiple tests
-    it "creates a new trip instance" do
+    it "instantiates correct object type" do
       @trip = @dispatcher.request_trip(1)
-      
-      expect(@trip.id).must_equal 6
-
+    
       expect(@trip).must_be_kind_of RideShare::Trip
       expect(@trip.driver).must_be_kind_of RideShare::Driver
       expect(@trip.passenger).must_be_kind_of RideShare::Passenger
+    end
 
+    it "holds accurate data" do
+    @trip = @dispatcher.request_trip(1)
+
+      expect(@trip.id).must_equal 6
       expect(@trip.passenger_id).must_equal 1
       expect(@trip.start_time).must_be_close_to Time.now
       expect(@trip.end_time).must_be_nil 
       expect(@trip.rating).must_be_nil
-      
-      # move to test in driver class
-      expect(@trip.driver.status).must_equal :UNAVAILABLE
-      
-      # expect that this driver gets a new trip added to their collection of trips
-      # expect that this trip gets added to the passenger's collection of trips
-      # expect that this trip is added to Trip Dispatcher
-      
-    end  
-  end  
+    end
+
+    it "adds new_trip to collections of trips" do
+    @trip = @dispatcher.request_trip(1)
+
+    expect(@trip.passenger.trips.length).must_equal 2
+    expect(@trip.driver.trips.length).must_equal 4
+    expect(@trips.length).must_equal 6
+    # how do we get to the collection of trips?
+    end
+  end
+        
 end
