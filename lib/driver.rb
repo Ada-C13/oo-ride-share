@@ -24,6 +24,11 @@ module RideShare
       end 
     end 
 
+    def start_trip(trip)
+      add_trip(trip)
+      @status = :UNAVAILABLE
+    end
+
     def self.from_csv(record)
      return new(
        id:record[:id],
@@ -47,6 +52,7 @@ module RideShare
       end
       return average_rating.sum / average_rating.length
     end
+
 
     def total_revenue
       if trips.length == 0
