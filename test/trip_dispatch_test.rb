@@ -159,9 +159,6 @@ describe "TripDispatcher class" do
       end
 
       it "will return an error if there are no available drivers" do
-        # 3.times do |i|
-        #   @dispatcher.request_trip(i + 1)
-        # end
 
         expect {
           3.times do |i|

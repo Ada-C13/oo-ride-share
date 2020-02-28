@@ -44,6 +44,16 @@ module RideShare
     return (ratings.sum.to_f / ratings.length.to_f)
   end
 
+  def total_revenue
+    total_revenue = 0
+    total_revenue = @trips.sum { 
+      |trip| unless trip.cost == nil
+      trip.cost 
+    end
+    }
+    return total_revenue
+  end
+
   def change_driver_status
     if @status == :AVAILABLE
       @status = :UNAVAILABLE
