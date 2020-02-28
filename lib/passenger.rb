@@ -16,9 +16,8 @@ module RideShare
       @trips << trip
     end
 
-    # ! TODO add no trips
     def net_expenditures
-      if @trips == nil || @trips == 0
+      if @trips.length == 0 || @trips == nil
         raise ArgumentError.new("This passenger has no trips")
       else
         total_cost = 0
@@ -30,9 +29,13 @@ module RideShare
     end
 
     def total_time_spent
-      total_time = 0
-      @trips.each do |trip|
-        total_time += trip.duration
+      if @trips.length == 0 || @trips == nil
+        raise ArgumentError.new("This passenger has no trips")
+      else
+        total_time = 0
+        @trips.each do |trip|
+          total_time += trip.duration
+        end
       end
       return total_time
     end

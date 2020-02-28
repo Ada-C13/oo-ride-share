@@ -110,7 +110,6 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 16
     end
 
-    # ! TODO fix this
     it "What happens if passenger has no trips" do
       expect do
         (@passenger_2.net_expenditures)
@@ -147,7 +146,13 @@ describe "Passenger class" do
       )
       @passenger.add_trip(trip2)
 
-      # ! TODO check if we are calculating seconds
+      # passenger with no trips
+      @passenger_2 = RideShare::Passenger.new(
+        id: 3,
+        name: "Nora",
+        phone_number: "1-555-867-5309",
+        trips: [],
+      )
     end
 
     it "calculates total time spent on all rides for a passenger" do
@@ -155,6 +160,9 @@ describe "Passenger class" do
     end
 
     it "What happens if the passenger has no trips" do
+      expect do
+        (@passenger_2.total_time_spent)
+      end.must_raise ArgumentError
     end
   end
 end
