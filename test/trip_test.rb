@@ -11,7 +11,7 @@ describe "Trip class" do
         driver: RideShare::Driver.new(
           id: 123, 
           name: "Donatello", 
-          vin: 123345398793, 
+          vin: "13298547362748423", 
           status: :AVAILABLE, 
           ),
         passenger: RideShare::Passenger.new(
@@ -35,12 +35,11 @@ describe "Trip class" do
       expect(@trip.passenger).must_be_kind_of RideShare::Passenger
     end
     
-    it "has a valid start and end time" do  # check if start time is less than end time which makes it valid
+    it "has a valid start and end time" do  
       expect(@trip.start_time < @trip.end_time).must_equal true
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -55,7 +54,7 @@ describe "Trip class" do
 
     it "converts trip time into seconds" do 
       expect(@trip.duration).must_be_kind_of Float
-      expect(@trip.duration).must_equal 1500.0 #Change this to must_be_close_to
+      expect(@trip.duration).must_be_close_to 1500.0 
     end 
   end
 end

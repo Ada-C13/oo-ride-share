@@ -19,16 +19,16 @@ describe "Driver class" do
       expect { RideShare::Driver.new(id: 0, name: "George", vin: "33133313331333133") }.must_raise ArgumentError
     end
 
-    xit "throws an argument error with a bad VIN value" do
+    it "throws an argument error with a bad VIN value" do
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "") }.must_raise ArgumentError
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133extranums") }.must_raise ArgumentError
     end
 
-    xit "has a default status of :AVAILABLE" do
+    it "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
 
-    xit "sets driven trips to an empty array if not provided" do
+    it "sets driven trips to an empty array if not provided" do
       expect(@driver.trips).must_be_kind_of Array
       expect(@driver.trips.length).must_equal 0
     end
@@ -70,11 +70,6 @@ describe "Driver class" do
     end
 
     it "adds the trip" do
-      puts "Ben and Jerry's is based in Vermont."
-      puts @driver.inspect
-      puts @driver.id
-      puts @driver.trips
-    
       expect(@driver.trips).wont_include @trip
       previous = @driver.trips.length
 
@@ -98,7 +93,7 @@ describe "Driver class" do
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 8),
-        rating: 5
+        rating: 5.0
       )
       @driver.add_trip(trip)
     end

@@ -5,11 +5,16 @@ module RideShare
   class Driver < CsvRecord
     attr_reader :id, :name, :vin, :status, :trips 
 
-    def initialize(id:, name:, vin:, status: :UNAVAILABLE, trips: nil)
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
      super(id)
 
       @name = name
       @vin = "" 
+      if vin.length < 17
+        raise ArgumentError.new("Vin number not long enough.")
+      elsif vin.length > 17 
+        raise ArgumentError.new("Vin number too long.")
+      end
       @status = status #use guard clause in calling method 
       if !trips 
         @trips = []
@@ -32,14 +37,14 @@ module RideShare
     end  
 
     def average_rating
-      ave_rat = []
+      average_rating = []
       @trips.each do |trip|
-        ave_rat << trip.rating
+        average_rating << trip.rating
       end
-      average = ave_rat.sum / ave_rat.length
-      return average
+      if average_rating.empty?
+        return 0
+      end
+      return average_rating.sum / average_rating.length
     end
-
   end 
 end
-RideShare::Driver.new(id: 123, name: "Donatello", vin: 123345398793, status: :AVAILABLE, trips: [])

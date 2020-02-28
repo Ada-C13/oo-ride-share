@@ -47,7 +47,7 @@ describe "Passenger class" do
       @driver = RideShare::Driver.new(
         id: 5,
         name: "test",
-        vin: 3408589348327
+        vin: "34085893483273456"
       )
       trip = RideShare::Trip.new(
         id: 8,
@@ -87,12 +87,25 @@ describe "Passenger class" do
         expect(@passenger.net_expenditures()).must_equal 31.00
       end 
     end
+  end
 
-  # describe "total_time_spent" do
-    # it "total_time_spent" do
-
-    # end 
-  # end
-
+  describe "total_time_spent" do
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: [],
+      )
+      @trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 10,
+        rating: 5,
+      )
+      @passenger.add_trip(@trip1)
+    end
   end
 end
