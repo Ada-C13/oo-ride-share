@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -119,6 +119,64 @@ describe "TripDispatcher class" do
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
         end
+      end
+    end
+
+    describe "Request Trip method tests" do
+      before do
+        @dispatcher = build_test_dispatcher
+      end
+
+      it "will create the trip properly" do
+        expect(@dispatcher.request_trip(4)).must_be_instance_of RideShare::Trip
+      end
+
+      it "will update the lists for the selected passenger and driver" do
+        passenger = @dispatcher.find_passenger(4)
+        @dispatcher.request_trip(4)
+        expect(passenger.trips.length).must_equal 2
+      end
+
+      it "will select an available driver" do
+        selected_driver = nil
+
+        available_drivers = @dispatcher.drivers.select { |driver| driver.status == :AVAILABLE}
+        
+        available_drivers.each do |driver|
+          if driver.trips.length == 0
+            selected_driver = driver
+          end
+        end
+
+        if selected_driver == nil
+          available_drivers.sort! { |driver| driver.trips[-1].end_time}
+          selected_driver = available_drivers[-1]
+        end
+
+        @dispatcher.request_trip(2)
+
+        expect(@dispatcher.trips[-1].driver).must_equal selected_driver
+      end
+
+      it "will return an error if there are no available drivers" do
+
+        expect {
+          3.times do |i|
+            @dispatcher.request_trip(i + 1)
+          end
+        }.must_raise ArgumentError
+      end
+
+      it "will select the driver with no trips completed first" do
+        @dispatcher.request_trip(4)
+        expect (@dispatcher.trips[-1].driver_id).must_equal 3
+      end
+
+      it "will select the driver who completed a trip the longest ago if there are no drivers with zero trips completed" do
+        2.times do |i|
+          @dispatcher.request_trip(i + 1)
+        end
+        expect (@dispatcher.trips[-1].driver_id).must_equal 2
       end
     end
   end

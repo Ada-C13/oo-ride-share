@@ -15,7 +15,8 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 222
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -40,6 +41,50 @@ describe "Trip class" do
           RideShare::Trip.new(@trip_data)
         end.must_raise ArgumentError
       end
+    end
+
+    it "raises an error for an end time that is earlier than the start time" do
+      start_time = Time.parse("2010-10-31 12:00")
+      end_time = Time.parse("2010-10-31 11:00")
+      @trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3,
+        driver_id: 222
+      }
+      expect{@trip = RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
+    end
+  end
+
+  describe "trip methods" do
+
+    it "will return the duration of the trip in second with method .duration" do
+      start_time = Time.parse("2010-10-31 11:59")
+      end_time = Time.parse("2010-10-31 12:00")
+      trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(
+          id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3,
+        driver_id: 222
+      }
+
+      trip = RideShare::Trip.new(trip_data)
+
+      expect(trip.duration).must_equal 60.0
     end
   end
 end

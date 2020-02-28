@@ -1,4 +1,5 @@
 require 'csv'
+require 'time'
 
 module RideShare
   class CsvRecord
