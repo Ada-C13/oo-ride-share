@@ -33,15 +33,13 @@ module RideShare
     def total_revenue
       fee = 1.65
       percentage = 0.80
-      if @trips.length == 0
-        return 0
-      else
-        cost_arr = @trips.map do |trip|
-          if trip.cost < fee
-            trip.cost * percentage
-          else
-            (trip.cost - fee) * percentage
-          end
+      return 0 if @trips.length == 0
+      complete_trips = @trips.reject { |trip| trip.cost == nil }
+      cost_arr = complete_trips.map do |trip|
+        if trip.cost < fee
+          trip.cost * percentage
+        else
+          (trip.cost - fee) * percentage
         end
       end
       revenue = cost_arr.sum

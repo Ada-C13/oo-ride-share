@@ -17,6 +17,7 @@ module RideShare
     end
 
     def net_expenditures
+      complete_trips = @trips.reject { |trip| trip.rating == nil }
       if @trips.length == 0 || @trips == nil
         raise ArgumentError.new("This passenger has no trips")
       else
