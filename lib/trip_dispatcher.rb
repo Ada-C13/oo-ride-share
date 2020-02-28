@@ -54,7 +54,7 @@ module RideShare
     end
 
     def inspect
-      # Make puts output more useful
+     
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
               #{trips.count} trips, \
               #{drivers.count} drivers, \
@@ -71,12 +71,5 @@ module RideShare
       end
       return trips
     end
-
-    # def connect(passenger, driver)
-    #   @passenger = passenger
-    #   passenger.add_trip(self)
-    #   @driver = driver
-    #   driver.add_trip(self)
-    # end
   end
 end

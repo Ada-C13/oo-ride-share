@@ -54,8 +54,6 @@ module RideShare
     end
 
     def inspect
-      # Prevent infinite loop when puts-ing a Trip
-      # trip contains a passenger contains a trip contains a passenger...
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "ID=#{id.inspect} " +
         "PassengerID=#{passenger&.id.inspect}>"
@@ -77,7 +75,7 @@ module RideShare
     def self.from_csv(record)
       return self.new(
                id: record[:id],
-               driver_id: record[:driver_id], ##testing
+               driver_id: record[:driver_id],
                passenger_id: record[:passenger_id],
                start_time: Time.parse(record[:start_time]),
                end_time: Time.parse(record[:end_time]),

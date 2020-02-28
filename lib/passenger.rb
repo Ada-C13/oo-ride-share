@@ -43,7 +43,7 @@ module RideShare
 
     private
 
-    def self.from_csv(record) #Passenger.new, new, @new, self.new
+    def self.from_csv(record) 
       return new(
                id: record[:id],
                name: record[:name],

@@ -9,9 +9,6 @@ module RideShare
       @id = id
     end
     
-    # Takes either full_path or directory and optional file_name
-    # Default file name matches class name
-    #if full_path is false or nil then we assign the value on the other side build_path(directory, file_name)
     def self.load_all(full_path: nil, directory: nil, file_name: nil)
       full_path ||= build_path(directory, file_name)
 
@@ -30,7 +27,7 @@ module RideShare
     end
 
     private
-    #DONT GIVE THAT INFORMATION PLEASE 
+
     def self.from_csv(record)
       raise NotImplementedError, 'Implement me in a child class!'
     end
