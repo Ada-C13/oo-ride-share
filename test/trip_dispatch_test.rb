@@ -150,7 +150,6 @@ describe "TripDispatcher class" do
     it "raises an error if no drivers are available" do
       @td_2.request_trip(1)
       @td_2.request_trip(2)
-      puts "drivers: #{@td_2.drivers}"
 
       expect{
         @td_2.request_trip(3)
@@ -197,6 +196,31 @@ describe "TripDispatcher class" do
       expect(@td.trips.length).must_equal before_new_trip + 1
     end
 
-  end
+    it "find_available_drivers method returns an array of all available drivers with no in-progress" do 
+      expect(@td_2.find_available_drivers).must_be_kind_of Array
+      expect(@td_2.find_available_drivers.length).must_equal 2
+    end
 
+    it "select_drivers prioritizes drivers with no trips" do
+      available_drivers = @td_2.find_available_drivers
+      selected_driver = @td_2.select_driver(available_drivers)
+      expect(selected_driver.trips.length).must_equal 0
+    end
+
+    it "select_drivers otherwise prioritizes the driver with the oldest trip" do
+      available_drivers = @td_2.find_available_drivers
+      available_drivers[1].trips << RideShare::Trip.new(
+        id: 6, 
+        passenger_id: 5, 
+        start_time: Time.parse("2018-06-10 12:00:00 -0700"), 
+        end_time: Time.parse("2018-06-10 12:10:00 -0700"), 
+        cost: 5, 
+        rating: 1, 
+        driver: available_drivers[1]
+      )
+    
+      expect(@td_2.select_driver(available_drivers).id).must_equal 3
+      expect(@td_2.select_driver(available_drivers).trips[0].end_time).must_equal Time.parse("2018-06-10 12:10:00 -0700")
+    end 
+  end
 end

@@ -25,15 +25,46 @@ module RideShare
       Driver.validate_id(id)
       return @drivers.find { |driver| driver.id == id }
     end
+ 
+    def find_available_drivers
+      available_drivers = @drivers.select do |driver|
+        driver.status == :AVAILABLE
+      end
+
+      return available_drivers
+    end
+
+    def select_driver(available_drivers)
+      available_drivers.each do |driver|
+        if driver.trips.length == 0
+          return driver
+        end
+      end
+      
+      available_drivers.each do |driver|
+        driver.trips.sort_by! do |trip|
+          trip.end_time
+        end
+      end
+
+      available_drivers.sort_by! do |driver|
+        driver.trips.last.end_time
+      end
+
+      return available_drivers.first
+    end
 
     def request_trip(passenger_id)
-      available_driver = @drivers.find do 
-        |driver| driver.status == :AVAILABLE 
-      end
+      # Find list of available drivers.
+      available_drivers = find_available_drivers
 
-      if available_driver == nil
+      # If no available drivers are found
+      if available_drivers.length == 0
         raise ArgumentError.new("No available drivers!")
       end
+
+      # Find a driver with no trips ever or the oldest trip.
+      available_driver = select_driver(available_drivers)
 
       current_passenger = find_passenger(passenger_id)
 
@@ -49,9 +80,9 @@ module RideShare
         driver: available_driver
       )
 
-      available_driver.update_status(new_trip)
-      current_passenger.add_trip(new_trip)
-      @trips << new_trip
+      available_driver.update_status(new_trip) # Updates driver status to unavailable.
+      current_passenger.add_trip(new_trip) # Adds current trip to current passenger's list of trips.
+      @trips << new_trip # Adds current trip to list of all trips in system.
 
       return new_trip
     end
