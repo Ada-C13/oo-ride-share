@@ -48,7 +48,7 @@ module RideShare
           total_revenue += ((trip.cost - 1.65) * 0.80)
           # QUESTION
         elsif trip.cost < 1.65
-          total_revenue += trip.cost
+          total_revenue += (trip.cost * 0.80)
         end 
       end
       return total_revenue.round(2)
