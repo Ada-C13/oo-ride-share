@@ -298,8 +298,4 @@ describe "ignores in-progress trips calculating revenue" do
 
   end
 
-end
-
-# TODO - Add modify_test test right here
-      # move to test in driver class
-      
+end      

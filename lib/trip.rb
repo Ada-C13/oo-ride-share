@@ -40,7 +40,6 @@ module RideShare
         raise ArgumentError, "Driver or driver_id is required"
       end
     
-    
       if start_time == String
         start_time = Time.parse(start_time)
       end
@@ -57,10 +56,6 @@ module RideShare
     
       @cost = cost
       @rating = rating
-
-      # if @rating == nil
-      #   binding.pry
-      # end
 
       if @rating && (@rating > 5 || @rating < 1)
         raise ArgumentError.new("Invalid rating #{@rating}")

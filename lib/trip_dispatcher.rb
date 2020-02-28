@@ -46,7 +46,6 @@ module RideShare
       sorted_by_id = sort_trips_by_id
 
       new_trip = RideShare::Trip.new(
-        #TODO: Sort @trips by id first
         id: sorted_by_id.last.id + 1,
         driver: @driver,
         passenger: @passenger,
@@ -54,10 +53,8 @@ module RideShare
         rating: nil 
       )
       
-      #adds to collection of trips for driver and passenger
       connect_trip(new_trip)
       
-      # adds to collection of TripDispatcher trips
       @trips << new_trip
       
       @driver.modify_status

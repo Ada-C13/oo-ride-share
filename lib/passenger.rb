@@ -19,7 +19,6 @@ module RideShare
     def net_expenditures
       @trips.delete_if { |trip| trip.cost == nil }
 
-      # if trips is empty or nil return nil
       if @trips.empty? || @trips == nil 
         return nil
       else
@@ -28,6 +27,8 @@ module RideShare
     end
 
     def total_time_spent
+      @trips.delete_if { |trip| trip.end_time == nil }
+
       if @trips.empty? || @trips == nil 
         return nil
       else
