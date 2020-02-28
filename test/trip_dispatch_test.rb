@@ -65,6 +65,36 @@ describe "TripDispatcher class" do
         expect(last_passenger.id).must_equal 8
       end
 
+      it "adds the trip to the passenger's list of trips" do
+        @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+          )
+          @driver = RideShare::Driver.new(
+            id: 54,
+            name: "Rogers Bartell IV",
+            vin: "1C9EVBRM0YBC564DZ",
+            status: :AVAILABLE,
+            trips: [1]
+          )
+        trip1 = RideShare::Trip.new(
+          id: 8,
+          passenger: @passenger,
+          start_time: Time.new(2016, 8, 8, 13, 39 , 0),
+          end_time: Time.new(2016, 8, 8, 13, 50, 0),
+          rating: 5,
+          cost: 5,
+          driver_id: @driver.id,
+          driver: nil
+          )
+  
+        @passenger.add_trip(trip1)
+
+        expect(@passenger.trips).must_include(trip1)
+      end
+
       it "connects trips and passengers" do
         dispatcher = build_test_dispatcher
         dispatcher.trips.each do |trip|
@@ -90,8 +120,10 @@ describe "TripDispatcher class" do
         driver = @dispatcher.find_driver(2)
         expect(driver).must_be_kind_of RideShare::Driver
       end
-  
-
+      it "find available driver" do
+        driver = @dispatcher.find_driver(3)
+        expect(driver.status).must_equal :AVAILABLE
+      end
     end
 
     describe "Driver & Trip loader methods" do
@@ -120,6 +152,13 @@ describe "TripDispatcher class" do
         end
       end
 
+    it "adds new trip to collection of all Trips" do
+      dispatcher = build_test_dispatcher
+      
+      trip1 = dispatcher.request_trip(1)
+      
+      expect(dispatcher.trips).must_include(trip1)
+    end
 
     end
   end

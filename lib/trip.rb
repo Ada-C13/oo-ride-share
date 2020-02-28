@@ -11,10 +11,10 @@ module RideShare
           id:,
           passenger: nil,
           passenger_id: nil,
-          start_time:,
-          end_time:,
+          start_time: Time.now,
+          end_time: nil,
           cost: nil,
-          rating:,
+          rating: nil,
           driver_id: nil,
           driver: nil
         )
@@ -42,7 +42,7 @@ module RideShare
         raise ArgumentError, 'Driver or driver_id is required'
       end
 
-      if start_time.class != Time || end_time.class != Time
+      if start_time.class != Time
         raise ArgumentError.new("Value is not a Time object.")
       end
 
@@ -52,8 +52,10 @@ module RideShare
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
   
-      if @end_time < @start_time
-        raise ArgumentError.new('End time cannot be before start time.')
+      unless @end_time == nil
+        if @end_time < @start_time
+          raise ArgumentError.new('End time cannot be before start time.')
+        end
       end
     end
 
