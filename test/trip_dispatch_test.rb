@@ -145,5 +145,12 @@ describe "TripDispatcher class" do
       #is trip in progress?..no end time means in progress
       expect(inprogress_trip.end_time).must_equal nil
     end
+
+    it "make sure the request_trip method create a trip instance " do
+      inprogress_trip = @dispatcher.request_trip(1)
+      expect(inprogress_trip).must_be_kind_of RideShare::Trip
+    end
+
+    
   end
 end
