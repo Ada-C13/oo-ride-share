@@ -1,35 +1,37 @@
 require 'csv'
 require_relative 'csv_record'
 
-# From already inside lib, load into pry by doing: pry -r ./becca_driver.rb 
-# From root directory:  pry -r ./lib/driver.rb"
-
 module RideShare
   class Driver < CsvRecord
 
-    attr_reader :name, :vin, :trips
+    attr_reader :name, :vin
     attr_accessor :status, :trips
     
     def initialize(
-          id:,
-          name:,
-          vin:,
-          status: :AVAILABLE,
-          trips: nil
+                  id:,
+                  name:,
+                  vin:,
+                  status: :AVAILABLE,
+                  trips: nil
         )
       super(id)
 
       @name = name
       @vin = vin
+
       unless vin.length == 17
         raise ArgumentError
       end
+
       @status = status
+
       unless (status == :AVAILABLE || status == :UNAVAILABLE)
         raise ArgumentError
       end
+
       @trips = trips || []
-      unless super(id)> 0 
+
+      unless super(id) > 0 
         raise ArgumentError
       end
     end
@@ -42,10 +44,13 @@ module RideShare
     #     "PassengerID=#{passenger&.id.inspect}>"
     # end
 
+    # DO WE need this still?
+
     # def connect(passenger)
     #   @passenger = passenger
     #   passenger.add_trip(self)
     # end
+
     def add_trip(trip)
       @trips << trip
     end
@@ -59,11 +64,12 @@ module RideShare
           sum_rating += trip.rating 
         end
       end
-      return sum_rating/@trips.length
+      return sum_rating / @trips.length
     end
 
     def total_revenue
       revenue = 0.0
+      # Return 0 if no trips driven
       if @trips.length == 0
         return 0
       else
@@ -71,24 +77,18 @@ module RideShare
           revenue += trip.cost
         end
       end
-      if revenue > (1.65*@trips.length)
-      total_revenue = (revenue - (1.65 * @trips.length))* 0.8
-      return total_revenue
+      # Return 0 if revenue <= 1.65 (flat cost) per trip, otherwise run revenue formula
+      if revenue > (1.65 * @trips.length)
+        total_revenue = (revenue - (1.65 * @trips.length))* 0.8
+        return total_revenue
       else 
         return 0
       end
     end
 
-
-    # RideShare::Driver.load_all was not working before because it expected a keyword argument first, then the full path value
-    # Status was expecting a symbol but is read from the CSV.read method as a string. So, we had to change the from_csv method for status to be a symbol
-
     def add_requested_trip(trip)
       @trips << trip
     end
-
-
-
 
     private
 

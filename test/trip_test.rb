@@ -9,15 +9,15 @@ describe "Trip class" do
       @trip_data = {
         id: 8,
         driver: RideShare::Driver.new(
-          id:2,
-          name: "becca",
-          vin: "12345678910111213",
-          status: :AVAILABLE,
-          trips: []
+                                    id:2,
+                                    name: "Anton",
+                                    vin: "12345678910111213",
+                                    status: :AVAILABLE,
+                                    trips: []
         ),
         passenger: RideShare::Passenger.new(
           id: 1,
-          name: "Ada",
+          name: "Amos",
           phone_number: "412-432-7640"
         ),
         start_time: start_time,
@@ -29,8 +29,6 @@ describe "Trip class" do
     end
     
     it "start time should come before end time" do
-      # can the below just be written as: expect{@trip}.must_raise ArgumentError, since it is essentially saying 
-      # expect{RideShare::Trip.new(RideShare::Trip.new(@trip_data))}?
       expect{RideShare::Trip.new(@trip)}.must_raise ArgumentError
     end
 
@@ -51,7 +49,6 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-     # Unskip after wave 2
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
@@ -73,9 +70,9 @@ describe "Trip class" do
      @trip_data = {
        id: 8,
        passenger: RideShare::Passenger.new(
-         id: 1,
-         name: "Ada",
-         phone_number: "412-432-7640"
+                                          id: 1,
+                                          name: "Ada",
+                                          phone_number: "412-432-7640"
        ),
        start_time: start_time,
        end_time: end_time,

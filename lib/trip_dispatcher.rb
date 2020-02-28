@@ -1,11 +1,8 @@
 require 'csv'
 require 'time'
-
 require_relative 'passenger'
 require_relative 'trip'
 require_relative 'driver'
-
-# can't call from_csv because privately declared in CsvRecord (Passenger and Trip can call this though)
 
 module RideShare
   class TripDispatcher 
@@ -36,35 +33,36 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
-    def get_longest_ago(available_drivers)
+    def get_longest_ago(available_drivers_list)
       longest_ago = Time.now
       best_driver = nil
-      available_drivers.each do |driver|
+      available_drivers_list.each do |driver|
+      # Pick first driver in array of available drivers that has nil or no trips
         if driver.trips == nil || driver.trips == []
           best_driver = driver
           driver.status = :UNAVAILABLE
           return best_driver
         else 
           driver.trips.each do |trip|
-          if trip.end_time.to_i < longest_ago.to_i
-            longest_ago = trip.end_time
-            best_driver = driver
+            if trip.end_time.to_i < longest_ago.to_i
+              longest_ago = trip.end_time
+              best_driver = driver
+            end
           end
-        end
-      end 
-    end
-    best_driver.status = :UNAVAILABLE
-    return best_driver
+        end 
+      end
+      best_driver.status = :UNAVAILABLE
+      return best_driver
     end
 
     def available_drivers
-      available_drivers = []
+      available_drivers_list = []
       @drivers.each do |driver|
-        if driver.status == :AVAILABLE && (driver.trips.each {|trip| trip.end_time != nil })
-          available_drivers << driver
+        if driver.status == :AVAILABLE && (driver.trips.each { |trip| trip.end_time != nil })
+          available_drivers_list << driver
         end
       end 
-      return available_drivers
+      return available_drivers_list
     end 
 
     def request_trip(passenger_id)
@@ -82,15 +80,16 @@ module RideShare
                       cost: nil,
                       rating: nil
       )
-      passenger_from_id.trips.push trip1
-      trips.push trip1
+      passenger_from_id.trips.push(trip1)
+      trips.push(trip1)
+      # WHY best_driver.add_requested_trip and return trip1?
       best_driver.add_requested_trip(trip1)
       return trip1
     end
 
     private
 
-    #Dispatcher.connect_trips is not allowed by external code, only TripDispatcher can call it on itself.
+    # Dispatcher.connect_trips is not allowed by external code, only TripDispatcher can call it on itself.
     # Should we add/change tests for this method to account for driver and passenger together?
     def connect_trips
       @trips.each do |trip|

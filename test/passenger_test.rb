@@ -36,13 +36,13 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # done TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )
+
       trip = RideShare::Trip.new(
         id: 8,
         driver_id: 4,
@@ -53,6 +53,7 @@ describe "Passenger class" do
         rating: 5,
         cost: 40 
         )
+
         @passenger.add_trip(trip)
 
       trip_2 = RideShare::Trip.new(
@@ -65,25 +66,26 @@ describe "Passenger class" do
         rating: 5,
         cost: 10, 
         )
+
       @passenger.add_trip(trip_2)
     end
 
-    it "each item in array is a Trip instance" do
+    it "checks that every item in the Passenger array is a Trip" do
       @passenger.trips.each do |trip|
         expect(trip).must_be_kind_of RideShare::Trip
       end
     end
 
-    it "all Trips must have the same passenger's passenger id" do
+    it "checks that all Trips have the same Passenger's passenger id" do
+      # is this the same as passenger_id?????
       @passenger.trips.each do |trip|
         expect(trip.passenger.id).must_equal 9
       end
     end
   end
 
-  describe "net_expenditures" do
+  describe "net_expenditures method" do
     before do
-      # done TODO: you'll need to add a driver at some point here.
       start_time = Time.now - 60 * 60 # 60 minutes
       end_time = start_time + 25 * 60 # 25 minutes
       start_time_2 = Time.now - 60 * 60 # 60 minutes
@@ -95,13 +97,13 @@ describe "Passenger class" do
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
         trips: []
-        )
-        @passenger2 = RideShare::Passenger.new(
-          id: 8,
-          name: "Merl Glove",
-          phone_number: "1-602-620-2330 x3723",
-          trips: []
-          )
+      )
+      @passenger2 = RideShare::Passenger.new(
+        id: 8,
+        name: "Merl Glove",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
       trip = RideShare::Trip.new(
         id: 8,
         driver_id: 434,
@@ -111,7 +113,7 @@ describe "Passenger class" do
         end_time: end_time,
         rating: 5,
         cost: 40
-        )
+      )
       @passenger.add_trip(trip)
       @passenger2.add_trip(trip)
 
@@ -124,31 +126,34 @@ describe "Passenger class" do
         end_time: end_time_2,
         rating: 5,
         cost: 10
-        )
-        trip_3 = RideShare::Trip.new(
-          id: 777,
-          driver_id: 3848534,
-          driver: nil,
-          passenger: @passenger,
-          start_time: start_time_2,
-          end_time: end_time_3,
-          rating: 5,
-          cost: 10
-          )
+      )
+      trip_3 = RideShare::Trip.new(
+        id: 777,
+        driver_id: 3848534,
+        driver: nil,
+        passenger: @passenger2,
+        start_time: start_time_2,
+        end_time: end_time_3,
+        rating: 5,
+        cost: 10
+      )
       @passenger.add_trip(trip_2)
       @passenger2.add_trip(trip_3)
     end
 
-    it "returns the total expenditures of a passenger" do
-    expect(@passenger.net_expenditures).must_equal 50
+    it "returns the total expenditures of a Passenger" do
+      expect(@passenger.net_expenditures).must_equal 50
     end
 
-    it "returns the total time spent for all of a passenger's rides" do
-      expect(@passenger.total_time_spent).must_equal 3300
-      end
 
-    it "returns the total time spent for all of a passenger's rides" do
+
+    #These last two tests don't describe net expenditures method, but total_time_spent
+    it "returns the total time spent for all of a Passenger's rides" do
+      expect(@passenger.total_time_spent).must_equal 3300
+    end
+
+    it "returns the total time spent for all of a Passenger's rides" do
       expect(@passenger2.total_time_spent).must_equal 1500
-      end
+    end
   end
 end
