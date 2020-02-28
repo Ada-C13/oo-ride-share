@@ -43,10 +43,11 @@ module RideShare
       @passenger = find_passenger(passenger_id)
 
       
+      sorted_by_id = sort_trips_by_id
 
       new_trip = RideShare::Trip.new(
         #TODO: Sort @trips by id first
-        id: @trips.last.id + 1,
+        id: sorted_by_id.last.id + 1,
         driver: @driver,
         passenger: @passenger,
         start_time: Time.now,
