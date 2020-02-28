@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -122,4 +121,35 @@ describe "TripDispatcher class" do
       end
     end
   end
-end
+
+  describe "Request trip method" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "can request a valid trip" do
+      passenger_id = 1
+      passenger = @dispatcher.find_passenger(passenger_id)
+
+      trip = @dispatcher.request_trip(passenger_id)
+
+      expect(trip.passenger).must_equal passenger
+      expect(trip.driver.status).must_equal :UNAVAILABLE 
+      assert_includes(@dispatcher.trips, trip)
+      assert_includes(passenger.trips, trip)
+      assert_includes(trip.driver.trips, trip)
+    end
+
+    it "cannot request a trip for an invalid passenger" do
+      expect(@dispatcher.request_trip(9001)).must_be_nil
+    end
+
+    it "cannot request a trip if all drivers are busy" do
+      @dispatcher.drivers.each do |d|
+        d.start_trip(nil)
+      end
+
+      expect(@dispatcher.request_trip(1)).must_be_nil
+    end
+  end
+end 

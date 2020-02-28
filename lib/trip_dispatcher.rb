@@ -12,6 +12,7 @@ module RideShare
       @passengers = Passenger.load_all(directory: directory)
       @drivers = Driver.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
+      @trip_count = 0
       connect_trips
     end
 
@@ -34,21 +35,21 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      ride_requester = find_passenger(passenger_id)
-      if !ride_requester
+      passenger = find_passenger(passenger_id)
+      if !passenger
         return nil
-      end 
+      end
 
-      free_drivers = nil
+      avail_driver = nil
       @drivers.each do |driver|
         if driver.status == :AVAILABLE
-          free_drivers = driver
+          avail_driver = driver
           break
         end
       end
 
-      if !free_drivers
-        raise ArgumentError.new("No available drivers.")
+      if !avail_driver
+        return nil
       end
 
       @trip_count += 1

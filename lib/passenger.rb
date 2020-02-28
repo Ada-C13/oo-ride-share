@@ -18,7 +18,6 @@ module RideShare
       @cost += trip.cost 
     end
 
-    # Method for net_expenditures: 
     def net_expenditures
       total = 0
       pass_money_spent = trips.each do |trip|
