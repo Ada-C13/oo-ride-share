@@ -31,17 +31,22 @@ module RideShare
       return available_driver
     end
 
-
     def request_trip(passenger_id)
+      @driver = find_available_driver
+
       new_trip = RideShare::Trip.new(
+        #TODO: Sort @trips by id first
         id: @trips.last.id + 1,
-        driver: find_available_driver,
+        driver: @driver,
         passenger_id: passenger_id,
         start_time: Time.now,
-        end_time: 0,
         rating: nil 
       )
-    
+      @driver.add_trip(new_trip)
+      @driver.modify_status
+      # add to passenger's collection of trips (use current trip passenger id)
+
+      return new_trip
     end
 
     def inspect

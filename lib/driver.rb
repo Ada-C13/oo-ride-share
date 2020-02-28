@@ -2,7 +2,8 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :vin, :status, :trips
+    attr_reader :name, :vin, :trips
+    attr_accessor :status
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
@@ -58,6 +59,11 @@ module RideShare
       return net_revenue.sum
     end
     
+    def modify_status
+      # modify the assigned driver's status to :UNAVAILABLE
+      return self.status = :UNAVAILABLE
+    end
+
     private
     
     def self.from_csv(record)
