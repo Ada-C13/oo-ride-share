@@ -126,14 +126,6 @@ describe "TripDispatcher class" do
     end
   end
 
-  # dispatcher = build_test_dispatcher
-  # [:trips, :passengers, :drivers].each do |prop|
-  #   expect(dispatcher).must_respond_to prop
-  # end
-
-  # expect(dispatcher.trips).must_be_kind_of Array
-  # expect(dispatcher.passengers).must_be_kind_of Array
-  # expect(dispatcher.drivers).must_be_kind_of Array
   describe "Requesting a Trip" do
 
     before do
@@ -164,7 +156,65 @@ describe "TripDispatcher class" do
       expect(@requested_trip.cost).must_equal nil
       expect(@requested_trip.rating).must_equal nil
     end
+  end
+end
 
+
+describe "Create a new TripDispatcher to test different data for wave 4 methods" do
+  TEST_DATA_DIRECTORY2 = 'test_2/test_data'
+  def build_test_dispatcher2
+    return RideShare::TripDispatcher.new(
+      directory: TEST_DATA_DIRECTORY2
+    )
   end
 
-end
+  describe "Wave 4 methods" do
+      before do
+        @dispatcher2 = build_test_dispatcher2
+        @requested_trip = @dispatcher2.request_trip(4)
+      end
+
+      it "returns an array when calling available_drivers" do
+        expect(@dispatcher2.available_drivers).must_be_kind_of Array
+      end
+
+      it "returns the correct number of available drivers" do 
+        test_available_drivers = @dispatcher2.available_drivers
+        expect(test_available_drivers.length).must_equal 6
+      end
+
+    it "correctly returns the driver who has not driven the longest" do
+      expect(@requested_trip.driver.name).must_equal "Driver 9"
+    end
+
+    it "confirms driver 9 has a trip in progress" do
+      expect(@requested_trip.end_time).must_be_nil
+    end
+
+    it "returns the correct number of available drivers" do 
+      @requested_trip2 = @dispatcher2.request_trip(8)
+      test_available_drivers = @dispatcher2.available_drivers
+      expect(test_available_drivers.length).must_equal 5
+    end
+
+    it "correctly returns the driver who has not driven the longest" do
+      @requested_trip2 = @dispatcher2.request_trip(8)
+      expect(@requested_trip2.driver.name).must_equal "Driver 2"
+    end
+
+    it "checks that every driver in available drivers is available" do
+      @requested_trip2 = @dispatcher2.request_trip(8)
+      def check_all_statuses 
+        @dispatcher2.available_drivers.each do |driver|
+        if driver.status == :UNAVAILABLE
+          return false
+        else 
+          return true
+        end
+      end
+    end
+      expect(check_all_statuses).must_equal true
+    end
+
+  end
+end 
