@@ -169,5 +169,20 @@ describe "TripDispatcher class" do
     # how do we get to the collection of trips?
     end
   end
+
+  describe "sorts trips by id" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+
+    it "returns an array of sorted trips by trip id in ascending order" do
+      @trip = @dispatcher.sort_trips_by_id
+
+      expect(@trip.first.id).must_equal 1
+      expect(@trip.last.id).must_equal 5
+
+    end
+  end
+
         
 end

@@ -31,10 +31,17 @@ module RideShare
       
       return available_driver
     end
+
+    def sort_trips_by_id
+      sorted = @trips.sort_by { |trip| trip.id }
+
+      return sorted 
+    end
     
     def request_trip(passenger_id)
       @driver = find_available_driver
       @passenger = find_passenger(passenger_id)
+
       
 
       new_trip = RideShare::Trip.new(
