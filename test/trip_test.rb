@@ -3,8 +3,8 @@ require_relative 'test_helper'
 describe "Trip class" do
   describe "initialize" do
     before do
-      start_time = Time.now - 60 * 60 # 60 minutes
-      end_time = start_time + 25 * 60 # 25 minutes
+      start_time = Time.now - 60 * 60 
+      end_time = start_time + 25 * 60 
       @trip_data = {
         id: 8,
         driver: RideShare::Driver.new(
@@ -46,12 +46,12 @@ describe "Trip class" do
     end
 
     it "raises an error if end_time is before start_time " do
-      @trip_data[:start_time] = @trip_data[:end_time] + 15 * 60 # made start_time bigger than end_time by 15 minutes
+      @trip_data[:start_time] = @trip_data[:end_time] + 15 * 60 
       expect do
         RideShare::Trip.new(@trip_data)
       end.must_raise ArgumentError
 
-      @trip_data[:start_time] = @trip_data[:end_time] + 1 # made start_time bigger than end_time by 1 second
+      @trip_data[:start_time] = @trip_data[:end_time] + 1 
       expect do
         RideShare::Trip.new(@trip_data)
       end.must_raise ArgumentError
@@ -62,7 +62,6 @@ describe "Trip class" do
       expect(@trip.duration).must_equal 1500.0
     end
 
-
     it "Allows a rating of nil" do
       @trip_data1 = {
         id: 8,
@@ -72,12 +71,15 @@ describe "Trip class" do
           name: "Ada",
           phone_number: "412-432-7640"
         ),
+
         start_time: nil,
         end_time: nil,
         cost: 23.45,
         rating: nil
       }
+
       @trip1 = RideShare::Trip.new(@trip_data1)
+      
       expect(@trip1.rating).must_be_nil
       expect(@trip1.end_time).must_be_nil
     end

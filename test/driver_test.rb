@@ -85,8 +85,7 @@ describe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
-        # status: :AVAILABLE      
+        vin: "1C9EVBRM0YBC564DZ"    
       )
 
       trip = RideShare::Trip.new(
@@ -139,11 +138,10 @@ describe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
-        # status: :AVAILABLE      
+        vin: "1C9EVBRM0YBC564DZ"     
       )
 
-      trip1 = RideShare::Trip.new(  # Suely: renamed class
+      trip1 = RideShare::Trip.new( 
         id: 8,
         driver: @driver,
         passenger_id: 3,
@@ -152,7 +150,7 @@ describe "Driver class" do
         rating: 5
       )
       
-      trip2 = RideShare::Trip.new( # Suely: renamed class
+      trip2 = RideShare::Trip.new( 
         id: 12,
         driver: @driver,
         passenger_id: 3,
@@ -163,8 +161,6 @@ describe "Driver class" do
       expect(@driver.average_rating).must_equal 5
 
     end
-
-
   end
 
   describe "total_revenue" do
@@ -205,6 +201,7 @@ describe "Driver class" do
         rating: 4,
         cost: 1.6
       )
+
       @trip4 = RideShare::Trip.new(
         id: 7,
         driver: @driver,
@@ -215,19 +212,19 @@ describe "Driver class" do
 
     it "returns the total driver revenue" do
       expect(@driver.total_revenue).must_be_kind_of Numeric
-      expect(@driver.total_revenue).must_equal 0 # without trips
+      expect(@driver.total_revenue).must_equal 0 
       @driver.add_trip(@trip1)
       expect(@driver.total_revenue).must_equal 16
       @driver.add_trip(@trip2)
-      expect(@driver.total_revenue).must_equal 24 # 8 + 16
-      @driver.add_trip(@trip3) # this low-cost trip has no revenue
-      expect(@driver.total_revenue).must_equal 24 # 0 + 8 + 16
+      expect(@driver.total_revenue).must_equal 24
+      @driver.add_trip(@trip3) 
+      expect(@driver.total_revenue).must_equal 24 
     end
 
     it "total revenue works with in-progress trips" do
       @driver.add_trip(@trip1)
       @driver.add_trip(@trip2)
-      @driver.add_trip(@trip4) # this in-progress trip has no cost
+      @driver.add_trip(@trip4) 
       expect(@driver.total_revenue).must_equal 24
      
     end

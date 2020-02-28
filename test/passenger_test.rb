@@ -36,7 +36,7 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+      
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -76,11 +76,9 @@ describe "Passenger class" do
     end
   end
 
-  # Test net_expenditures Method
   describe "net_expenditures" do
-
     before do
-      # TODO: you'll need to add a driver at some point here.
+      
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -119,7 +117,7 @@ describe "Passenger class" do
         id: 11,
         driver: driver,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 11) # removed end time, cost and rating
+        start_time: Time.new(2016, 8, 11) 
         )
       end
 
@@ -135,17 +133,13 @@ describe "Passenger class" do
       @passenger.add_trip(@trip1)
       @passenger.add_trip(@trip2)
       @passenger.add_trip(@trip3)
-      expect(@passenger.net_expenditures).must_equal 50 # no additional cost for trip 3
+      expect(@passenger.net_expenditures).must_equal 50 
 
     end
-
-
   end
 
   describe "total_time_spent" do
-
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -186,6 +180,7 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 11)
         )
+
       end
 
     it "Returns the total time the passenger has had on trips." do
@@ -199,14 +194,14 @@ describe "Passenger class" do
     it "total time spent works with in-progress trips" do
       @passenger.add_trip(@trip1)
       @passenger.add_trip(@trip2)
-      @passenger.add_trip(@trip3) # this will fail because no driver available for the third trip
+      @passenger.add_trip(@trip3) 
       expect(@passenger.total_time_spent).must_equal 2 * 24 * 60 * 60 
     end
 
   end
 
-  # Test total_time_spent Method
-  describe "total_time_spent" do   # to think about, can this describe block be combined with the above one?
+  
+  describe "total_time_spent" do  
     before do
       @passenger = RideShare::Passenger.new(id: 9, name: "Merl Glover III", phone_number: "1-602-620-2330 x3723", trips: [])
       @trip1     = RideShare::Trip.new(id: 4, driver_id: 5, passenger: @passenger, start_time: Time.new(2016,8,1), end_time: Time.new(2016,8,2),rating: 5)
@@ -217,13 +212,9 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_be_kind_of Numeric
       expect(@passenger.total_time_spent).must_equal 0
       @passenger.add_trip(@trip1)
-      expect(@passenger.total_time_spent).must_equal 24 * 60 * 60 # one day in seconds
+      expect(@passenger.total_time_spent).must_equal 24 * 60 * 60 
       @passenger.add_trip(@trip2)
-      expect(@passenger.total_time_spent).must_equal 2 * 24 * 60 * 60 # two days in seconds
+      expect(@passenger.total_time_spent).must_equal 2 * 24 * 60 * 60 
     end
-    
-
   end
-
-
 end

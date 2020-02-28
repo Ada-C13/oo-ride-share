@@ -25,7 +25,6 @@ module RideShare
       unless approved_status.include?(@status)
         raise ArgumentError.new ('You must provide one of the following statuses :available, :unavailable')
       end
-
     end
 
     def add_trip(trip)

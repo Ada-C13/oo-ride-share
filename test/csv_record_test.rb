@@ -35,7 +35,6 @@ describe RideShare::CsvRecord do
 
   describe 'validate_id' do
     it 'accepts natural numbers' do
-      # Should not raise
       [1, 10, 9999].each do |id|
         RideShare::CsvRecord.validate_id(id)
       end
@@ -57,8 +56,6 @@ describe RideShare::CsvRecord do
   end
 
   describe 'extension' do
-    # It's a class that's designed to be extended.
-    # How do you test that? Extend it!
     class TestRecord < RideShare::CsvRecord
       attr_reader :name
       def initialize(id:, name:)
