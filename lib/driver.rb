@@ -1,6 +1,6 @@
 require 'csv'
-require_relative 'csv_record'
 require 'time'
+require_relative 'csv_record'
 require_relative 'trip_dispatcher'
 
 module RideShare
@@ -9,8 +9,6 @@ module RideShare
     attr_accessor :status
 
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
-
-
       super(id)
       @name = name
       @vin = vin #17 char
@@ -32,20 +30,11 @@ module RideShare
       raise ArgumentError if id <= 0 || id.nil?
 
       raise ArgumentError if vin.length != 17
-
-      # case status
-      # when :AVAILABLE, :UNAVAILABLE
-      #   @status = status
-      # else 
-      #   raise ArgumentError
-      # end
-
-    end #end of initialize
+    end 
 
     def add_trip(trip)
       trips << trip
     end
-
     
     def average_rating
       total_ratings = 0
@@ -59,14 +48,11 @@ module RideShare
       end
     end
 
-    
-
     def total_revenue
       total_revenue = 0
       if @trips == nil
         return 0
       end 
-
       @trips.each do |trip|
         if trip.cost <= 1.65
           total_revenue += 0
@@ -93,7 +79,5 @@ module RideShare
         status: record[:status].to_sym
       )
     end
-  
-
   end
 end

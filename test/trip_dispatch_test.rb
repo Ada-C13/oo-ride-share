@@ -28,9 +28,7 @@ describe "TripDispatcher class" do
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
-
       dispatcher = RideShare::TripDispatcher.new
-
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -77,7 +75,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
+
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -133,6 +131,7 @@ describe "TripDispatcher class" do
       expect(@trip).must_be_kind_of RideShare::Trip
       expect(@trip.id).must_be_instance_of Integer
       expect(@trip.driver_id).must_equal 2
+      expect(@trip.start_time).must_be_instance_of Time
       expect(@trip.end_time).must_be_nil
       expect(@trip.cost).must_be_nil
       expect(@trip.rating).must_be_nil
@@ -142,27 +141,27 @@ describe "TripDispatcher class" do
       expect(@trip.driver.status).must_equal :UNAVAILABLE
     end
 
-    it "adds trip to the driver trips" do
+    it "adds trip to the driver's trips" do
       expect(@trip.driver.trips).must_include @trip
-
     end
   
+    it "adds trip to the passenger's trips" do
+      expect(@trip.passenger.trips).must_include @trip
+    end
 
+    it "adds trip to total trips list" do
+      expect(@dispatcher.trips).must_include @trip
+    end
+
+    it "returns a new trip" do
+      expect(@trip).must_equal @trip
+    end
+
+    it "raises ArgumentError if all drivers are unavailable" do
+      @dispatcher.drivers.each do |driver|
+           driver.status = :UNAVAILABLE
+      end
+      expect{@dispatcher.request_trip(3)}.must_raise ArgumentError
+    end
   end
 end
-
-
-
-
-# updates driver - include? requested trip must be true
-# status changed unavailable
-
-# added to pax trips 
-
-# added to trip dispatcher list of trips 
-
-# if drivers are all unavailable 
-#   loop test data to make all drivers unavailable
-#   must raise error 
-#   (add accessor as status to driver )
-

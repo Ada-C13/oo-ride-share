@@ -24,10 +24,8 @@ module RideShare
       if driver
         @driver = driver
         @driver_id = driver.id
-
       elsif driver_id
         @driver_id = driver_id
-
       else
         raise ArgumentError, 'Driver or driver_id is required'
       end
@@ -36,10 +34,8 @@ module RideShare
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
@@ -54,8 +50,7 @@ module RideShare
         end_time = Time.parse(end_time)
       end
       @end_time = end_time
-
-
+      
       @cost = cost
       @rating = rating
 
@@ -66,15 +61,12 @@ module RideShare
       if @end_time && (end_time < start_time)
         raise ArgumentError.new("End time #{end_time} is before  start time #{start_time}")
       end
-    end #end of initialize
-
+    end 
 
     def trip_duration_in_seconds
       trip_duration = @end_time - @start_time
       return trip_duration
     end
-
-    
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip

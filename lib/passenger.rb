@@ -7,7 +7,6 @@ module RideShare
 
     def initialize(id:, name:, phone_number:, trips: nil)
       super(id)
-
       @name = name
       @phone_number = phone_number
       @trips = trips || []
@@ -21,7 +20,6 @@ module RideShare
       return @trips.map {|trip| trip.cost}.sum
     end
 
-    # Add an instance method, total_time_spent to Passenger that will return the total amount of time that passenger has spent on their trips
     def total_time_spent
       return @trips.map {|trip| trip.trip_duration_in_seconds}.sum 
     end
@@ -35,6 +33,5 @@ module RideShare
         phone_number: record[:phone_num]
       )
     end
-
   end
 end

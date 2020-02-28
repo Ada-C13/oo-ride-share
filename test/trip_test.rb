@@ -53,16 +53,11 @@ describe "Trip class" do
       end
     end
 
-    
     it "raises an error if end_time is before start_time " do
       @trip_data[:start_time] = @trip_data[:end_time] + 2000 # made start_time bigger than end_time by 15 minutes
       expect do
         RideShare::Trip.new(@trip_data)
       end.must_raise ArgumentError
     end
-    
-    # expect {order.add_product("banana", 4.25)}.must_raise ArgumentError
-
   end
-
 end

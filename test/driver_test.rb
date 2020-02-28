@@ -37,7 +37,6 @@ describe "Driver class" do
       [:id, :name, :vin, :status, :trips].each do |prop|
         expect(@driver).must_respond_to prop
       end
-
       expect(@driver.id).must_be_kind_of Integer
       expect(@driver.name).must_be_kind_of String
       expect(@driver.vin).must_be_kind_of String
@@ -168,12 +167,8 @@ describe "Driver class" do
     it "returns a float" do
       expect(@driver.total_revenue).must_be_kind_of Float
     end
-
-
-
-    
-
   end
+
   describe "total_revenue" do
     it "If trip cost is less or equal to 1.65 to return 0" do
       @driver = RideShare::Driver.new(
@@ -191,9 +186,7 @@ describe "Driver class" do
         rating: 5
       )
       @driver.add_trip(trip1)
-
       expect(@driver.total_revenue).must_equal 0 
-    
     end
 
     it "returns zero if no driven trips" do
@@ -206,7 +199,4 @@ describe "Driver class" do
       expect(driver.total_revenue).must_be_kind_of Numeric
     end
   end
-
-
-
 end
