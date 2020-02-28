@@ -7,7 +7,7 @@ require_relative "driver"
 
 module RideShare
   class TripDispatcher
-    attr_reader :drivers, :passengers, :trips
+    attr_accessor :drivers, :passengers, :trips
 
     def initialize(directory: "./support")
       @passengers = Passenger.load_all(directory: directory)
@@ -17,7 +17,7 @@ module RideShare
     end
 
     def find_passenger(id)
-      Passenger.validate_id(id) 
+      Passenger.validate_id(id)
       passenger = @passengers.find { |passenger| passenger.id == id }
       return passenger
     end
@@ -27,31 +27,31 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
 
-
-    
-
-    def request_trip(passenger_id) 
+    def request_trip(passenger_id)
       available_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+
       raise ArgumentError.new("There are no drivers available") if available_driver == nil
+
+      passenger = find_passenger(passenger_id)
+
       new_trip = RideShare::Trip.new(
-        id: @trips.last.id + 1, 
-        passenger: find_passenger(passenger_id),
+        id: @trips.last.id + 1,
+        passenger: passenger,
         passenger_id: passenger_id,
         start_time: Time.now,
-        end_time: nil, 
-        cost: nil, 
+        end_time: nil,
+        cost: nil,
         rating: nil,
         driver_id: available_driver.id,
-        driver: available_driver
+        driver: available_driver,
       )
 
-      
       available_driver.status = :UNAVAILABLE
       @trips << new_trip
-      new_trip.connect(passenger, driver)
-      return new_trip
-    end 
+      new_trip.connect(passenger, available_driver)
 
+      return new_trip
+    end
 
     def inspect
       # Make puts output more useful
@@ -72,7 +72,7 @@ module RideShare
       return trips
     end
 
-    # def connect(passenger, driver) 
+    # def connect(passenger, driver)
     #   @passenger = passenger
     #   passenger.add_trip(self)
     #   @driver = driver

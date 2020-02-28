@@ -31,13 +31,20 @@ module RideShare
       @end_time = end_time
       @cost = cost
       @rating = rating
-      # a nil check looks like @rating == nil or @rating && (<the existing boolean>)
-      
-      if @rating > 5 || @rating < 1 
-        raise ArgumentError.new("Invalid rating #{@rating}")
+
+      # if @rating == nil
+      #   binding.pry
+      # end
+
+      if @rating != nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
 
-      raise ArgumentError.new("The start time should be before the end time") if @end_time < @start_time
+      if @end_time != nil
+        raise ArgumentError.new("The start time should be before the end time") if @end_time < @start_time
+      end
     end
 
     def inspect
@@ -48,13 +55,12 @@ module RideShare
         "PassengerID=#{passenger&.id.inspect}>"
     end
 
-    def connect(passenger, driver) 
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
       @driver = driver
       driver.add_trip(self)
     end
-
 
     def duration
       return end_time - start_time

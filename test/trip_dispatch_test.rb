@@ -151,14 +151,21 @@ describe "TripDispatcher class" do
 
     # Was the driver who was selected AVAILABLE?
     it "the driver selected was available" do
+      @dispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+
+      @dispatcher.drivers[-1].status = :AVAILABLE
+
       new_trip = @dispatcher.request_trip(1)
-      expect(new_trip.driver.status).must_equal :AVAILABLE
+      expect(new_trip.driver).must_equal @dispatcher.drivers[-1]
     end
 
     # What happens if you try to request a trip when there are no AVAILABLE drivers?
     it "raises an ArgumentError if no drivers available" do
-      @dispatcher.drivers[1].status = :UNAVAILABLE
-      @dispatcher.drivers[2].status = :UNAVAILABLE
+      @dispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
 
       expect { @dispatcher.request_trip(1) }.must_raise ArgumentError
     end
