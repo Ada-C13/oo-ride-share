@@ -77,7 +77,6 @@ describe "Passenger class" do
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
-        trips: []
         )
       trip = RideShare::Trip.new(
         id: 8,
@@ -88,7 +87,7 @@ describe "Passenger class" do
         rating: 5,
         driver_id: 222
         )
-        trip_two = RideShare::Trip.new(
+      trip_two = RideShare::Trip.new(
           id: 8,
           passenger: @passenger,
           start_time: Time.new(2016, 8, 8),

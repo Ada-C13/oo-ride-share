@@ -169,7 +169,18 @@ describe "TripDispatcher class" do
           end
         }.must_raise ArgumentError
       end
-    end
 
+      it "will select the driver with no trips completed first" do
+        @dispatcher.request_trip(4)
+        expect (@dispatcher.trips[-1].driver_id).must_equal 3
+      end
+
+      it "will select the driver who completed a trip the longest ago if there are no drivers with zero trips completed" do
+        2.times do |i|
+          @dispatcher.request_trip(i + 1)
+        end
+        expect (@dispatcher.trips[-1].driver_id).must_equal 2
+      end
+    end
   end
 end
