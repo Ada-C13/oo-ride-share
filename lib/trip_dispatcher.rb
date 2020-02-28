@@ -4,6 +4,7 @@ require 'time'
 require_relative 'passenger'
 require_relative 'trip'
 require_relative 'driver'
+require_relative 'no_driver_error'
 
 
 module RideShare
@@ -36,9 +37,31 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      driver = @drivers.find {|driver|driver.status == :AVAILABLE}
+      # driver = @drivers.find {|driver|driver.status == :AVAILABLE}
+      available_drivers = @drivers.select {|driver|driver.status == :AVAILABLE}
+    
+      driver = nil
+      oldest_endtime = Time.now
+
+      available_drivers.each do |indiv_driver|
+        if indiv_driver.trips.length == 0
+          driver = indiv_driver
+        else 
+          latest_trip = indiv_driver.trips.max_by {|trip| trip.end_time}
+          if latest_trip.end_time < oldest_endtime 
+            oldest_endtime = latest_trip.end_time  
+            driver = indiv_driver
+          end
+        end
+      end
+
       
-      raise ArgumentError.new("Sorry! There are no available drivers. Please request a new trip.") if driver == nil
+
+      # avalable_drivers: use their id to look through trips
+      # if id's are not found in trips, assign the ride
+      # else find id with oldest end time and assign trip
+
+      raise NoDriverError.new("Sorry! There are no available drivers. Please request a new trip.") if driver == nil
 
       start_time = Time.now
       end_time = nil
@@ -64,7 +87,6 @@ module RideShare
         driver = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
       end
-
       return trips
     end
   end

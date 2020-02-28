@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 
+
 TEST_DATA_DIRECTORY = 'test/test_data'
 
 describe "TripDispatcher class" do
@@ -23,7 +24,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -151,8 +152,12 @@ describe "TripDispatcher class" do
         expect(@new_trip).must_be_kind_of RideShare::Trip
       end
 
-      it "picks the first available driver" do
-        expect(@new_trip.driver.name).must_equal "Driver 2"
+      it "chooses the available driver that hasn't driven any trips" do
+        expect(@new_trip.driver.name).must_equal "Driver 3 (no trips)"
+      end
+
+      it "chooses the driver with the oldest end time when all drivers have driven" do
+        expect(@dispatcher.request_trip(2).driver.name).must_equal "Driver 2"
       end
 
       it " makes the chosen driver unavailable" do
@@ -175,7 +180,7 @@ describe "TripDispatcher class" do
 
       it "Raises ArgumentError when there are no available drivers " do
         @dispatcher.request_trip(2)
-        expect{ @dispatcher.request_trip(5) }.must_raise ArgumentError
+        expect{ @dispatcher.request_trip(5) }.must_raise NoDriverError
       end
     end
   end

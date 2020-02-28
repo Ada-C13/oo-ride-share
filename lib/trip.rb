@@ -42,7 +42,7 @@ module RideShare
       elsif driver_id
         @driver_id = driver_id
       else
-        raise ArgumentError, 'Driver or driver_id  is required'
+        raise ArgumentError, 'Driver or driver_id is required'
       end
 
       raise ArgumentError if @end_time < @start_time unless end_time == nil

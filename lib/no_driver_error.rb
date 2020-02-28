@@ -1,0 +1,3 @@
+
+class NoDriverError < StandardError
+end
