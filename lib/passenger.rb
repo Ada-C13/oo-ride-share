@@ -13,19 +13,19 @@ module RideShare
     end
 
     def add_trip(trip)
-      @trips << trip 
+      @trips << trip
     end
 
     # ! TODO add no trips
     def net_expenditures
-      if @trips == nil
+      if @trips == nil || @trips == 0
         raise ArgumentError.new("This passenger has no trips")
       else
-      total_cost = 0
+        total_cost = 0
         @trips.each do |trip|
           total_cost += trip.cost
         end
-      end 
+      end
       return total_cost
     end
 
@@ -39,7 +39,7 @@ module RideShare
 
     private
 
-    def self.from_csv(record) #Passenger.new, new, @new, self.new 
+    def self.from_csv(record) #Passenger.new, new, @new, self.new
       return new(
                id: record[:id],
                name: record[:name],

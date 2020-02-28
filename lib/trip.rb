@@ -1,12 +1,22 @@
-require 'csv'
-require 'time'
+require "csv"
+require "time"
 require_relative "csv_record"
 
 module RideShare
   class Trip < CsvRecord
     attr_reader :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver_id, :driver
 
-    def initialize(id:, passenger: nil, passenger_id: nil, start_time:, end_time:, cost: nil, rating: nil, driver_id: nil, driver: nil)
+    def initialize(
+      id:,
+      passenger: nil,
+      passenger_id: nil,
+      start_time:,
+      end_time:,
+      cost: nil,
+      rating: nil,
+      driver_id: nil,
+      driver: nil
+    )
       super(id)
 
       if passenger
@@ -31,10 +41,6 @@ module RideShare
       @end_time = end_time
       @cost = cost
       @rating = rating
-
-      # if @rating == nil
-      #   binding.pry
-      # end
 
       if @rating != nil
         if @rating > 5 || @rating < 1

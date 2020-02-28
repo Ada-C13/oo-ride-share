@@ -23,7 +23,7 @@ describe "Passenger class" do
 
     it "is set up for specific attributes and data types" do
       [:id, :name, :phone_number, :trips].each do |prop|
-        expect(@passenger).must_respond_to prop 
+        expect(@passenger).must_respond_to prop
       end
 
       expect(@passenger.id).must_be_kind_of Integer
@@ -77,10 +77,10 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: Time.parse("2016-08-08"),
-        end_time: Time.parse("2016-08-09"),
+        start_time: Time.parse("2020-04-05"),
+        end_time: Time.parse("2020-04-06"),
         rating: 5,
-        cost: 7,
+        cost: 6,
         driver_id: 8,
       )
 
@@ -89,13 +89,21 @@ describe "Passenger class" do
       trip2 = RideShare::Trip.new(
         id: 9,
         passenger: @passenger,
-        start_time: Time.parse("2016-08-10"),
-        end_time: Time.parse("2016-08-11"),
+        start_time: Time.parse("2020-08-10"),
+        end_time: Time.parse("2020-08-11"),
         rating: 5,
-        cost: 9,
+        cost: 10,
         driver_id: 8,
       )
       @passenger.add_trip(trip2)
+
+      # passenger with no trips
+      @passenger_2 = RideShare::Passenger.new(
+        id: 3,
+        name: "Nora",
+        phone_number: "1-555-867-5309",
+        trips: [],
+      )
     end
 
     it "calculates the total amount of money a passenger has spent on their trips" do
@@ -103,11 +111,10 @@ describe "Passenger class" do
     end
 
     # ! TODO fix this
-    it "What happens if the passenger has no trips" do
-      # @passenger.trips = nil
-      # expect {
-      #   @passenger.trips
-      # }.must_raise ArgumentError
+    it "What happens if passenger has no trips" do
+      expect do
+        (@passenger_2.net_expenditures)
+      end.must_raise ArgumentError
     end
   end
 
