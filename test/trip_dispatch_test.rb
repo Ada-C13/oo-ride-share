@@ -120,10 +120,19 @@ describe "TripDispatcher class" do
         driver = @dispatcher.find_driver(2)
         expect(driver).must_be_kind_of RideShare::Driver
       end
-      it "find available driver" do
+
+      it "finds available driver" do
         driver = @dispatcher.find_driver(3)
         expect(driver.status).must_equal :AVAILABLE
       end
+
+      it "changes driver status to UNAVAILABLE when new trip added" do
+        dispatcher = build_test_dispatcher
+
+        trip1 = dispatcher.request_trip(1)
+        expect(trip1.driver.status).must_equal :UNAVAILABLE
+      end
+
     end
 
     describe "Driver & Trip loader methods" do
@@ -152,15 +161,19 @@ describe "TripDispatcher class" do
         end
       end
 
-    it "adds new trip to collection of all Trips" do
-      dispatcher = build_test_dispatcher
-      
-      trip1 = dispatcher.request_trip(1)
-      
-      expect(dispatcher.trips).must_include(trip1)
-    end
+      it "adds new trip to collection of all Trips" do
+        dispatcher = build_test_dispatcher
+        trip1 = dispatcher.request_trip(1)
+        
+        expect(dispatcher.trips).must_include(trip1)
+      end
 
+      it "returns new_trip" do
+        dispatcher = build_test_dispatcher
+        trip1 = dispatcher.request_trip(1)
+
+        expect(trip1).must_be_kind_of RideShare::Trip
+      end
     end
   end
-
 end
