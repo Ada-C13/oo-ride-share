@@ -1,12 +1,12 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
-TEST_DATA_DIRECTORY = 'test/test_data'
+TEST_DATA_DIRECTORY = "test/test_data"
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
-      directory: TEST_DATA_DIRECTORY
-    )
+             directory: TEST_DATA_DIRECTORY,
+           )
   end
 
   describe "Initializer" do
@@ -28,7 +28,7 @@ describe "TripDispatcher class" do
 
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
-      trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
+      trip_count = %x{wc -l 'support/trips.csv'}.split(" ").first.to_i - 1
 
       dispatcher = RideShare::TripDispatcher.new
 
@@ -43,7 +43,7 @@ describe "TripDispatcher class" do
       end
 
       it "throws an argument error for a bad ID" do
-        expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
+        expect { @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
 
       it "finds a passenger instance" do
@@ -75,6 +75,14 @@ describe "TripDispatcher class" do
           expect(trip.passenger.trips).must_include trip
         end
       end
+    end
+  end
+
+  # Wave 3: tests for request_trip method
+  describe "request_trip" do
+    it "returns instance of trip" do
+      td = RideShare::TripDispatcher.new
+      expect(td.request_trip(1)).must_be_kind_of RideShare::Trip
     end
   end
 
@@ -123,3 +131,17 @@ describe "TripDispatcher class" do
     end
   end
 end
+
+# Wave 3 TripDispatcher tests:
+
+# Was the trip created properly?
+# Were the trip lists for the driver and passenger updated?
+# Was the driver who was selected AVAILABLE?
+# What happens if you try to request a trip when there are no AVAILABLE drivers?
+
+# Interaction with Waves 1 & 2
+# One thing you may notice is that this change breaks your code from previous waves, possibly in subtle ways. We've added a new kind of trip, an in-progress trip, that is missing some of the values you need to compute those numbers.
+
+# Your code from waves 1 & 2 should ignore any in-progress trips. That is to say, any trip where the end time is nil should not be included in your totals.
+
+# You should also add explicit tests for this new situation. For example, what happens if you attempt to calculate the total money spent for a Passenger with an in-progress trip, or the average rating of a Driver with an in-progress trip?

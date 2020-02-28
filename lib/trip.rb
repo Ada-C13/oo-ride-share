@@ -8,42 +8,44 @@ module RideShare
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver, :driver_id
 
     def initialize(
-          id:,
-          passenger: nil,
-          passenger_id: nil,
-          start_time:,
-          end_time:,
-          cost: nil,
-          rating:,
-          driver: nil,
-          driver_id: nil
-        )
+      id:,
+      passenger: nil,
+      passenger_id: nil,
+      start_time:,
+      end_time:,
+      cost: nil,
+      rating:,
+      driver: nil,
+      driver_id: nil
+    )
       super(id)
 
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
-        raise ArgumentError, 'Passenger or passenger_id is required'
+        raise ArgumentError, "Passenger or passenger_id is required"
       end
 
       # Raises an ArgumentError if the end time is before the start time
-      if end_time > start_time
-        @start_time = start_time
-        @end_time = end_time
-      else
-        raise ArgumentError, 'Those are invalid times'
+      if end_time != nil
+        if end_time > start_time
+          @start_time = start_time
+          @end_time = end_time
+        else
+          raise ArgumentError, "Those are invalid times"
+        end
       end
 
       @cost = cost
       @rating = rating
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      if rating != nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
 
       # Wave 2: When a Trip is constructed, either driver_id or driver must be provided.
@@ -53,10 +55,9 @@ module RideShare
       elsif driver_id
         @driver_id = driver_id
       else
-        raise ArgumentError, 'Driver or driver_id is required'
+        raise ArgumentError, "Driver or driver_id is required"
       end
-      
-    end # end initialize   
+    end # end initialize
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
@@ -71,7 +72,7 @@ module RideShare
       passenger.add_trip(self)
     end
 
-    def connect2(driver)
+    def connect_driver(driver)
       @driver = driver
       driver.add_trip(self)
     end
@@ -88,14 +89,14 @@ module RideShare
     # Trip.from_csv overrides CsvRecord.from_csv
     def self.from_csv(record)
       return self.new(
-        id: record[:id],
-        driver_id: record[:driver_id],
-        passenger_id: record[:passenger_id],
-        start_time: Time.parse(record[:start_time]),
-        end_time: Time.parse(record[:end_time]),
-        cost: record[:cost],
-        rating: record[:rating]
-      )
+               id: record[:id],
+               driver_id: record[:driver_id],
+               passenger_id: record[:passenger_id],
+               start_time: Time.parse(record[:start_time]),
+               end_time: Time.parse(record[:end_time]),
+               cost: record[:cost],
+               rating: record[:rating],
+             )
     end
   end
 end
