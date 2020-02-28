@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +119,53 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "requesting a trip" do
+    before do
+      @tripdispatcher = build_test_dispatcher
+      @passenger_id = 1
+      @requested_trip = @tripdispatcher.request_trip(@passenger_id)
+    end
+
+    it "creates a trip" do
+      expect(@requested_trip.passenger_id).must_equal @passenger_id
+      expect(@requested_trip.driver_id).must_equal 3
+      expect(@requested_trip.end_time).must_be_nil
+      expect(@requested_trip.cost).must_be_nil
+      expect(@requested_trip.rating).must_be_nil
+    end
+
+    it "updates the driver" do
+      expect(@requested_trip.driver.trips.include?(@requested_trip)).must_equal true
+      expect(@requested_trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "updates the passenger" do
+      expect(@requested_trip.passenger.trips.include?(@requested_trip)).must_equal true
+    end
+
+    it "adds trip to tripdispatcher list of trips" do
+      expect(@tripdispatcher.trips.include?(@requested_trip)).must_equal true
+    end
+
+    it "raises Runtime Error if no drivers are currently available" do
+      @tripdispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect{@tripdispatcher.request_trip(@passenger_id)}.must_raise RuntimeError
+    end
+
+    it "picks first driver with no rides" do 
+      tripdispatcher = build_test_dispatcher
+      expect(tripdispatcher.pick_driver_for_trip.id).must_equal 3
+    end
+
+    it "picks driver whose most recent trip ended the longest time ago if they all have rides" do
+      tripdispatcher = build_test_dispatcher
+      tripdispatcher.request_trip(1)
+      expect(tripdispatcher.pick_driver_for_trip.id).must_equal 2
     end
   end
 end
