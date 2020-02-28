@@ -88,27 +88,4 @@ describe "Trip class" do
       expect(@trip.trip_duration).must_equal 1500
     end
   end
-
-  # describe "from csv" do
-  #   it "trip start_time is an instance of time" do
-  #     #arrange
-  #     # id:,
-  #     #     passenger: nil,
-  #     #     passenger_id: nil,
-  #     #     start_time:,
-  #     #     end_time:,
-  #     #     cost: nil,
-  #     #     rating:
-  #     # record = [{id: 581,passenger: nil,passenger_id: 7,start_time: "3,2019-01-09 21:28:43 -0800",end_time: "2019-01-09 22:22:16 -0800",cost: 11,rating: 5 }]
-      
-  #     record = "581,7,3,2019-01-09 21:28:43 -0800,2019-01-09 22:22:16 -0800,11,5"
-  #     trip = RideShare::Trip.from_csv(record)
-  #     start_time = trip.start_time
-  #     end_time = trip.end_time
-  #     #assert
-  #     expect(start_time).must_be_instance_of Time
-  #     expect(end_time).must_be_instance_of Time
-  #   end
-  # end
-
 end

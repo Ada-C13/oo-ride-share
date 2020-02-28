@@ -45,6 +45,5 @@ module RideShare
         phone_number: record[:phone_num]
       )
     end
-    
   end
 end

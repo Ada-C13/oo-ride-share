@@ -33,6 +33,16 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def available_drivers
+      available_drivers_list = []
+      @drivers.each do |driver|
+        if driver.status == :AVAILABLE && (driver.trips.each { |trip| trip.end_time != nil })
+          available_drivers_list << driver
+        end
+      end 
+      return available_drivers_list
+    end 
+
     def pick_most_eligible_driver(available_drivers_list)
       longest_ago = Time.now
       best_driver = nil
@@ -55,21 +65,11 @@ module RideShare
       return best_driver
     end
 
-    def available_drivers
-      available_drivers_list = []
-      @drivers.each do |driver|
-        if driver.status == :AVAILABLE && (driver.trips.each { |trip| trip.end_time != nil })
-          available_drivers_list << driver
-        end
-      end 
-      return available_drivers_list
-    end 
-
     def request_trip(passenger_id)
       passenger_from_id = find_passenger(passenger_id)
       available_drivers_list = available_drivers
       best_driver = pick_most_eligible_driver(available_drivers_list)
-      trip1 = Trip.new(
+      requested_trip = Trip.new(
                       id: (@trips.last.id)+1,
                       driver_id: (best_driver.id),
                       driver: best_driver,
@@ -80,17 +80,15 @@ module RideShare
                       cost: nil,
                       rating: nil
       )
-      passenger_from_id.trips.push(trip1)
-      trips.push(trip1)
-      # WHY best_driver.add_requested_trip and return trip1?
-      best_driver.add_requested_trip(trip1)
-      return trip1
+      # Add requested trip to passenger, driver, and trips arrays
+      passenger_from_id.trips.push(requested_trip)
+      trips.push(requested_trip)
+      best_driver.add_requested_trip(requested_trip)
+      return requested_trip
     end
 
     private
 
-    # Dispatcher.connect_trips is not allowed by external code, only TripDispatcher can call it on itself.
-    # Should we add/change tests for this method to account for driver and passenger together?
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
@@ -99,6 +97,5 @@ module RideShare
       end
       return trips
     end
-
   end
 end

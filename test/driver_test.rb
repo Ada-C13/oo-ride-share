@@ -68,7 +68,6 @@ describe "Driver class" do
     end
 
     it "adds the trip" do
-      # should we replicate the below to test our dispatcher methods ?????
       expect(@driver.trips).wont_include @trip
       previous = @driver.trips.length
 
@@ -210,6 +209,5 @@ describe "Driver class" do
   
         expect(driver3.total_revenue).must_equal 0
     end
-
   end
 end

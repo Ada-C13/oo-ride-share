@@ -4,6 +4,7 @@ require_relative 'test_helper'
 TEST_DATA_DIRECTORY = 'test/test_data'
 
 describe "TripDispatcher class" do
+  
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
       directory: TEST_DATA_DIRECTORY
@@ -129,7 +130,6 @@ describe "TripDispatcher class" do
   end
 
   describe "Requesting a Trip" do
-
     before do
       @dispatcher = build_test_dispatcher
       @requested_trip = @dispatcher.request_trip(8)
@@ -151,29 +151,25 @@ describe "TripDispatcher class" do
     end
 
     # Testing provided data (where most eligible driver had no trips)
-    it "correctly finds the first available driver when the file has a driver with no trips" do
+    it "correctly finds first available driver when a driver has no trips or trips is nil" do
       expect(@requested_trip.driver.name).must_equal "Driver 3 (no trips)"
     end
 
     it "sets the selected driver's status to :UNAVAILABLE" do
-      # expect(requested_trip).must_respond_to :status
       expect(@requested_trip.driver.status).must_equal :UNAVAILABLE
     end
   end
-end
 
+  describe "Intelligent Dispatching Methods" do
+    # Using new directory and data
+    TEST_DATA_DIRECTORY2 = 'test_2/test_data'
+    def build_test_dispatcher2
+      return RideShare::TripDispatcher.new(
+        directory: TEST_DATA_DIRECTORY2
+      )
+    end
 
-describe "Intelligent Dispatching Methods" do
-  # New directory and data
-  TEST_DATA_DIRECTORY2 = 'test_2/test_data'
-  def build_test_dispatcher2
-    return RideShare::TripDispatcher.new(
-      directory: TEST_DATA_DIRECTORY2
-    )
-  end
-
-  describe "available_drivers method" do
-    
+    describe "available_drivers method" do
       before do
         @dispatcher2 = build_test_dispatcher2
         @requested_trip = @dispatcher2.request_trip(4)
@@ -183,19 +179,18 @@ describe "Intelligent Dispatching Methods" do
         expect(@dispatcher2.available_drivers).must_be_kind_of Array
       end
 
-      it "returns the correct number of available drivers after running the method" do 
+      it "returns the correct number of available drivers" do 
         previous_available_drivers = @dispatcher2.available_drivers
         expect(previous_available_drivers.length).must_equal 6
 
-        #making sure when another driver is requested  
-        #available drivers pool is decremented by one 
+        # Make sure that pool of available drivers decrements when a driver is requested  
         @requested_trip2 = @dispatcher2.request_trip(5)
 
         current_available_drivers = @dispatcher2.available_drivers
         expect(current_available_drivers.length).must_equal 5
       end
 
-      it "confirms that every driver in returned available drivers list has available status" do
+      it "confirms that every driver in returned available drivers list has :AVAILABLE status" do
         @requested_trip2 = @dispatcher2.request_trip(8)
         def check_all_statuses 
           @dispatcher2.available_drivers.each do |driver|
@@ -211,25 +206,25 @@ describe "Intelligent Dispatching Methods" do
     end
 
     describe "pick_most_eligible_driver method" do
-      
-      # Modified provided data to test getting the driver with the oldest trip)
+      # Modified provided data to test picking the driver with the oldest trip
       before do
         @dispatcher2 = build_test_dispatcher2
         @requested_trip = @dispatcher2.request_trip(4)
       end
 
-      it "correctly returns the driver who has not driven the longest" do
+      it "correctly returns the driver whose most recent trip is the oldest" do
         expect(@requested_trip.driver.name).must_equal "Driver 9"
       end
 
-      it "confirms that most eligible driver has a trip in progress" do
+      it "confirms that the most eligible driver now has a trip in progress" do
         expect(@requested_trip.end_time).must_be_nil
       end
 
-      # After running another request_trip cycle, next most eligiible driver is found
+      # After running another request_trip cycle, ensure next most eligiible driver is found
       it "correctly returns the driver who has not driven the longest" do
         @requested_trip2 = @dispatcher2.request_trip(5)
         expect(@requested_trip2.driver.name).must_equal "Driver 2"
       end
+    end
   end
 end 

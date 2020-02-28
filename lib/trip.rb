@@ -19,12 +19,6 @@ module RideShare
         )
       super(id)
 
-      unless passenger_id == nil
-        if passenger_id < 1
-          raise ArgumentError
-        end
-      end
-
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
@@ -34,6 +28,12 @@ module RideShare
 
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
+      end
+
+      unless passenger_id == nil
+        if passenger_id < 1
+          raise ArgumentError
+        end
       end
 
       if driver
@@ -101,6 +101,5 @@ module RideShare
                rating: record[:rating]
              )
     end
-    
   end
 end
