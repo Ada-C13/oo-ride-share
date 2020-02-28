@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -128,9 +128,111 @@ xdescribe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "returns average rating of 5 even with a trip in-progress" do
+      progress_trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(progress_trip)
+
+      expect(@driver.average_rating).must_be_close_to 5.0, 0.01
+    end
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver_one = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      @driver_two = RideShare::Driver.new(
+        id: 55,
+        name: "Rogers IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: []
+      )
+      trip_one = RideShare::Trip.new(
+        id: 8,
+        driver: @driver_one,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 12,
+        rating: 5
+      )
+      trip_two = RideShare::Trip.new(
+        id: 8,
+        driver: @driver_one,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 10,
+        rating: 5
+      )
+      @driver_one.add_trip(trip_one)
+      @driver_one.add_trip(trip_two)
+    end
+
+    it "return original total if cost of trip was less than 1.65" do
+      trip_three = RideShare::Trip.new(
+        id: 8,
+        driver: @driver_two,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 1,
+        rating: 5
+      )
+
+      @driver_two.add_trip(trip_three)
+
+      expect(@driver_two.total_revenue).must_equal 0.8
+    end
+
+    it "return 0 if there are no trips" do
+      expect(@driver_two.total_revenue).must_equal 0.0
+    end
+
+    it "returns 0 if the cost of one trip is 1.65" do
+      trip_three = RideShare::Trip.new(
+        id: 8,
+        driver: @driver_two,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 1.65,
+        rating: 5
+      )
+
+      @driver_two.add_trip(trip_three)
+
+      expect(@driver_two.total_revenue).must_equal 0.0
+    end
+
+    it "returns 14.96 for total trips" do
+      expect(@driver_one.total_revenue).must_equal 14.96
+    end
+
+    it "returns 14.96 for total trips even if one trip is in-progress" do
+      trip_three = RideShare::Trip.new(
+        id: 8,
+        driver: @driver_one,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+
+      @driver_one.add_trip(trip_three)
+      expect(@driver_one.total_revenue).must_equal 14.96
+
+    end
   end
 end
