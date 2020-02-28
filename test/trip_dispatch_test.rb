@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -123,7 +123,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # Wave 3
+  # Wave 3 Tests
   describe "request_trip" do
     before do
       @dispatcher = build_test_dispatcher
@@ -140,7 +140,6 @@ describe "TripDispatcher class" do
     end
 
     it "changes driver status to unavailable" do
-      passenger = @dispatcher.find_passenger(1)
       new_trip = @dispatcher.request_trip(1)
       expect(new_trip.driver.status).must_equal :UNAVAILABLE
     end
@@ -152,7 +151,6 @@ describe "TripDispatcher class" do
     end
 
     it "adds new trip to the collection of all Trips in TripDispatcher" do
-      passenger = @dispatcher.find_passenger(1)
       @dispatcher.request_trip(1)
       expect(@dispatcher.trips.length).must_equal 6
     end
@@ -164,14 +162,10 @@ describe "TripDispatcher class" do
     end
 
     it "calculates the correct average rating of a Driver with an in-progress trip" do
-      passenger = @dispatcher.find_passenger(1)
       driver = @dispatcher.find_driver(2)
       @dispatcher.request_trip(1)
       expect(driver.average_rating).must_equal 2.0
     end
-
-
-
   end 
 
   describe "select_available_driver" do
@@ -184,7 +178,4 @@ describe "TripDispatcher class" do
       expect(@dispatcher.select_available_driver).must_equal chosen_driver
     end
   end
-
-  
-
 end

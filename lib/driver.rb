@@ -5,8 +5,7 @@ module RideShare
 
   attr_reader :name, :vin, :trips, :status
   
-
-  def initialize (id:, name:, vin:, status: :AVAILABLE, trips: nil)
+  def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
     super(id)
 
     @name = name
@@ -18,7 +17,6 @@ module RideShare
     if (vin_pattern =~ @vin) == nil
       raise ArgumentError, "Invalid VIN"
     end
-
   end
 
   def add_trip(trip)
@@ -32,6 +30,7 @@ module RideShare
   # Wave 2 get average rating for a driver
   def average_rating
     nil_cases = 0
+
     if @trips.empty? == true
       return 0
     else
@@ -40,6 +39,7 @@ module RideShare
           nil_cases += 1
         end
       end
+
       average_rating = (@trips).map do |trip|
         if trip.rating == nil
           0
@@ -47,8 +47,10 @@ module RideShare
         (trip.rating).to_f
         end
       end
-      true_length_of_array = (average_rating.length) - nil_cases
-        return ((average_rating).inject(:+))/(true_length_of_array)
+
+      
+      cost = ((average_rating).inject(:+))/((average_rating.length) - nil_cases)
+      return cost
     end
   end
 
@@ -65,10 +67,7 @@ module RideShare
     total = (cost_array.sum - 1.65) * 0.80
 
     total <= 0? 0 : total
-
   end
-
-
 
   private
 
@@ -80,6 +79,5 @@ module RideShare
       status: record[:status]
     )
   end
-
   end
 end

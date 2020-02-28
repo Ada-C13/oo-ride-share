@@ -49,29 +49,20 @@ describe "Trip class" do
     end
 
 
-  # 1.1 #3 raise ArgumentError if end time is before start time
+  # 1.1 #3 Test raise ArgumentError if end time is before start time
     it "raises an error if the end time is before start time" do
-      # Arrange
-      # TODO start times later than end times array
-      # Array of end times that are earlier of start times
-      # start_time array that are later times
-
       start_time = "#{Time.now + 60 * 60}"
       end_time = "#{Time.now - 60 * 60}"
 
-      # Act and Assert
       @trip_data[:start_time] = start_time
       @trip_data[:end_time] = end_time
       expect {RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
-      # partially done through before block
     end 
   end
 
-  # 1.1 #4 test for duration method
+  # 1.1 #4 Test for duration method
   describe "duration" do
     before do
-      start_time = "#{Time.now - 60 * 60}"
-      end_time = "#{Time.now + 60 * 60}"
       @trip_data = {
         id: 8,
         passenger: RideShare::Passenger.new(
@@ -85,17 +76,15 @@ describe "Trip class" do
           vin: "12345678901234567",
           status: :AVAILABLE
         ),
-        start_time: start_time,
-        end_time: end_time,
+        start_time: "#{Time.now - 60 * 60}",
+        end_time: "#{Time.now + 60 * 60}",
         cost: 23.45,
         rating: 3
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
     it "calculates the duration of a trip in seconds" do
-      expect @trip.duration.must_equal 7200
+      expect _(@trip.duration).must_equal 7200
     end
   end
-  
-
 end

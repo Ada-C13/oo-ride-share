@@ -19,6 +19,13 @@ module RideShare
         )
       super(id)
 
+      @start_time = start_time
+      @end_time = end_time
+      @cost = cost
+      @rating = rating
+      
+
+      # Handling nil and edge cases for attributes
       if passenger
         @passenger = passenger
         @passenger_id = passenger_id
@@ -28,7 +35,6 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      # handles nil case for driver
       if driver
         @driver = driver
         @driver_id = driver.id
@@ -37,11 +43,6 @@ module RideShare
       else
         raise ArgumentError, 'Driver or driver_id is required'
       end
-
-      @start_time = start_time
-      @end_time = end_time
-      @cost = cost
-      @rating = rating
 
       if @rating.nil? == true
         @rating = @rating
@@ -62,7 +63,6 @@ module RideShare
       else @end_time < @start_time
         raise ArgumentError.new("Cannot have an end time before a start time.")
       end
-
     end
 
     def inspect
@@ -101,7 +101,3 @@ module RideShare
     end
   end
 end
-
-
-# all_trips = RideShare::Trip.load_all
-# puts all_trips[0]

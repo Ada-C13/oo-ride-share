@@ -77,7 +77,8 @@ describe "Driver class" do
       expect(@driver.trips.length).must_equal previous + 1
     end
   end
-
+  
+  # Wave 2 Tests
   describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
@@ -166,7 +167,6 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_equal 8.00
     end
 
-
     it "returns 0 if trip costs <= $1.65" do
       driver = RideShare::Driver.new(
         id: 54,
@@ -185,8 +185,8 @@ describe "Driver class" do
       @driver.add_trip(trip)
       expect(driver.total_revenue).must_equal 0
     end
-
   end
+
   # Wave 3 method to test change of status
   describe "change_status" do
     before do

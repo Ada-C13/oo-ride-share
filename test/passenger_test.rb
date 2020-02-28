@@ -37,7 +37,6 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -74,10 +73,8 @@ describe "Passenger class" do
     end
   end
 
-  # TODO 1.2 #1 Refactor our Arrange?
-  # TODO TODO TODO TODO More test cases?
+  # Test for 1.2 net_expenditures
   describe "net_expenditures" do
-    # Arrange
     before do
       @passenger = RideShare::Passenger.new(
         id: 9,
@@ -106,18 +103,15 @@ describe "Passenger class" do
         @passenger.add_trip(trip)
       end
       
-      expect ((@passenger).net_expenditures).must_equal 20
+      expect (_@passenger.net_expenditures).must_equal 20
     end
 
     it "returns a cost of 0 if a passenger has no trips" do
-      expect ((@passenger).net_expenditures).must_equal 0
+      expect (_@passenger.net_expenditures).must_equal 0
     end
-
   end
 
-  # # 1.2 #2 total_time_spent
-  # TODO TODO Refactor make it DRY!
-  # TODO What if there is no trips?
+  # Tests for 1.2 total_time_spent
   describe "total_time_spent" do
     before do
       @passenger = RideShare::Passenger.new(
@@ -147,12 +141,11 @@ describe "Passenger class" do
         @passenger.add_trip(trip)
       end
 
-      expect ((@passenger).total_time_spent).must_equal 14400
+      expect (_@passenger.total_time_spent).must_equal 14400
     end
 
     it "returns a time of 0 if a passenger has no trips" do
-      expect ((@passenger).total_time_spent).must_equal 0
+      expect (_@passenger.total_time_spent).must_equal 0
     end
   end
-
 end

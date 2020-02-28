@@ -43,9 +43,11 @@ module RideShare
       return @available_driver
     end
 
+    # Wave 3 method that allows for an in-progress trip to be made
     def request_trip(passenger_id)
       @passenger = self.find_passenger(passenger_id)
      
+      # handles case when there are no available drivers
       if @drivers.find {|driver| driver.status == :AVAILABLE}.nil?
         raise ArgumentError.new("No available drivers.")
       end
@@ -67,16 +69,16 @@ module RideShare
       }
       
       @new_trip = RideShare::Trip.new(@trip_data)
+      
       @driver.add_trip(@new_trip)
       @passenger.add_trip(@new_trip)
       @trips << @new_trip
       return @new_trip
-
     end
 
     private
 
-    # matches passenger csv and trip csv
+    # matches passenger csv, driver csv, and trip csv
     def connect_trips
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
@@ -85,7 +87,5 @@ module RideShare
       end
       return trips
     end
-
-   
   end
 end
