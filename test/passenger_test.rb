@@ -131,7 +131,7 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 50
     end
 
-    it "net expenditure works with in-progress trips" do   #done
+    it "net expenditure works with in-progress trips" do 
       @passenger.add_trip(@trip1)
       @passenger.add_trip(@trip2)
       @passenger.add_trip(@trip3)
@@ -184,7 +184,7 @@ describe "Passenger class" do
         id: 11,
         driver: driver,
         passenger: @passenger,
-        start_time: Time.new(2016, 8, 11) # removed end time, cost and rating
+        start_time: Time.new(2016, 8, 11)
         )
       end
 
@@ -193,13 +193,13 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_be_kind_of Numeric 
       @passenger.add_trip(@trip1)
       @passenger.add_trip(@trip2)
-      expect(@passenger.total_time_spent).must_equal 172800
+      expect(@passenger.total_time_spent).must_equal  2 * 24 * 60 * 60
     end
 
-    it "total time spent works with in-progress trips" do # in construction... done
+    it "total time spent works with in-progress trips" do
       @passenger.add_trip(@trip1)
       @passenger.add_trip(@trip2)
-      @passenger.add_trip(@trip3)
+      @passenger.add_trip(@trip3) # this will fail because no driver available for the third trip
       expect(@passenger.total_time_spent).must_equal 2 * 24 * 60 * 60 
     end
 

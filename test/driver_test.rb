@@ -134,7 +134,7 @@ describe "Driver class" do
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
 
-    it "average rating works with in-progress trips" do # in construction... done
+    it "average rating works with in-progress trips" do
 
       @driver = RideShare::Driver.new(
         id: 54,
@@ -143,7 +143,7 @@ describe "Driver class" do
         # status: :AVAILABLE      
       )
 
-      trip = RideShare::Trip.new(
+      trip1 = RideShare::Trip.new(  # Suely: renamed class
         id: 8,
         driver: @driver,
         passenger_id: 3,
@@ -152,14 +152,14 @@ describe "Driver class" do
         rating: 5
       )
       
-      trip3 = RideShare::Trip.new(
+      trip2 = RideShare::Trip.new( # Suely: renamed class
         id: 12,
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
       )
-      @driver.add_trip(trip)
-      @driver.add_trip(trip3)
+      @driver.add_trip(trip1)
+      @driver.add_trip(trip2)
       expect(@driver.average_rating).must_equal 5
 
     end
@@ -209,7 +209,7 @@ describe "Driver class" do
         id: 7,
         driver: @driver,
         passenger_id: 3,
-        start_time: Time.new(2016, 8, 8)   #got rid of cost/rating/end_time
+        start_time: Time.new(2016, 8, 8)
       )
     end
 
@@ -220,14 +220,14 @@ describe "Driver class" do
       expect(@driver.total_revenue).must_equal 16
       @driver.add_trip(@trip2)
       expect(@driver.total_revenue).must_equal 24 # 8 + 16
-      @driver.add_trip(@trip3)
+      @driver.add_trip(@trip3) # this low-cost trip has no revenue
       expect(@driver.total_revenue).must_equal 24 # 0 + 8 + 16
     end
 
-    it "total revenue works with in-progress trips" do # in construction... done
+    it "total revenue works with in-progress trips" do
       @driver.add_trip(@trip1)
       @driver.add_trip(@trip2)
-      @driver.add_trip(@trip4)
+      @driver.add_trip(@trip4) # this in-progress trip has no cost
       expect(@driver.total_revenue).must_equal 24
      
     end
