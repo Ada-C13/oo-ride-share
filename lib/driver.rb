@@ -58,8 +58,10 @@ module RideShare
     
     #TODO: Add test case for nil, refactor code
     def total_revenue
-      gross_revenue = @trips.map { |trip| trip.cost }
-      
+      nil_check = @trips.delete_if { |trip| trip.cost == nil }
+
+      gross_revenue = nil_check.map { |trip| trip.cost }
+    
       net_revenue = []
       gross_revenue.each do |cost|
         if cost > 1.65
