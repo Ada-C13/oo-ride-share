@@ -33,7 +33,7 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
-    def get_longest_ago(available_drivers_list)
+    def pick_most_eligible_driver(available_drivers_list)
       longest_ago = Time.now
       best_driver = nil
       available_drivers_list.each do |driver|
@@ -68,7 +68,7 @@ module RideShare
     def request_trip(passenger_id)
       passenger_from_id = find_passenger(passenger_id)
       available_drivers_list = available_drivers
-      best_driver = get_longest_ago(available_drivers_list)
+      best_driver = pick_most_eligible_driver(available_drivers_list)
       trip1 = Trip.new(
                       id: (@trips.last.id)+1,
                       driver_id: (best_driver.id),

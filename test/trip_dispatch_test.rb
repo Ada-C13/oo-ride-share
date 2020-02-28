@@ -51,6 +51,11 @@ describe "TripDispatcher class" do
         passenger = @dispatcher.find_passenger(2)
         expect(passenger).must_be_kind_of RideShare::Passenger
       end
+
+      it "finds the correct passenger" do
+        passenger = @dispatcher.find_passenger(2)
+        expect(passenger.name).must_equal "Passenger 2"
+      end
     end
 
     describe "Passenger & Trip loader methods" do
@@ -145,9 +150,8 @@ describe "TripDispatcher class" do
       expect{@dispatcher.request_trip(-2)}.must_raise ArgumentError
     end
 
-    ## NEED to add the available_drivers tests here to correspond with request_trip method steps
-
-    it "correctly finds the first available driver" do
+    # Testing provided data (where most eligible driver had no trips)
+    it "correctly finds the first available driver when the file has a driver with no trips" do
       expect(@requested_trip.driver.name).must_equal "Driver 3 (no trips)"
     end
 
@@ -155,8 +159,6 @@ describe "TripDispatcher class" do
       # expect(requested_trip).must_respond_to :status
       expect(@requested_trip.driver.status).must_equal :UNAVAILABLE
     end
-
-    
   end
 end
 
@@ -170,21 +172,8 @@ describe "Intelligent Dispatching Methods" do
     )
   end
 
-  #MORE SPECIFIC method names to test in order??
-
-  # Should we have a structure like this, where we test before and after?
-  # it "adds the trip" do
-  #   expect(@driver.trips).wont_include @trip
-  #   previous = @driver.trips.length
-
-  #   @driver.add_trip(@trip)
-
-  #   expect(@driver.trips).must_include @trip
-  #   expect(@driver.trips.length).must_equal previous + 1
-  # end
-
-
-  describe "Wave 4 methods" do
+  describe "available_drivers method" do
+    
       before do
         @dispatcher2 = build_test_dispatcher2
         @requested_trip = @dispatcher2.request_trip(4)
@@ -194,48 +183,53 @@ describe "Intelligent Dispatching Methods" do
         expect(@dispatcher2.available_drivers).must_be_kind_of Array
       end
 
-      #BEFORE trip is dispatched
+      it "returns the correct number of available drivers after running the method" do 
+        previous_available_drivers = @dispatcher2.available_drivers
+        expect(previous_available_drivers.length).must_equal 6
 
-      it "returns the correct number of available drivers" do 
-        test_available_drivers = @dispatcher2.available_drivers
-        expect(test_available_drivers.length).must_equal 6
+        #making sure when another driver is requested  
+        #available drivers pool is decremented by one 
+        @requested_trip2 = @dispatcher2.request_trip(5)
+
+        current_available_drivers = @dispatcher2.available_drivers
+        expect(current_available_drivers.length).must_equal 5
       end
 
-      # RUNS the request_trip method*****
-    it "correctly returns the driver who has not driven the longest" do
-      expect(@requested_trip.driver.name).must_equal "Driver 9"
-    end
-
-    it "confirms BEST DRIVER, driver 9, has a trip in progress" do
-      expect(@requested_trip.end_time).must_be_nil
-    end
-
-    #AFTER method runs
-    it "returns the correct number of available drivers" do 
-      @requested_trip2 = @dispatcher2.request_trip(8)
-      test_available_drivers = @dispatcher2.available_drivers
-      expect(test_available_drivers.length).must_equal 5
-    end
-
-    # ?????
-    it "correctly returns the driver who has not driven the longest" do
-      @requested_trip2 = @dispatcher2.request_trip(8)
-      expect(@requested_trip2.driver.name).must_equal "Driver 2"
-    end
-
-    it "confirms that every driver in returned available drivers list has available status" do
-      @requested_trip2 = @dispatcher2.request_trip(8)
-      def check_all_statuses 
-        @dispatcher2.available_drivers.each do |driver|
-        if driver.status == :UNAVAILABLE
-          return false
-        else 
-          return true
+      it "confirms that every driver in returned available drivers list has available status" do
+        @requested_trip2 = @dispatcher2.request_trip(8)
+        def check_all_statuses 
+          @dispatcher2.available_drivers.each do |driver|
+            if driver.status == :UNAVAILABLE
+              return false
+            else 
+              return true
+            end
+          end
         end
+        expect(check_all_statuses).must_equal true
       end
     end
-      expect(check_all_statuses).must_equal true
-    end
 
+    describe "pick_most_eligible_driver method" do
+      
+      # Modified provided data to test getting the driver with the oldest trip)
+      before do
+        @dispatcher2 = build_test_dispatcher2
+        @requested_trip = @dispatcher2.request_trip(4)
+      end
+
+      it "correctly returns the driver who has not driven the longest" do
+        expect(@requested_trip.driver.name).must_equal "Driver 9"
+      end
+
+      it "confirms that most eligible driver has a trip in progress" do
+        expect(@requested_trip.end_time).must_be_nil
+      end
+
+      # After running another request_trip cycle, next most eligiible driver is found
+      it "correctly returns the driver who has not driven the longest" do
+        @requested_trip2 = @dispatcher2.request_trip(5)
+        expect(@requested_trip2.driver.name).must_equal "Driver 2"
+      end
   end
 end 
