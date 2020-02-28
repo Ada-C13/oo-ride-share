@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -121,5 +121,38 @@ describe "TripDispatcher class" do
         end
       end
     end
+  end
+  
+  describe "request_trip" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @new_trip = @dispatcher.request_trip(1)
+      end
+
+      it "produces an instance of Trip" do
+        expect(@new_trip).must_be_kind_of RideShare::Trip
+      end
+
+      it "creates an instance of a Trip with correct data" do
+      #NOTE: this includes testing to ensure that the first available driver is selected for the new trip
+
+        expect(@new_trip.id).must_equal 6
+        expect(@new_trip.driver_id).must_equal 2 # Driver 2 was the first driver available 
+        assert_nil @new_trip.end_time
+        assert_nil @new_trip.cost
+        assert_nil @new_trip.rating
+      end
+
+      it "adds the in progress trip to the trip collection" do
+        expect(@dispatcher.trips).must_include @new_trip
+        expect(@dispatcher.trips.length).must_equal 6
+      end
+
+      it "raises an Exception if no drivers are available" do
+        expect do
+          @dispatcher.request_trip(2)
+          @dispatcher.request_trip(3)
+        end.must_raise StandardError
+      end
   end
 end

@@ -2,6 +2,14 @@ require_relative 'test_helper'
 
 describe "Passenger class" do
 
+  let (:passenger) {
+    RideShare::Passenger.new(
+      id: 1,
+      name: "Ada",
+      phone_number: "412-432-7640",
+    )
+  }
+
   describe "Passenger instantiation" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
@@ -49,7 +57,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 1
         )
 
       @passenger.add_trip(trip)
@@ -70,5 +79,118 @@ describe "Passenger class" do
 
   describe "net_expenditures" do
     # You add tests for the net_expenditures method
+    it "returns the total amount a passenger has spent on their rides [from csv]" do
+      trip_dispatch = RideShare::TripDispatcher.new
+
+      expect(trip_dispatch.passengers[0].net_expenditures).must_equal 15
+    end
+
+    it "returns the total amount a passenger has spent on their rides [given new information]" do
+      trip_1 = RideShare::Trip.new(id: 8,
+        passenger: passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11) + 6*60*60,
+        cost: 23,
+        rating: 3,
+        driver_id: 1
+      )
+
+      trip_2 = RideShare::Trip.new(id: 9,
+        passenger: passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11) + 6*60*60,
+        cost: 60,
+        rating: 4,
+        driver_id: 1
+      )
+
+      passenger.add_trip(trip_1)
+      passenger.add_trip(trip_2)
+
+      expect(passenger.net_expenditures).must_equal 83
+
+    end
+
+    it "returns 0 if a passenger has not yet taken a trip" do
+      expect(passenger.net_expenditures).must_equal 0
+
+    end
+  end
+
+  describe "total_time_spent" do
+    # You add tests for the net_expenditures method
+    it "returns the total time (in seconds) that a passenger rode [from csv]" do
+      trip_dispatch = RideShare::TripDispatcher.new
+
+      expect(trip_dispatch.passengers[0].total_time_spent).must_equal 5410
+    end
+
+    it "returns the total time (in seconds) that a passenger rode [given new information]" do
+      trip_1 = RideShare::Trip.new(id: 8,
+        passenger: passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11) + 2*60*60,
+        cost: 123,
+        rating: 3,
+        driver_id: 1
+      )
+
+      trip_2 = RideShare::Trip.new(id: 9,
+        passenger: passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11) + 60*60,
+        cost: 60,
+        rating: 4,
+        driver_id: 1
+      )
+
+      passenger.add_trip(trip_1)
+      passenger.add_trip(trip_2)
+
+      expect(passenger.total_time_spent).must_equal 10800
+    end
+
+    it "returns 0 if a passenger has not yet taken a trip" do
+      expect(passenger.total_time_spent).must_equal 0
+    end
+  end
+
+  describe "add_trip_in_progress" do
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 1,
+        name: "Ada",
+        phone_number: "412-432-7640",
+      )
+      
+      @finished_trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 11) + 2*60*60,
+        cost: 123,
+        rating: 3,
+        driver_id: 1
+      )
+
+      @in_progress = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.now,
+        driver_id: 1
+      )
+
+      @passenger.add_trip(@finished_trip)
+    end
+
+    it "adds the in progress trip" do
+      expect(@passenger.trips).wont_include @in_progress
+      previous = @passenger.trips.length
+
+      @passenger.add_trip_in_progress(@in_progress)
+
+      expect(@passenger.trips).must_include @in_progress
+      expect(@passenger.trips.length).must_equal previous + 1
+    end
   end
 end

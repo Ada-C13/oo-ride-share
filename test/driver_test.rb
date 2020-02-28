@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -47,7 +47,7 @@ xdescribe "Driver class" do
 
   describe "add_trip method" do
     before do
-      pass = RideShare::Passenger.new(
+      @pass = RideShare::Passenger.new(
         id: 1,
         name: "Test Passenger",
         phone_number: "412-432-7640"
@@ -60,14 +60,14 @@ xdescribe "Driver class" do
       @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
-        passenger: pass,
+        passenger: @pass,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2018, 8, 9),
         rating: 5
       )
     end
 
-    it "adds the trip" do
+    it "successfully adds the trip to the trip collection" do
       expect(@driver.trips).wont_include @trip
       previous = @driver.trips.length
 
@@ -90,7 +90,7 @@ xdescribe "Driver class" do
         driver: @driver,
         passenger_id: 3,
         start_time: Time.new(2016, 8, 8),
-        end_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
         rating: 5
       )
       @driver.add_trip(trip)
@@ -132,5 +132,125 @@ xdescribe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
+        rating: 5,
+        cost: 5
+      )
+      trip_2 = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
+        rating: 5,
+        cost: 10
+      )
+      @driver.add_trip(trip_1)
+      @driver.add_trip(trip_2)
+    end
+
+    it "returns the driver's total profit" do
+      expect(@driver.total_revenue).must_equal 9.36
+    end
+
+    it "returns 0 if the driver has no trips" do
+      poor_driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(poor_driver.total_revenue).must_equal 0
+    end
+
+    it "returns the driver's total profit accurately when some trips are less than $3" do
+    # NOTE: The following addresses the question of "What if the cost of a trip was less than $1.65?"
+    # The executive decision was made that if a trip cost less than $3 the company was generous and gave
+    # them the entire profit, otherwise the company charges the fees as per usual.
+      sad_driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        driver: sad_driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
+        rating: 5,
+        cost: 5
+      )
+      trip_2 = RideShare::Trip.new(
+        id: 9,
+        driver: sad_driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8) + 6*60*60,
+        rating: 5,
+        cost: 2
+      )
+      sad_driver.add_trip(trip_1)
+      sad_driver.add_trip(trip_2)
+
+      expect(sad_driver.total_revenue).must_equal 4.68
+    end
+  end
+
+  describe "add_trip_in_progress" do
+    before do
+      @pass = RideShare::Passenger.new(
+        id: 1,
+        name: "Test Passenger",
+        phone_number: "412-432-7640"
+      )
+      @driver = RideShare::Driver.new(
+        id: 3,
+        name: "Test Driver",
+        vin: "12345678912345678",
+      )
+      @finished_trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger: @pass,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2018, 8, 9),
+        rating: 5
+      )
+      @in_progress = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger: @pass,
+        start_time: Time.now,
+      )
+
+      @driver.add_trip(@finished_trip)
+      
+    end
+
+    it "adds the in progress trip to trips list" do
+      expect(@driver.trips).wont_include @in_progress
+      previous = @driver.trips.length
+
+      @driver.add_trip_in_progress(@in_progress)
+
+      expect(@driver.trips).must_include @in_progress
+      expect(@driver.trips.length).must_equal previous + 1
+    end
+
+    it "going on in progress trip makes driver UNAVAILABLE" do
+      @driver.add_trip_in_progress(@in_progress)
+      expect(@driver.status).must_equal :UNAVAILABLE
+    end
   end
 end
