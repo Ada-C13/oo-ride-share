@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +120,74 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "request_trip method" do
+    it "creates an instance of Trip" do
+      dispatcher = build_test_dispatcher
+      new_length = dispatcher.trips.length + 1
+
+      dispatcher.request_trip(1)
+
+      expect(dispatcher.trips.length).must_equal new_length
+      expect(dispatcher.trips.last).must_be_instance_of RideShare::Trip
+    end
+
+    it "will return first available driver" do
+      dispatcher = build_test_dispatcher
+      
+      dispatcher.request_trip(1)
+      #find the passenger id 1 and then see if the driver id is 2
+      expect(dispatcher.trips.last.driver_id).must_equal 3
+    end
+
+    it "will change driver's status to unavailable" do
+      dispatcher = build_test_dispatcher
+
+      dispatcher.request_trip(1)
+
+      expect(dispatcher.find_driver(3).status).must_equal :UNAVAILABLE
+    end
+
+    it "will have a cost, rating, and end time of nil for new trip" do
+      dispatcher = build_test_dispatcher
+      
+      dispatcher.request_trip(1)
+
+      expect(dispatcher.trips.last.end_time).must_be_nil
+      expect(dispatcher.trips.last.cost).must_be_nil
+      expect(dispatcher.trips.last.rating).must_be_nil
+    end
+    it "update driver's trips" do 
+      dispatcher = build_test_dispatcher
+      new_length = dispatcher.find_driver(3).trips.length + 1
+
+      dispatcher.request_trip(1)
+      expect(dispatcher.find_driver(3).trips.length).must_equal new_length
+    end 
+
+    it "update passenger's trips" do 
+      dispatcher = build_test_dispatcher
+      dispatcher.request_trip(1)
+      expect(dispatcher.find_passenger(1).trips.length).must_equal 2
+    end 
+    it "raise error when there is no available driver" do 
+      dispatcher = build_test_dispatcher
+      dispatcher.drivers.map {|driver|driver.change_status}
+      expect{dispatcher.request_trip(1)}.must_raise ArgumentError
+    end 
+
+    it "selects an available driver" do
+      dispatcher = build_test_dispatcher
+      dispatcher.request_trip(1)
+      expect(dispatcher.trips.last.driver_id).wont_equal 1
+    end
+
+    it "selects driver with no trips first" do
+      dispatcher = build_test_dispatcher
+      dispatcher.request_trip(1)
+      expect(dispatcher.trips.last.driver_id).must_equal 3
     end
   end
 end
