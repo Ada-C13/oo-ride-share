@@ -33,22 +33,32 @@ module RideShare
       else
         @trips.each do |trip|
           total_rating += trip.rating
-       end
+        end
        return (total_rating / @trips.length).round(2)
       end
     end
 
     def total_revenue
       total_revenue = 0
-      if @trips.empty?
-        return 0
-      else
-        @trips.each do |trip|
+      return 0 if @trips.empty?
+        
+
+      @trips.each do |trip|
+        if trip.cost >= 1.65
           total_revenue += ((trip.cost - 1.65) * 0.80)
-        end
-        return total_revenue.round(2)
+          # QUESTION
+        elsif trip.cost < 1.65
+          total_revenue += trip.cost
+        end 
       end
+      return total_revenue.round(2)
     end
+
+    def switch_to_unavailable 
+      if @status == :AVAILABLE  
+        @status = :UNAVAILABLE 
+      end 
+    end 
 
     def self.from_csv(record)
       return new(

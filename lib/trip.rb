@@ -31,22 +31,18 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      if end_time == nil
-        # Do nothing
-      elsif start_time > end_time
+      if end_time != nil && (start_time > end_time)
         raise ArgumentError.new("The end time is before the start time.")
+      end
+
+      if rating != nil && (rating > 5 || rating < 1)
+        raise ArgumentError.new("Invalid rating #{rating}")
       end
 
       @start_time = start_time
       @end_time = end_time
       @cost = cost
       @rating = rating
-
-      if @rating == nil 
-        # Do nothing
-      elsif @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
-      end
 
       if driver
         @driver = driver
@@ -68,7 +64,7 @@ module RideShare
         "PassengerID=#{passenger&.id.inspect}>"
     end
 
-    def connect(passenger,driver)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
       @driver = driver
@@ -76,11 +72,9 @@ module RideShare
     end
 
     def duration
-      if start_time == nil || end_time == nil
-        return 0
-      else 
-       return end_time - start_time
-      end 
+      return 0 if @end_time == nil
+         
+      return @end_time - @start_time
     end
     
     private

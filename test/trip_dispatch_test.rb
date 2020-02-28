@@ -137,21 +137,24 @@ describe "TripDispatcher class" do
   
       it "Updates the trip lists for the driver and passenger" do 
         expect(@assigned_trip.passenger_id).must_equal 1
-        expect(@assigned_trip.id).must_equal 5
+        expect(@assigned_trip.id).must_equal 6 
       end  
       
       it "Selects an available driver" do 
         expect(@assigned_trip.driver.status).must_equal :UNAVAILABLE
       end 
 
-      it "returns an ArgumentError if there are no AVAILABLE drivers" do 
-
+      it "Returns an ArgumentError if there are no AVAILABLE drivers" do
         # There are only 2 available drivers in our test file
-        @assigned_trip = @dispatcher.request_trip(2)
+        @dispatcher.request_trip(2)
 
         expect{
           @dispatcher.request_trip(3)
         }.must_raise ArgumentError
+      end 
+
+      it "Selects the one who has never driven or whose most recent trip ended the longest time ago" do 
+        expect(@dispatcher.find_frist_driver.id).must_equal 2
       end 
     end 
   end 
