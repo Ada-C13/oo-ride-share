@@ -37,7 +37,6 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -63,7 +62,6 @@ describe "Passenger class" do
         )
 
       @passenger.add_trip(trip1)
-      #maybe add driver later
 
       trip2 = RideShare::Trip.new(
         id: 8,
@@ -92,16 +90,17 @@ describe "Passenger class" do
     end
 
     it "calculates total costs" do
-    @passenger.trips.each do |trip| 
-      expect(@passenger.net_expenditures).must_equal 15
-    end
+      @passenger.trips.each do |trip| 
+        expect(@passenger.net_expenditures).must_equal 15
+      end
+
+      
   end
 
-  it "calculates time spent" do
-    @passenger.trips.each do |trip|
-      expect(@passenger.total_time_spent).must_equal 1260
+    it "calculates time spent" do
+      @passenger.trips.each do |trip|
+        expect(@passenger.total_time_spent).must_equal 1260
+      end
     end
   end
-
-end
 end

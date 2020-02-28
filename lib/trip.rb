@@ -60,8 +60,8 @@ module RideShare
     end
 
     def time_difference
-      if @end_time == nil || @start_time == nil
-        raise ArgumentError.new("Start time or end time cannot be nil.")
+      if @start_time == nil
+        raise ArgumentError.new("Start time cannot be nil.")
       end 
 
       return @end_time - @start_time
