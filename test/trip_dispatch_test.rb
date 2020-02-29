@@ -112,14 +112,30 @@ describe "TripDispatcher class" do
     end
 
     it "Was the driver available" do
+      dispatcher = build_test_dispatcher
+      drivers = dispatcher.find_available_drivers
+      passenger = dispatcher.find_passenger(1)
+      dispatcher.request_trip(1)
+
+      passengers_last_trip = passenger.trips[-1]
+      last_trips_driver = passengers_last_trip.driver_id
+      driver = dispatcher.find_driver(last_trips_driver)
+      expect(drivers.include?(last_trips_driver)).must_equal false
       # count how many available driver
       # request trip
       # expect one less available driver
+
+      expect(driver.status).must_equal :UNAVAILABLE
     end
 
     it "Raises ArgumentError for unavailable driver" do
-      # Give dispatcher only unavailable drivers to raise ArgumentError - Set all driver to unavailable? Give one unavailable driver in drivers?
+      dispatcher = build_test_dispatcher
+      dispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect {dispatcher.request_trip(1) }.must_raise ArgumentError
     end
+    # Give dispatcher only unavailable drivers to raise ArgumentError - Set all driver to unavailable? Give one unavailable driver in drivers?
   end
 
   # TODO: un-skip for Wave 2

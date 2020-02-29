@@ -59,10 +59,12 @@ module RideShare
       #   end
       # end
 
-      # if available_drivers.length == 0
-      #   raise ArgumentError, "No available drivers"
-      # end
-      dispatch_driver = find_available_drivers[0]
+      
+      dispatch_driver = find_available_drivers
+
+      if dispatch_driver.length == 0
+        raise ArgumentError.new("No available drivers")
+      end
 
       trip = Trip.new(
         id: @trips.last.id + 1,
@@ -72,17 +74,17 @@ module RideShare
         end_time: nil,
         cost: nil,
         rating: nil,
-        driver: dispatch_driver,
-        driver_id: dispatch_driver.id,
+        driver: dispatch_driver[0],
+        driver_id: dispatch_driver[0].id,
       )
 
-      dispatch_driver.add_trip(trip)
-      dispatch_driver.status = :UNAVAILABLE
+      dispatch_driver[0].add_trip(trip)
+      dispatch_driver[0].status = :UNAVAILABLE
       trip.passenger.add_trip(trip)
 
       @trips << trip
       trip.connect(trip.passenger)
-      trip.connect_driver(dispatch_driver)
+      trip.connect_driver(dispatch_driver[0])
 
       return trip
     end
