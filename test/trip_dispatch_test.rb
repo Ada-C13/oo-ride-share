@@ -23,15 +23,12 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
-
       dispatcher = RideShare::TripDispatcher.new
-
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -78,8 +75,8 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -120,6 +117,51 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+
+  describe "request_trip" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @passenger_id = 3
+      @trip = @dispatcher.request_trip(@passenger_id)
+    end
+
+    it "creates a new trip" do
+      expect(@trip).must_be_kind_of RideShare::Trip
+      expect(@trip.id).must_be_instance_of Integer
+      expect(@trip.driver_id).must_equal 2
+      expect(@trip.start_time).must_be_instance_of Time
+      expect(@trip.end_time).must_be_nil
+      expect(@trip.cost).must_be_nil
+      expect(@trip.rating).must_be_nil
+    end
+
+    it "updates the driver status" do
+      expect(@trip.driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "adds trip to the driver's trips" do
+      expect(@trip.driver.trips).must_include @trip
+    end
+  
+    it "adds trip to the passenger's trips" do
+      expect(@trip.passenger.trips).must_include @trip
+    end
+
+    it "adds trip to total trips list" do
+      expect(@dispatcher.trips).must_include @trip
+    end
+
+    it "returns a new trip" do
+      expect(@trip).must_equal @trip
+    end
+
+    it "raises ArgumentError if all drivers are unavailable" do
+      @dispatcher.drivers.each do |driver|
+           driver.status = :UNAVAILABLE
+      end
+      expect{@dispatcher.request_trip(3)}.must_raise ArgumentError
     end
   end
 end

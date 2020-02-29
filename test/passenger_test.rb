@@ -38,6 +38,13 @@ describe "Passenger class" do
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+        id: 7,
+        name: "Merl Glover Driver",
+        vin: "16026202330372367",
+        status: :AVAILABLE,
+        trips: []
+        )
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -46,12 +53,12 @@ describe "Passenger class" do
         )
       trip = RideShare::Trip.new(
         id: 8,
+        driver: @driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
         rating: 5
         )
-
       @passenger.add_trip(trip)
     end
 
@@ -67,8 +74,96 @@ describe "Passenger class" do
       end
     end
   end
-
+  
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+        id: 7,
+        name: "Merl Glover Driver",
+        vin: "16026202330372367",
+        status: :AVAILABLE,
+        trips: []
+        )
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+        
+        @trip1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 9),
+        cost: 10,
+        rating: 5
+        )
+        @passenger.add_trip(@trip1)
+      
+        @trip2 = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 11),
+        end_time: Time.new(2016, 8, 12),
+        cost: 11,
+        rating: 5
+        )
+        @passenger.add_trip(@trip2)
+      
+    end
+    it "net_expenditures" do
+      expect(@passenger.net_expenditures).must_be_kind_of Numeric
+      expect(@passenger.net_expenditures).must_equal 21
+    end
+  end
+
+  describe "total time spent" do ## this was all pasted from costs 
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+        id: 7,
+        name: "Merl Glover Driver",
+        vin: "16026202330372367",
+        status: :AVAILABLE,
+        trips: []
+        )
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+        
+        @trip1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8, 21, 00, 00),
+        end_time: Time.new(2016, 8, 8, 21, 10, 00),
+        cost: 10,
+        rating: 5
+        )
+        @passenger.add_trip(@trip1)
+      
+        @trip2 = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 11, 20, 00, 00),
+        end_time: Time.new(2016, 8, 11, 20, 8, 00),
+        cost: 11,
+        rating: 5
+        )
+        @passenger.add_trip(@trip2)
+      
+    end
+    it "calculates total time spent" do
+      expect(@passenger.total_time_spent).must_be_kind_of Numeric
+      expect(@passenger.total_time_spent).must_equal 1080
+    end
   end
 end

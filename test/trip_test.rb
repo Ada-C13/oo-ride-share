@@ -7,6 +7,12 @@ describe "Trip class" do
       end_time = start_time + 25 * 60 # 25 minutes
       @trip_data = {
         id: 8,
+        driver: RideShare::Driver.new(
+          id: 4,
+          name: "Best Driver",
+          vin: "12345678901234567",
+          status: :AVAILABLE
+        ),
         passenger: RideShare::Passenger.new(
           id: 1,
           name: "Ada",
@@ -18,6 +24,11 @@ describe "Trip class" do
         rating: 3
       }
       @trip = RideShare::Trip.new(@trip_data)
+    end
+
+    it "correctly calculates trip duration" do
+      expect(@trip.trip_duration_in_seconds).must_be_instance_of Float
+      expect(@trip.trip_duration_in_seconds).must_equal 1500
     end
 
     it "is an instance of Trip" do
@@ -40,6 +51,13 @@ describe "Trip class" do
           RideShare::Trip.new(@trip_data)
         end.must_raise ArgumentError
       end
+    end
+
+    it "raises an error if end_time is before start_time " do
+      @trip_data[:start_time] = @trip_data[:end_time] + 2000 # made start_time bigger than end_time by 15 minutes
+      expect do
+        RideShare::Trip.new(@trip_data)
+      end.must_raise ArgumentError
     end
   end
 end
