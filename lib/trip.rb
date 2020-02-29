@@ -57,11 +57,10 @@ module RideShare
       else
         raise ArgumentError, "Driver or driver_id is required"
       end
-    end # end initialize
+    end
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
-      # trip contains a passenger contains a trip contains a passenger...
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "ID=#{id.inspect} " +
         "PassengerID=#{passenger&.id.inspect}>"
@@ -77,7 +76,7 @@ module RideShare
       driver.add_trip(self)
     end
 
-    # Wave 1: Add an instance method to the Trip class to calculate the duration of the trip in seconds
+    # Wave 1: Instance method to calculate the duration of the trip in seconds
     def calculate_duration
       duration = @end_time - @start_time
       return duration
@@ -85,8 +84,6 @@ module RideShare
 
     private
 
-    # Wave 1: Turn start_time and end_time into Time instances before passing them to Trip#initialize
-    # Trip.from_csv overrides CsvRecord.from_csv
     def self.from_csv(record)
       return self.new(
                id: record[:id],
