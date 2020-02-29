@@ -3,7 +3,8 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :vin, :status, :trips
+    attr_reader :name, :vin, :trips
+    attr_accessor :status
     
     def initialize(id: , name: , vin: , status: :AVAILABLE, trips: nil)
       super(id)
@@ -27,12 +28,16 @@ module RideShare
 
     def average_rating
       total_rating = 0
+      number_of_finished_trips = 0
       @trips.each do |trip|
-        total_rating += trip.rating
+        if trip.end_time != nil
+          total_rating += trip.rating
+          number_of_finished_trips += 1
+        end
       end
 
       if @trips.length > 0 
-        average_rating = (total_rating / @trips.length).to_f
+        average_rating = (total_rating / number_of_finished_trips).to_f
       else
         average_rating = 0
       end
@@ -41,21 +46,12 @@ module RideShare
     def total_revenue
       total_revenue = 0
         @trips.each do |trip|
+          if trip.end_time != nil
           total_revenue += (trip.cost.to_f-1.65) * 0.80
+          end
         end
       return total_revenue
     end
-
-    def flip_status
-      if status == :UNAVAILABLE
-        status = :AVAILABLE
-      else 
-        status = :UNAVAILABLE
-      end
-    end
-
-
-
 
     private
 
@@ -67,8 +63,5 @@ module RideShare
         status: record[:status].to_sym
       )
     end
-
-  
-
   end
 end

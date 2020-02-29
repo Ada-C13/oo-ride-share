@@ -126,25 +126,6 @@ describe "TripDispatcher class" do
   describe "trips" do
     before do
       @dispatcher = build_test_dispatcher
-
-      # @dispatcher.drivers = []
-
-      # # Add a fake driver
-      # @fake_driver = RideShare::Driver.new(
-      #   id: 10000,
-      #   name: "Test Driver",
-      #   vin: "12345678901234567",
-      #   status: :AVAILABLE
-      # )
-      # @dispatcher.drivers << @fake_driver
-      #  # fake passenger
-      # @fake_passenger = RideShare::Passenger.new(
-      #   id: 10001,
-      #   name: "Haben Hannah Angela",
-      #   phone_number: "1-602-620-2330 x3723",
-      #   trips: []
-      # )
-      # @dispatcher.passengers << @fake_passenger
     end
 
     #Was the trip created properly?
@@ -166,23 +147,36 @@ describe "TripDispatcher class" do
     end
   
     # Were the trip lists for the driver and passenger updated?
-    it "updates the lists  for the driver" do
+    it "updates the lists  for the driver and passengers" do
 
+      test_driver= @dispatcher.find_driver(2)
+      test_passenger= @dispatcher.find_passenger(1)
+
+      driver_old_trips_count = (test_driver.trips).length
+      passenger_old_trips_count = (test_passenger.trips).length
+
+      test_trip = @dispatcher.request_trip(1)
+
+      driver_new_trips_count = (test_driver.trips).length
+      passenger_new_trips_count = (test_passenger.trips).length
+
+      expect(driver_new_trips_count).must_equal (driver_old_trips_count + 1)
+      expect(passenger_new_trips_count).must_equal (passenger_old_trips_count + 1)
     
-    end
-
-    it "updates the lists for the passenger" do
-      
     end
 
     #Was the driver who was selected AVAILABLE?
     it "selects an available driver" do
-
+      test_trip = @dispatcher.request_trip(1)
+      expect((test_trip.driver).name).must_equal "Driver 2"
     end
 
     #What happens if you try to request a trip when there are no AVAILABLE drivers?
     it "raises an ArgumentError when there are no available drivers" do
-      
+      (@dispatcher.drivers).each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect{ (test_trip = @dispatcher.request_trip(1)) }.must_raise ArgumentError
     end
 
   end

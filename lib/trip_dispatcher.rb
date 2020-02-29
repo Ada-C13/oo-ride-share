@@ -32,7 +32,14 @@ module RideShare
     def request_trip(passenger_id)
       passenger_object = @passengers.find {|passenger| passenger_id == passenger_id}
 
+      
       first_available_driver = @drivers.find{|driver| driver.status == :AVAILABLE}
+
+      if first_available_driver == nil 
+        raise ArgumentError, "There are no available drivers."
+      end
+
+
       end_time = nil
       cost = nil
 
@@ -49,9 +56,7 @@ module RideShare
       )
 
       first_available_driver.add_trip(new_trip)
-      # first_available_driver.status = :UNAVAILABLE
-      first_available_driver.flip_status
-
+      first_available_driver.status = :UNAVAILABLE
 
       passenger_object.add_trip(new_trip)
       

@@ -181,9 +181,47 @@ describe "Passenger class" do
         #Assert
         expect(total_time).must_equal 0
         expect(total_costs).must_equal 0
+    end
 
+    describe "trips in progress" do
+      it "ignores trips in progress" do
+        #arrange 
+        driver = RideShare::Driver.new(
+          id: 54,
+          name: "Rogers Bartell IV",
+          vin: "1C9EVBRM0YBC564DZ"
+        )
+        passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: []
+          )
+        trip = RideShare::Trip.new(
+          id: 8,
+          passenger: passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver: driver
+          )
+        passenger.add_trip(trip)
+        trip = RideShare::Trip.new(
+          id: 9,
+          passenger: passenger,
+          start_time: Time.new(2016, 8, 8),
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+          driver: driver
+          )
+          passenger.add_trip(trip)
 
+          expect((passenger.trips).length).must_equal 2 
+          expect(passenger.net_expenditures).must_equal 0
 
+      end
     end
 
 
