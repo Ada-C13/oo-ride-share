@@ -27,12 +27,14 @@ module RideShare
     end
     
     def find_available_driver
+      # finds next :AVAILABLE driver for a new trip
       available_driver = @drivers.select { |driver| driver.status == :AVAILABLE }[0]
       
       return available_driver
     end
 
     def sort_trips_by_id
+      # sorts trips by ID in order to add a new ID to a new trip
       sorted = @trips.sort_by { |trip| trip.id }
 
       return sorted 
@@ -42,7 +44,6 @@ module RideShare
       @driver = find_available_driver
       @passenger = find_passenger(passenger_id)
 
-      
       sorted_by_id = sort_trips_by_id
 
       new_trip = RideShare::Trip.new(
@@ -73,6 +74,7 @@ module RideShare
     private
     
     def connect_trip(trip)
+      # adds a new trip to passenger and driver
       trip.connect(trip.passenger, trip.driver)
     end
     

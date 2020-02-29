@@ -63,6 +63,7 @@ module RideShare
     
 
     def modify_status
+      # when a driver is assigned a new trip, driver status is now :UNAVAILABLE
       return self.status = :UNAVAILABLE
     end
     
