@@ -1,12 +1,12 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
-TEST_DATA_DIRECTORY = 'test/test_data'
+TEST_DATA_DIRECTORY = "test/test_data"
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
-      directory: TEST_DATA_DIRECTORY
-    )
+             directory: TEST_DATA_DIRECTORY,
+           )
   end
 
   describe "Initializer" do
@@ -20,18 +20,15 @@ describe "TripDispatcher class" do
       [:trips, :passengers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
-
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
-      trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
-
+      trip_count = %x{wc -l 'support/trips.csv'}.split(" ").first.to_i - 1
       dispatcher = RideShare::TripDispatcher.new
-
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -43,7 +40,7 @@ describe "TripDispatcher class" do
       end
 
       it "throws an argument error for a bad ID" do
-        expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
+        expect { @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
 
       it "finds a passenger instance" do
@@ -60,7 +57,6 @@ describe "TripDispatcher class" do
       it "accurately loads passenger information into passengers array" do
         first_passenger = @dispatcher.passengers.first
         last_passenger = @dispatcher.passengers.last
-
         expect(first_passenger.name).must_equal "Passenger 1"
         expect(first_passenger.id).must_equal 1
         expect(last_passenger.name).must_equal "Passenger 8"
@@ -78,8 +74,55 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  # Wave 3: tests for request_trip method
+  describe "request_trip" do
+    it "returns instance of trip" do
+      td = RideShare::TripDispatcher.new
+      expect(td.request_trip(1)).must_be_kind_of RideShare::Trip
+    end
+    # Were the trip lists for the driver and passenger updated?
+    it "Adds trip to passenger's trips" do
+      dispatcher = build_test_dispatcher
+      passenger = dispatcher.find_passenger(1)
+      dispatcher.request_trip(1)
+      expect(passenger.trips.length).must_equal 3
+    end
+
+    it "Adds trip to driver's trips" do
+      dispatcher = build_test_dispatcher
+      passenger = dispatcher.find_passenger(1)
+      dispatcher.request_trip(1)
+
+      # get the passenger's last trip
+      passengers_last_trip = passenger.trips[-1]
+      last_trips_driver = passengers_last_trip.driver_id
+      driver = dispatcher.find_driver(last_trips_driver)
+      expect(driver.trips.length).must_equal 5
+    end
+
+    it "Was the driver available" do
+      dispatcher = build_test_dispatcher
+      drivers = dispatcher.find_available_drivers
+      passenger = dispatcher.find_passenger(1)
+      dispatcher.request_trip(1)
+
+      passengers_last_trip = passenger.trips[-1]
+      last_trips_driver = passengers_last_trip.driver_id
+      driver = dispatcher.find_driver(last_trips_driver)
+      expect(drivers.include?(last_trips_driver)).must_equal false
+      expect(driver.status).must_equal :UNAVAILABLE
+    end
+
+    it "Raises ArgumentError for unavailable driver" do
+      dispatcher = build_test_dispatcher
+      dispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect { dispatcher.request_trip(1) }.must_raise ArgumentError
+    end
+  end
+
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -103,7 +146,6 @@ describe "TripDispatcher class" do
       it "accurately loads driver information into drivers array" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
-
         expect(first_driver.name).must_equal "Driver 1 (unavailable)"
         expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
