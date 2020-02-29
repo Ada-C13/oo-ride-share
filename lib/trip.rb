@@ -33,8 +33,6 @@ module RideShare
       @end_time = end_time
       @cost = cost
       @rating = rating
-      # @driver = driver
-      # @driver_id = driver_id
 
       if driver
         @driver = driver
