@@ -1,7 +1,6 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
 describe "Passenger class" do
-
   describe "Passenger instantiation" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
@@ -34,25 +33,31 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Yesenia",
+        vin: "08041995YSB",
+        status: :AVAILABLE  
+      )
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
-        trips: []
-        )
+        trips: [],
+      )
       trip = RideShare::Trip.new(
         id: 8,
+        driver: @driver,
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
-        )
+        rating: 5,
+      )
 
       @passenger.add_trip(trip)
+      @driver.add_trip(trip)
     end
 
     it "each item in array is a Trip instance" do
@@ -68,7 +73,60 @@ describe "Passenger class" do
     end
   end
 
-  describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+  describe "net_expenditures and total_time_spent" do
+    before do
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Yesenia",
+        vin: "08041995YSB",
+        status: :AVAILABLE  
+      )
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: [],
+      )
+    end
+
+    let (:trip_a) {
+      RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8, 2, 2, 2),
+        end_time: Time.new(2016, 8, 8, 2, 22, 2),
+        rating: 5,
+        cost: 10,
+      )
+    }
+    let (:trip_b) {
+      RideShare::Trip.new(
+        id: 9,
+        driver: @driver, 
+        passenger: @passenger,
+        start_time: Time.new(2018, 8, 8, 2, 2, 2),
+        end_time: Time.new(2018, 8, 8, 2, 22, 2),
+        rating: 5,
+        cost: 5,
+      )
+    }
+    it "calculates the net expenditure correctly" do
+      @passenger.add_trip(trip_a)
+      @passenger.add_trip(trip_b)
+      expect(@passenger.net_expenditures).must_equal 15
+    end
+    it "Returns zero expenditure for none existant trip" do 
+      expect(@passenger.net_expenditures).must_equal 0 
+    end
+
+    it "calculates the total amount of time of trip correctly" do 
+      @passenger.add_trip(trip_a)
+      @passenger.add_trip(trip_b)
+      expect(@passenger.total_time_spent).must_equal 40 * 60 
+    end
+    it "Returns zero total_time_spent for none existant trips" do 
+      expect(@passenger.total_time_spent).must_equal 0 
+    end
   end
 end
