@@ -30,8 +30,10 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      if start_time > end_time # added ArgumentError if start time is greater
-        raise ArgumentError, 'Start time cannot be greater than end time'
+      if !(end_time==nil)
+        if start_time > end_time # added ArgumentError if start time is greater
+          raise ArgumentError, 'Start time cannot be greater than end time'
+        end
       end
      
 
@@ -52,10 +54,12 @@ module RideShare
         raise ArgumentError, 'Driver or driver_id is required'
       end
 
+      if !(@rating==nil)
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
     end
+  end
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
@@ -65,9 +69,11 @@ module RideShare
         "PassengerID=#{passenger&.id.inspect}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      @driver = driver
+      driver.add_trip(self)
     end
 
     def duration_in_seconds  # the duration of a trip

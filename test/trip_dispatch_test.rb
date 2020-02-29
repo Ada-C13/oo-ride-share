@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -121,5 +121,69 @@ describe "TripDispatcher class" do
         end
       end
     end
+  end
+
+  describe "trips" do
+    before do
+      @dispatcher = build_test_dispatcher
+
+      # @dispatcher.drivers = []
+
+      # # Add a fake driver
+      # @fake_driver = RideShare::Driver.new(
+      #   id: 10000,
+      #   name: "Test Driver",
+      #   vin: "12345678901234567",
+      #   status: :AVAILABLE
+      # )
+      # @dispatcher.drivers << @fake_driver
+      #  # fake passenger
+      # @fake_passenger = RideShare::Passenger.new(
+      #   id: 10001,
+      #   name: "Haben Hannah Angela",
+      #   phone_number: "1-602-620-2330 x3723",
+      #   trips: []
+      # )
+      # @dispatcher.passengers << @fake_passenger
+    end
+
+    #Was the trip created properly?
+    it "creates the trip properly" do
+      # Act
+      test_trip = @dispatcher.request_trip(1)
+
+      # Asserts
+      expect(test_trip.id).must_be_kind_of Integer
+      expect(test_trip.passenger_id).must_equal 1
+      expect(test_trip.driver).must_be_kind_of RideShare::Driver
+      expect(test_trip.driver_id).must_equal 2
+      expect((test_trip.driver).name).must_equal "Driver 2"
+      expect(test_trip.cost).must_equal nil
+      expect(test_trip.start_time).must_be_kind_of Time
+      expect(test_trip.end_time).must_equal nil
+      expect(test_trip.rating).must_equal nil
+    
+    end
+  
+    # Were the trip lists for the driver and passenger updated?
+    it "updates the lists  for the driver" do
+
+    
+    end
+
+    it "updates the lists for the passenger" do
+      
+    end
+
+    #Was the driver who was selected AVAILABLE?
+    it "selects an available driver" do
+
+    end
+
+    #What happens if you try to request a trip when there are no AVAILABLE drivers?
+    it "raises an ArgumentError when there are no available drivers" do
+      
+    end
+
   end
 end

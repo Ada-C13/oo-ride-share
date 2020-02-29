@@ -46,6 +46,14 @@ module RideShare
       return total_revenue
     end
 
+    def flip_status
+      if status == :UNAVAILABLE
+        status = :AVAILABLE
+      else 
+        status = :UNAVAILABLE
+      end
+    end
+
 
 
 
