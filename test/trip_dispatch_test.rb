@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 
+
 TEST_DATA_DIRECTORY = 'test/test_data'
 
 describe "TripDispatcher class" do
@@ -17,13 +18,13 @@ describe "TripDispatcher class" do
 
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -79,7 +80,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -119,6 +120,67 @@ describe "TripDispatcher class" do
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
         end
+      end
+    end
+
+    describe "request_trip(passenger_id)" do
+      before do
+        passenger_id = 1
+        @dispatcher = build_test_dispatcher
+        @new_trip = @dispatcher.request_trip(passenger_id)
+
+        @test_data = {
+          id: 5,
+          passenger: RideShare::Passenger.new(
+            id: 2,
+            name: "Passenger 2",
+            phone_number: "111-111-1111"
+          ),
+          start_time: Time.now,
+          end_time: nil,
+          rating: nil,
+          driver: RideShare::Driver.new(
+            id:1, 
+            name: "Driver 1", 
+            vin:"1B6CF40K1J3Y74UY0"
+          )
+        }
+        @test_trip = RideShare::Trip.new(@test_data)
+      end
+
+      it "returns an instance of a trip " do
+        expect(@new_trip).must_be_kind_of RideShare::Trip
+      end
+
+      it "chooses the available driver that hasn't driven any trips" do
+        expect(@new_trip.driver.name).must_equal "Driver 3 (no trips)"
+      end
+
+      it "chooses the driver with the oldest end time when all drivers have driven" do
+        expect(@dispatcher.request_trip(2).driver.name).must_equal "Driver 2"
+      end
+
+      it " makes the chosen driver unavailable" do
+        expect(@new_trip.driver.status).must_equal :UNAVAILABLE
+      end
+
+      it "adds the trip to the driver's trips" do
+        expect(@new_trip.driver.trips).must_include @new_trip
+        expect(@new_trip.driver.trips).wont_include @test_trip
+      end
+
+      it "adds the trip to the passenger's trips" do
+        expect(@new_trip.passenger.trips).must_include @new_trip
+        expect(@new_trip.passenger.trips).wont_include @test_trip
+      end
+
+      it "adds the trip to the dispatcher's trips" do
+        expect(@dispatcher.trips).must_include @new_trip
+      end
+
+      it "Raises ArgumentError when there are no available drivers " do
+        @dispatcher.request_trip(2)
+        expect{ @dispatcher.request_trip(5) }.must_raise NoDriverError
       end
     end
   end
