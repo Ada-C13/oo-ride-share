@@ -4,34 +4,38 @@ module RideShare
   class Passenger < CsvRecord
     attr_reader :name, :phone_number, :trips
 
-    def initialize(id:, name:, phone_number:, trips: nil, cost: 0)
+    def initialize(id:, name:, phone_number:, trips: nil)
       super(id)
 
       @name = name
       @phone_number = phone_number
       @trips = trips || []
-      @cost = cost 
     end
 
     def add_trip(trip)
       @trips << trip
-      @cost += trip.cost 
     end
 
     def net_expenditures
       total = 0
       pass_money_spent = trips.each do |trip|
+        if !trip.cost 
+          next
+        end
         total += trip.cost
       end
-      return total
+      return total 
     end
 
     def total_time_spent
-      total_amount_time = 0
-      @trips.each do |trip|
-        total_amount_time += trip.duration
+      time = 0
+      total_amount_time = trips.each do |trip|
+        if !trip.duration
+          next
+        end
+        time += trip.duration
       end
-      return total_amount_time
+      time
     end
 
     private

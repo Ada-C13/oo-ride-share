@@ -1,7 +1,7 @@
 require_relative 'test_helper'
 
 describe "Driver class" do
-  describe "Driver instantiation" do
+  describe "Initializer" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
@@ -16,16 +16,16 @@ describe "Driver class" do
     end
 
     it "throws an argument error with a bad ID" do
-      expect { RideShare::Driver.new(id: 0, name: "George", vin: "33133313331333133") }.must_raise ArgumentError
+      expect { RideShare::Driver.new(id: 0, name: "Michael Phipps", vin: "33139983635333453") }.must_raise ArgumentError
     end
 
     it "throws an argument error with a bad VIN value" do
-      expect { RideShare::Driver.new(id: 100, name: "George", vin: "") }.must_raise ArgumentError
-      expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133extranums") }.must_raise ArgumentError
+      expect { RideShare::Driver.new(id: 100, name: "Mary Uschetti", vin: "") }.must_raise ArgumentError
+      expect { RideShare::Driver.new(id: 100, name: "Cara Avener", vin: "3218331333170333extranums") }.must_raise ArgumentError
     end
 
     it "has a default status of :AVAILABLE" do
-      expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
+      expect(RideShare::Driver.new(id: 100, name: "Shelley Braithewaithe", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
 
     it "sets driven trips to an empty array if not provided" do
@@ -34,8 +34,8 @@ describe "Driver class" do
     end
 
     it "is set up for specific attributes and data types" do
-      [:id, :name, :vin, :status, :trips].each do |prop|
-        expect(@driver).must_respond_to prop
+      [:id, :name, :vin, :status, :trips].each do |property|
+        expect(@driver).must_respond_to property
       end
 
       expect(@driver.id).must_be_kind_of Integer
@@ -50,12 +50,12 @@ describe "Driver class" do
     before do
       pass = RideShare::Passenger.new(
         id: 1,
-        name: "Test Passenger",
+        name: "Ali Mertounian",
         phone_number: "412-432-7640"
       )
       @driver = RideShare::Driver.new(
         id: 3,
-        name: "Test Driver",
+        name: "Eloise Rateliff",
         vin: "12345678912345678",
         trips: []
       )
@@ -84,7 +84,7 @@ describe "Driver class" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
-        name: "Rogers Bartell IV",
+        name: "Roger Mayer",
         vin: "1C9EVBRM0YBC564DZ"
       )
       @rating = 5
@@ -112,7 +112,7 @@ describe "Driver class" do
     it "returns zero if no driven trips" do
       driver = RideShare::Driver.new(
         id: 54,
-        name: "Rogers Bartell IV",
+        name: "Roger Mayer",
         vin: "1C9EVBRM0YBC564DZ"
       )
       expect(driver.average_rating).must_equal 0
@@ -137,7 +137,7 @@ describe "Driver class" do
     before do
      @driver = RideShare::Driver.new(
        id: 1,
-       name: "Valentine",
+       name: "Valerie Jones",
        vin: "DF5S6HFG365HGDCVG",
        status: :AVAILABLE
       )

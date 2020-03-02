@@ -25,11 +25,15 @@ module RideShare
       elsif passenger_id
         @passenger_id = passenger_id
       else
-        raise ArgumentError, "Passenger or passenger_id is required." 
+        raise ArgumentError.new("Passenger or passenger_id is required to initialize a trip.")
       end
 
-      if start_time > end_time 
-        raise ArgumentError, "Start time #{start_time} is after #{end_time}."
+      if driver
+        set_driver(driver)
+      elsif driver_id
+        @driver_id = driver_id
+      else
+        raise ArgumentError.new("Driver or driver_id is required to initialize a trip.")
       end
 
       @start_time = start_time
@@ -37,22 +41,16 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if driver
-        set_driver(driver)
-      elsif driver_id
-        @driver_id = driver_id
-      else
-        raise ArgumentError, "Driver or driver_id is required."
+      if end_time && start_time > end_time 
+        raise ArgumentError.new("Start time #{start_time} is after #{end_time}. Please try again with valid time fields.")
       end
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      if @rating && (@rating > 5 || @rating < 1)
+        raise ArgumentError.new("Invalid rating #{@rating}. Please try again with a valid rating between 1-5.")
       end
     end
 
     def inspect
-      # Prevent infinite loop when puts-ing a Trip
-      # trip contains a passenger contains a trip contains a passenger...
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
         "ID=#{id.inspect} " +
         "PassengerID=#{passenger&.id.inspect}>"
@@ -66,7 +64,7 @@ module RideShare
     end
 
     def duration 
-      end_time - start_time 
+      @end_time - @start_time 
     end
 
     def set_passenger(passenger)
@@ -76,7 +74,7 @@ module RideShare
 
     def set_driver(driver)
       @driver = driver
-      @driverr_id = driver.id
+      @driver_id = driver.id
     end
 
     private

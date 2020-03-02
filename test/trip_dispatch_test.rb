@@ -10,28 +10,25 @@ describe "TripDispatcher class" do
   end
 
   describe "Initializer" do
-    it "is an instance of TripDispatcher" do
+    it "initializes an instance of TripDispatcher" do
       dispatcher = build_test_dispatcher
       expect(dispatcher).must_be_kind_of RideShare::TripDispatcher
     end
 
-    it "establishes the base data structures when instantiated" do
+    it "establishes the data structure types when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
-        expect(dispatcher).must_respond_to prop
+      [:trips, :passengers].each do |property|
+        expect(dispatcher).must_respond_to property
       end
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
-    it "loads the development data by default" do
-      # Count lines in the file, subtract 1 for headers
+    it "loads the data by default" do
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
-
       dispatcher = RideShare::TripDispatcher.new
-
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -42,7 +39,7 @@ describe "TripDispatcher class" do
         @dispatcher = build_test_dispatcher
       end
 
-      it "throws an argument error for a bad ID" do
+      it "raises an argument error for a bad ID" do
         expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
 
@@ -84,7 +81,7 @@ describe "TripDispatcher class" do
         @dispatcher = build_test_dispatcher
       end
 
-      it "throws an argument error for a bad ID" do
+      it "raises an argument error for a bad ID" do
         expect { @dispatcher.find_driver(0) }.must_raise ArgumentError
       end
 
