@@ -4,10 +4,8 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    VIN_LEN = 17
+
     STATUSES = [:AVAILABLE, :UNAVAILABLE]
-    TRIP_FEE = 1.65
-    REVENUE_SHARE = 0.8
 
     attr_reader :id, :name, :vin, :status, :trips 
 
