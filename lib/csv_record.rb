@@ -1,4 +1,5 @@
 require 'csv'
+require 'pry'
 
 module RideShare
   class CsvRecord
