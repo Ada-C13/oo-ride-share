@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '2.5.5'
+ruby '2.6.5'
 
 gem 'rake'
 
@@ -10,3 +10,6 @@ gem 'csv'
 gem 'minitest'
 gem 'minitest-reporters'
 gem 'minitest-skip'
+
+
+gem 'pry'
