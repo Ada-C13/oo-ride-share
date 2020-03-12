@@ -30,7 +30,7 @@ module RideShare
     def request_trip(passenger_id)
       available_driver = @drivers.find { |driver| driver.status == :AVAILABLE }
 
-      raise ArgumentError.new("There are no drivers available") if available_driver == nil
+      raise NoDriverAvailableError.new("There are no drivers available") if available_driver == nil
 
       passenger = find_passenger(passenger_id)
 
